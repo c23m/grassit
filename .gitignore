@@ -8,8 +8,10 @@ backend/target/
 backend/.mvn/wrapper/maven-wrapper.jar
 
 # 通用数据
-archive/
 storage/
+!storage/**/.gitkeep
+archive/
+
 .env
 .idea/
 .vscode/

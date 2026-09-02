@@ -1,198 +1,236 @@
-# my-website
+# Grassit
 
-个人网站项目的企划书。
+网站项目的企划书。
 
 在线地址：<https://grassit.cn>
-## 1. 概要
 
+## 目录
+- [Grassit](#grassit)
+  - [目录](#目录)
+  - [概要](#概要)
+    - [技术栈](#技术栈)
+    - [项目阶段](#项目阶段)
+  - [存储结构](#存储结构)
+    - [用户表](#用户表)
+    - [文章表](#文章表)
+    - [资源表](#资源表)
+    - [文件存储](#文件存储)
+  - [接口规范](#接口规范)
+    - [通用约定](#通用约定)
+    - [GET `/api/user/:id`](#get-apiuserid)
+    - [GET `/api/article/{identifier}`](#get-apiarticleidentifier)
+    - [GET `/api/article/:id/content`](#get-apiarticleidcontent)
+    - [GET `/api/article/:id/raw`](#get-apiarticleidraw)
+    - [POST `/api/article/upload`](#post-apiarticleupload)
 
-## 2. 技术栈
+---
 
-- **前端**: Vue 3(JS) / Vite / Vue Router
-- **后端**: FastAPI(python)
-- **数据库**: MySQL
-- **桌面端**: Electron（计划使用）
-- **实时通信**: WebSocket / WebRTC（计划使用）
-- **部署**: 
+## 概要
+
+### 技术栈
+
+- **前端**：Vue 3（JavaScript）+ Vite + Vue Router
+- **后端**：Spring Boot
+- **数据库**：MySQL
+- **桌面端**：Electron(计划)
+- **实时通信**：WebSocket / WebRTC(计划)
+- **部署**：
   - Linux / WSL
-  - Nginx
-  - Gunicorn
-  - Supervisor
-  - Cloudflare Tunnel
+  - Nginx（反向代理 + 静态资源）
+  - Cloudflare Tunnel（对外暴露）
+  - Docker Compose（编排所有服务）
 
-## 3. 文件结构
-省略了环境和部分文件. 
+### 项目阶段
 
-- Web/
-  - frontend/
-    - public/
-      - images/
-      - robots.txt
-      - favicon.ico
-    - src/
-      - assets/
-        - images/
-        - icons/
-        - styles/
-      - components/
-        - common/
-        - layouts/
-        - misc/
-      - router/
-      - utils/
-      - views/
-      - App.vue
-      - main.js
-    - index.html
-  - backend/
-    - main.py
-  - .gitignore
-
-## 4. url结构
-
-`/:lang?`设置网站语言(*不控制文档语言*):  
-省略时为`zh`, 中文.  
-`en`为英文.  
-
-本网站暂时不支持其他语言...  
-
-其他下面的都是子路径.
-
-### `/`
-**主页(Home)**
-
-在这里可以跳转到其他页面.
-
-### `/login`
-**登录界面(Login)**
-登录成功后默认跳转到主页
-
-### `/register`
-**注册界面(Register)**
-注册成功后跳转到登录
-
-### `/user/:username?`
-**用户页面(User)**
-
-`username`置空且未登录, 跳转到登录
-
-否则到对应`username`(置空为登录的`username`).  
-
-### `/article/:slug?`
-**文档页(Article)**
-
-如果`slug`为空, 查询`readme`.
-
-渲染对应文档
-
-#### `?`参数
-`by=id` 时, 根据文章id而非slug来查找
-
-### `404`
-若是根节点匹配失败, 则到**404页面**.
-
-否则, 根据具体查询失败的页面渲染出错信息. 
+| 版本     | 内容                                                                      | 当前状态                     |
+| -------- | ------------------------------------------------------------------------- | ---------------------------- |
+| **0.x**  | 前端基础页面 + 路由，后端 Docker 环境搭建，实现文章查询接口（硬编码数据） | **进行中**（后端脚手架搭建） |
+| **1.0**  | 文章系统完整实现：通过 slug 查看预存文章，支持 Markdown 渲染与资源映射    | 计划中                       |
+| **2.0**  | 账号系统（注册/登录），文章与用户关联，数据库完整接入，文章发布与列表     | 计划中                       |
+| **3.0**  | 个人资源存储系统，文章内引用本地图片/附件，Markdown 资源自动替换          | 计划中                       |
+| **4.0**  | Electron 桌面端，WebSocket 实时通信，推送与私聊                           | 远期                         |
+| **待定** | Wiki、标签、自定义样式、留言、多版本、游戏模块等                          | 需求池                       |
 
 ## 存储结构
 
-**用户**  
-```ts
-type user = {
-    id: number // 自增主键
-    username: string // unique 用户名, 不可更改
-    nickname: string // 显示名
-    password: string // 密码哈希
-    email: string // 邮箱
-    avatar: string // 头像url
+### 用户表
+
+```sql
+CREATE TABLE users (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(32) NOT NULL UNIQUE,
+    nickname VARCHAR(64) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    avatar_url VARCHAR(512)
+);
+```
+
+### 文章表
+
+> 禁止`slug`使用uuid格式(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)!  
+> 前端和后端都要校验
+>
+> 正文内容不存储在数据库，而是以文件形式存放
+
+```sql
+CREATE TABLE articles (
+    uuid CHAR(36) PRIMARY KEY,
+    slug VARCHAR(128) NOT NULL UNIQUE,
+    
+    author_id BIGINT UNSIGNED NOT NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
+
+    FOREIGN KEY (author_id) REFERENCES users(id)
+);
+```
+
+### 资源表
+```sql
+CREATE TABLE resources (
+    name_hash CHAR(12) PRIMARY KEY,
+    name_origin VARCHAR(255) NOT NULL,
+    mime_type VARCHAR(64) NOT NULL,
+    file_size BIGINT UNSIGNED NOT NULL,
+    article_uuid CHAR(36) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (article_uuid) REFERENCES articles(uuid) ON DELETE CASCADE,
+    INDEX idx_article (article_uuid)
+);
+```
+
+### 文件存储
+
+`/var/lib/grassit/`
+
+```
+/var/lib/grassit/
+├── files/
+│   ├── articles/
+│   │   └── {article-uuid}.md
+│   └── resources/
+│       └── {hash}.{ext}
+└── avatars/
+    └── {user-id}.jpeg
+```
+
+哈希算法：对 `slug + 原始文件名` 取 SHA-256，取前 12 位作为存储文件名。
+
+---
+
+## 接口规范
+
+### 通用约定
+
+- **版本**：所有接口前缀 `/api`，当前版本隐含为 v1（不加版本号）。
+- **认证**：1.0 阶段暂不校验 token，`author_id` 固定为 `1`（管理员），返回的用户名固定为 `admin`。
+- **日期格式**：`yyyy-MM-dd HH:mm:ss`（返回时使用 `yyyy-MM-dd` 仅用于示例，实际可包含时间）。
+- **错误响应**：统一返回 JSON 格式 `{"code": 404, "message": "Not Found"}`，HTTP 状态码与业务码一致。
+- **CORS**：开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
+
+---
+
+### GET `/api/user/:id`
+
+> 当前阶段仅用于演示，后续会扩展更多字段。
+
+**请求**：`GET /api/user/1`
+
+**响应**（200 OK）：
+```json
+{
+  "name": "admin"
 }
 ```
 
-**文章记录**  
-```ts
-type article = {
-    id: string[4] // 哈希后的主键
-    slug: string // 唯一, 用作临时链接
-    auther: string // 作者的username, 渲染为昵称
-    created_at: string // 文章创建时间
-    updated_at: string // 最后一次对任意版本修改的时间
+---
+
+### GET `/api/article/{identifier}`
+
+**说明**：获取文章详细信息（不含正文）. 正则判断是uuid还是slug.
+
+**请求**：`GET /api/article/01234567-89ab-cdef-ffff-4321fedc9876`
+
+**响应**（200 OK）：
+```json
+{
+  "uuid": "01234567-89ab-cdef-ffff-4321fedc9876",
+  "slug": "my-article",
+  "author_id": 1,
+  "author_name": "admin",
+  "created": "2026-09-01 10:00:00",
+  "updated": "2026-09-02 14:30:00",
+  "attachments": [
+    {
+      "url": "/resources/a1b2c3d4e5f6.png",
+      "originalName": "sunny.png",
+      "size": 2048576
+    },
+    {
+      "url": "/resources/f6e5d4c3b2a1.zip",
+      "originalName": "data.zip",
+      "size": 512000
+    }
+  ]
 }
 ```
 
-**文件存储**
+若文章不存在，返回 `404`。
 
-在后端, 例如:
-- articles/
-  - 1v4r/
-    - main.md 
-    - raw.md
-    - sunny.png
-    - resource.zip
-    - ...
-- avatars/
-  - r674.jpeg
-  - ...
+---
 
-### 1. 核心功能
-- 资源系统
-  - 不做通用网盘，而是作为文章的依赖资源仓库
-  - 一篇文章由 Markdown 和若干依赖资源组成
-  - 不支持深层目录
-- Markdown 引用
-  - 上传时将站内文章、资源引用转换为内部 ID
-  - 内部引用不依赖 slug，因此修改 slug 不会导致站内引用失效
-  - 渲染时将内部 ID 转换为当前可读 URL
-  - 外部引用不进行处理，可能因外部地址变化而失效
-- Markdown 导出
-  - 原始：直接返回用户上传的原始 Markdown
-  - 即用：将内部引用转换为永久链接，可直接在网站外使用
+### GET `/api/article/:id/content`
 
-### 3. 项目阶段
+**说明**：返回渲染后的 Markdown 内容(资源 URL 替换为哈希路径，站内链接替换为 slug 形式)。
 
-- 0.x
-  - 当前开发阶段
-  - 完成基础页面与项目框架
-  - 尚未达到最小可行产品，因此暂不使用正式版本号
+**请求**：`GET /api/article/01234567-89ab-cdef-ffff-4321fedc9876/content`
 
-- 1.0
-  - 初步完成文章系统
-  - 可以通过 slug 查看预存文章
+**响应**：`Content-Type: text/markdown`，正文为处理后的 Markdown 字符串。
 
-- 2.0
-  - 初步完成账号系统
-  - 接入数据库
-  - 文章与用户关联
-  - 可以查找、发布文章
+处理规则：
+1. 读取md, 将原始资源引用(如 `![](sunny.png)`)替换为 `/resources/a1b2c3d4e5f6.png`。
+2. 将站内链接（形如 `(https://grassit.cn)?/article/other-slug`）替换为 `/article/{对应uuid}`。
 
-- 3.0
-  - 初步完成个人资源存储系统
-  - 文章拥有自己的依赖资源
-  - Markdown 支持内部资源引用
-  - 可以引用本站上传的图片等资源
+> 当前版本（0.x）可能暂不实现替换，留待 1.0 完善。
 
-- 4.0
-  - 调整已有系统和底层
-  - 提供桌面端
-  - 学习并加入实时网络通信
-  - 支持主动推送、私聊等功能
+---
 
-### 4. 后续扩展
+### GET `/api/article/:id/raw`
 
-- Wiki
-- 自定义标签
-- 自定义样式
-- 创建日期、更新日期
-- 留言
-- 更多文章版本
-- 游戏相关内容
-- 其他功能模块
+**说明**：获取原始 Markdown 文件内容（未经处理）。
 
-## 游戏项目
+**请求**：`GET /api/article/01234567-89ab-cdef-ffff-4321fedc9876/raw`
 
-- 与网站项目分开开发
-- 游戏项目可以独立完成，不强制与 GrassIt 网站绑定
-- 卡牌游戏、解谜游戏、生存建造游戏等作为独立企划
-- 卡牌游戏可以作为其他游戏的底层框架或独立项目
-- 网络通信可以作为游戏项目和网站桌面端共同学习的技术
-- 美术资源尽量考虑招募美工协作，避免个人开发占用过多时间
-- 游戏项目不以短期完成为目标，在有足够时间和资源后再推进
+**响应**：`Content-Type: text/markdown`, 不做替换, 直接返回存储的内容。
 
+---
+
+### POST `/api/article/upload`
+
+**说明**：上传文章及附件，创建新文章。
+
+**请求**：`multipart/form-data`
+
+| 字段      | 类型     | 描述                                              |
+| --------- | -------- | ------------------------------------------------- |
+| `files`   | 文件数组 | 包含一个 `main.md` 及其他资源文件                 |
+| `slug`    | 字符串   | 文章 slug（必填, 唯一, 不能是合法的uuid）         |
+| `author`  | 整数     | 作者 ID                                           |
+| `created` | 字符串   | 创建日期（格式 `yyyy-MM-dd`，可选，默认当前时间） |
+
+**存储与映射**：
+
+1. 生成 UUID（v4）作为文章 ID。
+2. 将 `main.md` 预处理: 将 Markdown 中站内文章链接（如 `[title](https://grassit.cn/article/some-slug)`）替换为 `[title](https://grassit.cn/article/{对应uuid})`
+3. 上述内容保存到 `/var/lib/grassit/files/articles/{uuid}.md`。
+4. 遍历其他文件，计算哈希(`slug + 原文件名`), 存储到 `/var/lib/grassit/files/resources/{hash}.{ext}`, 并添加数据库记录。
+5. 插入 `articles` 表记录（`created_at` 和 `updated_at` 均为当前时间或传入值）。
+
+**响应**（201 Created）：
+```json
+{
+  "uuid": "01234567-89ab-cdef-ffff-4321fedc9876"
+}
+```
