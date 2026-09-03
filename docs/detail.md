@@ -57,10 +57,10 @@
 {
   "uuid": "01234567-89ab-cdef-ffff-4321fedc9876",
   "slug": "my-article",
-  "author_id": 1,
-  "author_name": "admin",
-  "created": "2026-09-01 10:00:00",
-  "updated": "2026-09-02 14:30:00",
+  "authorId": 1,
+  "authorName": "admin",
+  "createdAt": "2026-09-01 10:00:00",
+  "updatedAt": "2026-09-02 14:30:00",
   "attachments": [
     {
       "url": "/resources/a1b2c3d4e5f6.png",
