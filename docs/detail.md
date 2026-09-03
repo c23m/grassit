@@ -177,8 +177,6 @@ CREATE TABLE users (
 
 > 禁止`slug`使用uuid格式(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)!  
 > 前端和后端都要校验
->
-> 正文内容不存储在数据库，而是以文件形式存放
 
 ```sql
 CREATE TABLE articles (
@@ -216,6 +214,7 @@ CREATE TABLE resources (
   - frontend/
   - backend/
   - storage/
+    - database/
     - avatars/
       - {user-id}.jpeg
     - articles/

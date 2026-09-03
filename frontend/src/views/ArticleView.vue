@@ -50,7 +50,10 @@ onMounted(() => {
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else class="container">
         <Aside :items="[]" class="menu"> 目录 </Aside>
-        <article class="content markdown-body" v-html="html"></article>
+        <div class="content">
+            <article class="markdown-body" v-html="html"></article>
+        </div>
+
     </div>
 </template>
 
