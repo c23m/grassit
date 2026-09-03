@@ -24,7 +24,7 @@ services:
   grassit-backend:
     image: grassit-backend:latest
     container_name: grassit-backend
-    command: ["java", "-jar", "target/app.jar"]
+    command: ["java", "-jar", "app.jar"]
     ports:
       - "8090:8090"
     volumes:
