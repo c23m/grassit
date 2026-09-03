@@ -3,6 +3,7 @@
 - [设计细节](#设计细节)
   - [接口](#接口)
     - [GET `/api/user/:id`](#get-apiuserid)
+    - [GET `/api/article?...`](#get-apiarticle)
     - [GET `/api/article/{identifier}`](#get-apiarticleidentifier)
     - [GET `/api/article/{identifier}/raw`](#get-apiarticleidentifierraw)
     - [POST `/api/article/upload`](#post-apiarticleupload)
@@ -47,9 +48,35 @@
 
 ---
 
+### GET `/api/article?...`
+
+返回符合条件的article. 没找到返回空数组即可.
+
+| 查询参数 | 示例值       | 描述                                                          |
+| -------- | ------------ | ------------------------------------------------------------- |
+| `author` | `1`          | 用户id                                                        |
+| `slug`   | `html`       | 文章 slug                                                     |
+| `uuid`   | 略           | 文章UUID                                                      |
+| `start`  | `2026-09-01` | 查找createdtime 在 [start, end]时间内的文章, 默认`1970-01-01` |
+| `end`    | `2026-09-13` | 默认current time                                              |
+| `tag`    | `game`       | 以后再给文章打tag列表                                         |
+
+```json
+[
+{
+  "uuid": "01234567-89ab-cdef-ffff-4321fedc9876",
+  "slug": "my-article",
+  "authorId": 1, // 暂时总是1
+  "authorName": "admin",  // 暂时总是"admin"
+  "createdAt": "2026-09-01 10:00:00",
+  "updatedAt": "2026-09-02 14:30:00",
+}
+]
+```
+
 ### GET `/api/article/{identifier}`
 
-**说明**：获取文章详细信息（不含正文）. 正则判断是uuid还是slug.
+**说明**：获取文章详细信息. 正则判断是uuid还是slug.
 
 处理规则：
 1. 读取md, 将原始资源引用(如 `![](sunny.png)`)替换为 `/resources/a1b2c3d4e5f6.png`。
