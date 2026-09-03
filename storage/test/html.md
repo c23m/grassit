@@ -1,7 +1,5 @@
 # HTML
 
-
-
 ## script
 
 `<script>`标签. 

@@ -1,6 +1,27 @@
-# 接口规范
+# 设计细节
 
-## 通用约定
+- [设计细节](#设计细节)
+  - [接口](#接口)
+    - [GET `/api/user/:id`](#get-apiuserid)
+    - [GET `/api/article/{identifier}`](#get-apiarticleidentifier)
+    - [GET `/api/article/:id/content`](#get-apiarticleidcontent)
+    - [GET `/api/article/:id/raw`](#get-apiarticleidraw)
+    - [POST `/api/article/upload`](#post-apiarticleupload)
+  - [表结构](#表结构)
+    - [用户表](#用户表)
+    - [文章表](#文章表)
+    - [资源表](#资源表)
+  - [文件存储](#文件存储)
+  - [规范](#规范)
+    - [分支](#分支)
+      - [`main`](#main)
+      - [`dev`](#dev)
+      - [`tmp`](#tmp)
+
+
+## 接口
+
+**通用约定**:
 
 - **前缀**：所有接口前缀 `/api`。
 - **认证**：1.0 阶段暂不校验 token，`author_id` 固定为 `1`（管理员），返回的用户名固定为 `admin`。
@@ -112,3 +133,85 @@
   "uuid": "01234567-89ab-cdef-ffff-4321fedc9876"
 }
 ```
+
+## 表结构
+
+### 用户表
+
+```sql
+CREATE TABLE users (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(32) NOT NULL UNIQUE,
+    nickname VARCHAR(64) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    avatar_url VARCHAR(512)
+);
+```
+
+### 文章表
+
+> 禁止`slug`使用uuid格式(`^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$`)!  
+> 前端和后端都要校验
+>
+> 正文内容不存储在数据库，而是以文件形式存放
+
+```sql
+CREATE TABLE articles (
+    uuid CHAR(36) PRIMARY KEY,
+    slug VARCHAR(128) NOT NULL UNIQUE,
+    
+    author_id BIGINT UNSIGNED NOT NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
+
+    FOREIGN KEY (author_id) REFERENCES users(id)
+);
+```
+
+### 资源表
+```sql
+CREATE TABLE resources (
+    name_hash CHAR(12) PRIMARY KEY,
+    name_origin VARCHAR(255) NOT NULL,
+    mime_type VARCHAR(64) NOT NULL,
+    file_size BIGINT UNSIGNED NOT NULL,
+    article_uuid CHAR(36) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (article_uuid) REFERENCES articles(uuid) ON DELETE CASCADE,
+    INDEX idx_article (article_uuid)
+);
+```
+
+## 文件存储
+
+开发环境: `/storage/`, 如下
+
+- grassit/
+  - frontend/
+  - backend/
+  - storage/
+    - avatars/
+      - {user-id}.jpeg
+    - articles/
+      - {article-uuid}.md
+    - resources/
+      - {hash}.{ext}
+
+生产: `/var/lib/grassit/`
+
+哈希算法：对 `slug + 原始文件名` 取 SHA-256，取前 12 位作为存储文件名。
+
+## 规范
+
+### 分支
+
+#### `main`
+完整实现了某个功能, 通过了测试.
+
+#### `dev`
+可以运行才提交到这个分支.
+
+#### `tmp`
+半成品代码, 随便提交
