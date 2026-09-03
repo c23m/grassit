@@ -4,8 +4,8 @@
   - [接口](#接口)
     - [GET `/api/user/:id`](#get-apiuserid)
     - [GET `/api/article/{identifier}`](#get-apiarticleidentifier)
-    - [GET `/api/article/:id/content`](#get-apiarticleidcontent)
-    - [GET `/api/article/:id/raw`](#get-apiarticleidraw)
+    - [GET `/api/article/{identifier}/content`](#get-apiarticleidentifiercontent)
+    - [GET `/api/article/{identifier}/raw`](#get-apiarticleidentifierraw)
     - [POST `/api/article/upload`](#post-apiarticleupload)
   - [表结构](#表结构)
     - [用户表](#用户表)
@@ -33,6 +33,8 @@
 
 ### GET `/api/user/:id`
 
+
+> 暂时跳过这个  
 > 当前阶段仅用于演示，后续会扩展更多字段。
 
 **请求**：`GET /api/user/1`
@@ -52,26 +54,27 @@
 
 **请求**：`GET /api/article/01234567-89ab-cdef-ffff-4321fedc9876`
 
-**响应**（200 OK）：
+**响应** (200 OK)：
 ```json
 {
   "uuid": "01234567-89ab-cdef-ffff-4321fedc9876",
   "slug": "my-article",
-  "authorId": 1,
-  "authorName": "admin",
+  "authorId": 1, // 暂时总是1
+  "authorName": "admin",  // 暂时总是"admin"
   "createdAt": "2026-09-01 10:00:00",
   "updatedAt": "2026-09-02 14:30:00",
   "attachments": [
-    {
-      "url": "/resources/a1b2c3d4e5f6.png",
-      "originalName": "sunny.png",
-      "size": 2048576
-    },
-    {
-      "url": "/resources/f6e5d4c3b2a1.zip",
-      "originalName": "data.zip",
-      "size": 512000
-    }
+    // 下面内容可以暂时置空
+    // {
+    //   "url": "/resources/a1b2c3d4e5f6.png",
+    //   "originalName": "sunny.png",
+    //   "size": 2048576
+    // },
+    // {
+    //   "url": "/resources/f6e5d4c3b2a1.zip",
+    //   "originalName": "data.zip",
+    //   "size": 512000
+    // }
   ]
 }
 ```
@@ -80,7 +83,7 @@
 
 ---
 
-### GET `/api/article/:id/content`
+### GET `/api/article/{identifier}/content`
 
 **说明**：返回渲染后的 Markdown 内容(资源 URL 替换为哈希路径，站内链接替换为 slug 形式)。
 
@@ -96,9 +99,9 @@
 
 ---
 
-### GET `/api/article/:id/raw`
+### GET `/api/article/{identifier}/raw`
 
-**说明**：获取原始 Markdown 文件内容（未经处理）。
+**说明**：获取原始 Markdown 文件内容。
 
 **请求**：`GET /api/article/01234567-89ab-cdef-ffff-4321fedc9876/raw`
 
@@ -112,20 +115,24 @@
 
 **请求**：`multipart/form-data`
 
-| 字段      | 类型     | 描述                                              |
-| --------- | -------- | ------------------------------------------------- |
-| `files`   | 文件数组 | 包含一个 `main.md` 及其他资源文件                 |
-| `slug`    | 字符串   | 文章 slug（必填, 唯一, 不能是合法的uuid）         |
-| `author`  | 整数     | 作者 ID                                           |
-| `created` | 字符串   | 创建日期（格式 `yyyy-MM-dd`，可选，默认当前时间） |
+| 字段        | 类型     | 描述                                              |
+| ----------- | -------- | ------------------------------------------------- |
+| `files`     | 文件数组 | 包含一个 `main.md` 及其他资源文件                 |
+| `slug`      | 字符串   | 文章 slug（必填, 唯一, 不能是合法的uuid）         |
+| `authorId`  | 整数     | 作者 ID                                           |
+| `createdAt` | 字符串   | 创建日期（格式 `yyyy-MM-dd`，可选，默认当前时间） |
+
+当前: 文件只包含main.md, 不包含其他附件.
+
 
 **存储与映射**：
 
 1. 生成 UUID（v4）作为文章 ID。
 2. 将 `main.md` 预处理: 将 Markdown 中站内文章链接（如 `[title](https://grassit.cn/article/some-slug)`）替换为 `[title](https://grassit.cn/article/{对应uuid})`
 3. 上述内容保存到 `/var/lib/grassit/files/articles/{uuid}.md`。
-4. 遍历其他文件，计算哈希(`slug + 原文件名`), 存储到 `/var/lib/grassit/files/resources/{hash}.{ext}`, 并添加数据库记录。
-5. 插入 `articles` 表记录（`created_at` 和 `updated_at` 均为当前时间或传入值）。
+> 下面第4步先跳过  
+4. 遍历其他文件，计算哈希(`slug + 原文件名`), 存储到 `/> var/lib/grassit/files/resources/{hash}.{ext}`, 并添加数据库记录。
+5. 插入 `articles` 表记录。
 
 **响应**（201 Created）：
 ```json
