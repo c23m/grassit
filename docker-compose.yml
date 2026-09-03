@@ -19,7 +19,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./storage/data:/var/lib/mysql
+      - ./storage/database:/var/lib/mysql
     restart: unless-stopped
   grassit-backend:
     image: grassit-backend:latest
