@@ -12,10 +12,8 @@ services:
   mysql:
     image: mysql:8.0
     container_name: mysql-server
-    # command: --skip-grant-tables
     environment:
       MYSQL_ROOT_PASSWORD: grassit_db_admin
-      # MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
       - "3306:3306"
     volumes:
@@ -24,7 +22,7 @@ services:
   grassit-backend:
     image: grassit-backend:latest
     container_name: grassit-backend
-    command: ["java", "-jar", "app.jar"]
+    command: [ "java", "-jar", "app.jar" ]
     ports:
       - "8090:8090"
     volumes:

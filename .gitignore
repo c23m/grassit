@@ -16,4 +16,4 @@ archive/
 .DS_Store
 
 # 部署后数据
-data/
+storage/database/

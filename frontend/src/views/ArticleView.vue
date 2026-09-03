@@ -21,18 +21,6 @@ const article = ref({
     uuid: '',
 })
 
-const testArticle = {
-    "attachments": null,
-    "authorId": 3,
-    "authorName": null,
-    "content": "# 一级标题\n\n正文内容...\n\n## 二级标题\n\n更多内容...",
-    "createdAt": "2026-09-02 19:17:10",
-    "slug": "html",
-    "toc": null,
-    "updatedAt": "2026-09-02 19:17:12",
-    "uuid": "123e4567-e89b-12d3-a456-426614174000"
-}
-
 const html = computed(() => {
     if (!article.value.content) return ''
     return marked.parse(article.value.content)
@@ -52,8 +40,7 @@ async function loadArticle() {
 }
 
 onMounted(() => {
-    // loadArticle()
-    article.value = testArticle
+    loadArticle()
 })
 
 </script>
