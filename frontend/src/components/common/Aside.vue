@@ -1,14 +1,15 @@
 <script setup>
 import Link from '@/components/common/Link.vue';
-const { title, items } = defineProps({
-    title: String,
+const { items } = defineProps({
     items: Array
 })
 </script>
 
 <template>
     <aside>
-        <h2>{{ title }}</h2>
+        <h2>
+            <slot></slot>
+        </h2>
         <ul>
             <li v-for="item in items" :key="item.url">
                 <Link :url="item.url" class="no-underline">
