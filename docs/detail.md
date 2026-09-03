@@ -4,7 +4,6 @@
   - [接口](#接口)
     - [GET `/api/user/:id`](#get-apiuserid)
     - [GET `/api/article/{identifier}`](#get-apiarticleidentifier)
-    - [GET `/api/article/{identifier}/content`](#get-apiarticleidentifiercontent)
     - [GET `/api/article/{identifier}/raw`](#get-apiarticleidentifierraw)
     - [POST `/api/article/upload`](#post-apiarticleupload)
   - [表结构](#表结构)
@@ -52,6 +51,12 @@
 
 **说明**：获取文章详细信息（不含正文）. 正则判断是uuid还是slug.
 
+处理规则：
+1. 读取md, 将原始资源引用(如 `![](sunny.png)`)替换为 `/resources/a1b2c3d4e5f6.png`。
+2. 将站内链接（形如 `(https://grassit.cn)?/article/other-slug`）替换为 `/article/{对应uuid}`。
+
+> 当前版本（0.x）可能暂不实现替换，留待 1.0 完善。
+
 **请求**：`GET /api/article/01234567-89ab-cdef-ffff-4321fedc9876`
 
 **响应** (200 OK)：
@@ -63,6 +68,10 @@
   "authorName": "admin",  // 暂时总是"admin"
   "createdAt": "2026-09-01 10:00:00",
   "updatedAt": "2026-09-02 14:30:00",
+  "content": "# 一级标题\n\n正文内容...\n\n## 二级标题...",
+  "toc": [
+    //目录暂时置空
+  ],
   "attachments": [
     // 下面内容可以暂时置空
     // {
@@ -80,22 +89,6 @@
 ```
 
 若文章不存在，返回 `404`。
-
----
-
-### GET `/api/article/{identifier}/content`
-
-**说明**：返回渲染后的 Markdown 内容(资源 URL 替换为哈希路径，站内链接替换为 slug 形式)。
-
-**请求**：`GET /api/article/01234567-89ab-cdef-ffff-4321fedc9876/content`
-
-**响应**：`Content-Type: text/markdown`，正文为处理后的 Markdown 字符串。
-
-处理规则：
-1. 读取md, 将原始资源引用(如 `![](sunny.png)`)替换为 `/resources/a1b2c3d4e5f6.png`。
-2. 将站内链接（形如 `(https://grassit.cn)?/article/other-slug`）替换为 `/article/{对应uuid}`。
-
-> 当前版本（0.x）可能暂不实现替换，留待 1.0 完善。
 
 ---
 
