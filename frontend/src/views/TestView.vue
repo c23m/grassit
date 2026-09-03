@@ -3,6 +3,8 @@
 import BaseLayout from '@/components/layouts/BaseLayout.vue'
 import Button from '@/components/common/Button.vue'
 import Link from '@/components/common/Link.vue';
+
+import ArticleView from './ArticleView.vue';
 </script>
 
 <template>
@@ -12,6 +14,8 @@ import Link from '@/components/common/Link.vue';
         <p>
             <Link href="https://example.com"> 一个链接 </Link>
         </p>
+
+        <ArticleView url="html" />
 
     </BaseLayout>
 </template>
