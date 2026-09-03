@@ -51,6 +51,11 @@ onMounted(() => {
     <div v-else class="container">
         <Aside :items="[]" class="menu"> 目录 </Aside>
         <div class="content">
+            <h2>{{ article.title }}</h2>
+            <div class="info">
+                <span class="author"> {{ article.authorName }} </span>
+                <span class="date">{{ article.updateTime }}</span>
+            </div>
             <article class="markdown-body" v-html="html"></article>
         </div>
 
@@ -86,5 +91,10 @@ onMounted(() => {
 .content {
     padding: 40px;
     flex: 1;
+}
+
+.info {
+    color: var(--text-weak);
+    font-weight: 400;
 }
 </style>

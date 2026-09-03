@@ -14,6 +14,6 @@ if %errorlevel% equ 0 (
 
 echo [INFO] Using commandl: !DOCKER_COMPOSE_CMD!
 
-!DOCKER_COMPOSE_CMD! up -docker
+!DOCKER_COMPOSE_CMD! up -d
 
 endlocal

@@ -2,6 +2,7 @@
 
 - [设计细节](#设计细节)
   - [接口](#接口)
+    - [GET `/api/test/time/now`](#get-apitesttimenow)
     - [GET `/api/user/:id`](#get-apiuserid)
     - [GET `/api/article?...`](#get-apiarticle)
     - [GET `/api/article/{identifier}`](#get-apiarticleidentifier)
@@ -11,6 +12,8 @@
     - [用户表](#用户表)
     - [文章表](#文章表)
     - [资源表](#资源表)
+    - [标签表](#标签表)
+    - [文章-标签 关联表](#文章-标签-关联表)
   - [文件存储](#文件存储)
   - [规范](#规范)
     - [分支](#分支)
@@ -30,6 +33,18 @@
 - **CORS**：开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ---
+
+### GET `/api/test/time/now`
+
+**响应** (200 OK):
+
+返回当前时间(`yyyy-MM-dd HH:mm:ss`).
+
+```json
+{
+  "time": "2026-09-04 08:22:44"
+}
+```
 
 ### GET `/api/user/:id`
 
@@ -96,6 +111,12 @@
   "createdAt": "2026-09-01 10:00:00",
   "updatedAt": "2026-09-02 14:30:00",
   "content": "# 一级标题\n\n正文内容...\n\n## 二级标题...",
+  "tags": [
+    { "id": 22,
+      "nameZh": "中",
+      "nameEn": "Eng"
+    }
+  ]
   "attachments": [
     // 下面内容可以暂时置空
     // {
@@ -182,7 +203,7 @@ CREATE TABLE users (
 CREATE TABLE articles (
     uuid CHAR(36) PRIMARY KEY,
     slug VARCHAR(128) NOT NULL UNIQUE,
-    
+    title VARCHAR(128) NOT NULL,
     author_id BIGINT UNSIGNED NOT NULL,
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL,
@@ -203,6 +224,27 @@ CREATE TABLE resources (
 
     FOREIGN KEY (article_uuid) REFERENCES articles(uuid) ON DELETE CASCADE,
     INDEX idx_article (article_uuid)
+);
+```
+
+### 标签表
+```sql
+CREATE TABLE tags (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name_zh VARCHAR(255) NOT NULL,
+    name_en VARCHAR(255) NOT NULL
+);
+```
+
+### 文章-标签 关联表
+```sql
+CREATE TABLE article_tags (
+    article_uuid CHAR(36) NOT NULL,
+    tag_id INT NOT NULL,
+
+    PRIMARY KEY (article_uuid, tag_id)
+    FOREIGN KEY (article_uuid) REFERENCES articles(uuid) ON DELETE CASCADE,
+    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
 );
 ```
 
