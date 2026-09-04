@@ -6,6 +6,15 @@ import Button from '@/components/common/Button.vue'
 import Link from '@/components/common/Link.vue';
 
 import ArticleView from './ArticleView.vue';
+
+import { onMounted, computed } from 'vue'
+import { get } from '@/utils/request.js';
+
+const time = ref('')
+
+onMounted(() => {
+    time.value = get("/api/test/time/now")
+})
 </script>
 
 <template>
@@ -17,7 +26,11 @@ import ArticleView from './ArticleView.vue';
             <p>
                 <Link url="https://example.com"> 一个链接 </Link>
             </p>
-            <ArticleView url="html" />
+
+            <p>
+                查询时间: {{ time }}
+            </p>
+
         </main>
         <Footer />
     </div>
