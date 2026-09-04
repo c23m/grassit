@@ -19,7 +19,7 @@ $DOCKER_COMPOSE_CMD up -d
 read -p "Create test data for database(grassit_db) [y/N]" answer
 if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
     echo "Creating test data..."
-    docker exec -i mysql-server mysql -u root -p grassit_db < backend/test_data.sql
+    docker exec -i mysql-server mysql -u root -p grassit_db < storage/test/grassit_db_test.sql
     echo "Test data created."
 elif [[ "$answer" == "n" || "$answer" == "N" || -z "$answer" ]]; then
     echo "Skipped test data creation."
