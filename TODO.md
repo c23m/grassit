@@ -267,7 +267,7 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
   "author": {
     "userName": "admin",
     "nickname": "管理员"
-  }
+  },
   "title": "标题内容",
   "createdAt": "2026-09-01 10:00:00",
   "updatedAt": "2026-09-02 14:30:00",
