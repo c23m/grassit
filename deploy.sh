@@ -14,7 +14,7 @@ fi
 
 cd ..
 echo "Executing command: $DOCKER_COMPOSE_CMD"
-exec $DOCKER_COMPOSE_CMD up -d
+$DOCKER_COMPOSE_CMD up -d
 
 read -p "Create test data for database(grassit_db) [y/N]" answer
 if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
