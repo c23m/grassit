@@ -27,5 +27,5 @@ services:
     ports:
       - "8090:8090"
     volumes:
-      - ./storage:/var/lib/grassit/backend
+      - ./storage:/var/lib/grassit
     restart: unless-stopped
