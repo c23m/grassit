@@ -265,7 +265,7 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
   "uuid": "01234567-89ab-cdef-ffff-4321fedc9876",
   "slug": "my-article",
   "author": {
-    "userName": "admin",
+    "username": "admin",
     "nickname": "管理员"
   },
   "title": "标题内容",
