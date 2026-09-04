@@ -13,15 +13,15 @@ services:
     image: mysql:8.0
     container_name: mysql-server
     environment:
-      MYSQL_ROOT_PASSWORD: grassit_db_admin
+      MYSQL_ROOT_PASSWORD: gstadmin
     ports:
       - "3306:3306"
     volumes:
       - ./storage/database:/var/lib/mysql
     restart: unless-stopped
   grassit-backend:
-    image: grassit-backend:latest
-    container_name: grassit-backend
+    image: gst-backend:latest
+    container_name: gst-backend
     command: [ "java", "-jar", "app.jar" ]
     ports:
       - "8090:8090"
