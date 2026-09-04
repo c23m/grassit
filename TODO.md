@@ -1,11 +1,10 @@
 # TODO
 
+## 目录
 - [TODO](#todo)
+  - [目录](#目录)
+  - [日志](#日志)
   - [注意事项](#注意事项)
-    - [概述](#概述)
-    - [用户](#用户)
-    - [文章](#文章)
-    - [存储](#存储)
   - [版本](#版本)
     - [0.0.0](#000)
     - [0.0.1](#001)
@@ -16,6 +15,11 @@
     - [0.1.2](#012)
     - [0.1.3](#013)
     - [0.2](#02)
+  - [需求](#需求)
+    - [概述](#概述)
+    - [用户](#用户)
+    - [文章](#文章)
+    - [存储](#存储)
   - [接口](#接口)
     - [`GET /api/test/time/now`](#get-apitesttimenow)
     - [`GET /api/user/{username}`](#get-apiuserusername)
@@ -25,13 +29,91 @@
     - [`GET /api/article/{identifier}/raw`](#get-apiarticleidentifierraw)
     - [`POST /api/article/upload`](#post-apiarticleupload)
 
-## 注意事项
+## 日志
 
 9/4
 
 做了前后端职责分离.
 
-本文的描述里, 带`- [ ] `的项表示"不急着做"
+
+
+## 注意事项
+
+本文的描述里, 
+- [ ] 这种样式的内容表示需要做
+- [x] 这种样式的内容表示已实现
+> - [ ] 这种样式的内容表示优先级低
+
+
+
+## 版本
+
+### 0.0.0
+
+- [x] 网站已经可以照常运行了.
+
+### 0.0.1
+
+- [x] 实现主页. 
+
+- [x] 可以从主页的导航栏正常跳转到/test页. 
+
+- [x] test页会向后端询问当前时间, 返回即可. 
+
+**参考**:
+[`GET /api/test/time/now`](#get-apitesttimenow)
+
+### 0.0.2
+
+- [ ] 实现了文档查看页.
+- [ ] 添加测试数据
+
+测试用例与说明: 
+
+[测试文档1](../storage/test/v0-0-2-0.md)
+
+[测试文档2](../storage/test/v0-0-2-1.md)
+
+**参考**:
+[`GET /api/article/{identifier}`](#get-apiarticleidentifier)
+
+### 0.0.3
+
+- [ ] 可以上传文档, 不带附件
+- [ ] 添加测试数据
+
+**参考**:
+[`POST /api/article/upload`](#post-apiarticleupload)
+
+### 0.1.0
+
+从本版本开始, 需要处理用户
+
+- [ ] 可以根据用户名得到昵称和头像
+- [ ] 可以注册
+
+**参考**:
+[`POST /api/user/register`](#post-apiuserregister)
+
+### 0.1.1
+
+- [ ] 可以登录
+
+### 0.1.2
+
+- [ ] 在登陆状态上传文档
+
+### 0.1.3
+
+- [ ] 修改文档
+- [ ] 删除文档
+
+### 0.2
+
+优化体验, 如添加目录功能.
+...
+
+## 需求
 
 ### 概述
 1. 前端在查询时不会请求和使用任何id(如`3`这类), 文章的uuid除外.
@@ -78,76 +160,6 @@
 哈希算法参考：对 `slug + 原始文件名` 取 SHA-256，取前 12 位作为存储文件名。
 
 
-## 版本
-
-### 0.0.0
-
-网站已经可以照常运行了.
-
-### 0.0.1
-
-实现了主页. 
-
-可以从主页的导航栏正常跳转到/test页. 
-
-test页会向后端询问当前时间, 返回即可. 
-
-**参考**:
-[`GET /api/test/time/now`](#get-apitesttimenow)
-
-### 0.0.2
-
-实现了文档查看页.
-
-测试用例与说明: 
-
-[测试文档1](../storage/test/v0-0-2-0.md)
-
-[测试文档2](../storage/test/v0-0-2-1.md)
-
-**参考**:
-[`GET /api/article/{identifier}`](#get-apiarticleidentifier)
-
-### 0.0.3
-
-可以上传文档, 不带附件
-
-**参考**:
-[`POST /api/article/upload`](#post-apiarticleupload)
-
-### 0.1.0
-
-处理用户
-
-可以注册
-
-**参考**:
-[`POST /api/user/register`](#post-apiuserregister)
-
-### 0.1.1
-
-可以登录
-
-### 0.1.2
-
-在登陆状态上传文档
-
-### 0.1.3
-
-修改与删除文档
-
-### 0.2
-
-优化体验, 如添加目录功能.
-
-- 给
-
-| 版本  | 描述 | 状态   |
-| ----- | ---- | ------ |
-| 0.2.0 | ...  | 未开始 |
-...
-
-
 ## 接口
 
 字段默认必需, 若可选会声明
@@ -173,9 +185,9 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ### `GET /api/user/{username}`
 
-返回用户的详细信息.
+- [ ] 返回用户的详细信息.
 
-- [ ] 后续添加更多信息
+> - [ ] 后续添加更多信息
 
 ```json
 {
@@ -186,7 +198,7 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ### `POST /api/user/register`
 
-创建用户. 暂时不涉及其他字段
+- [ ] 创建用户. 暂时不涉及其他字段
 ```json
 {
   "username": "Hello",
@@ -203,7 +215,7 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 ---
 
 ### `GET /api/article`
-- [ ] 实现本接口:根据`?`后的查询条件, 返回符合条件的article. 没找到返回空数组即可.
+>- [ ] 实现本接口:根据`?`后的查询条件, 返回符合条件的article. 没找到返回空数组即可.
 
 | 查询参数 | 示例值       | 描述                                 |
 | -------- | ------------ | ------------------------------------ |
@@ -235,17 +247,17 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ### `GET /api/article/{identifier}`
 
-获取文章详细信息.
+- [ ] 获取文章详细信息.
 
-正则判断是uuid还是slug.
+- [ ] 正则判断是uuid还是slug.
 
 处理规则：
 
-将站内链接(形如`/article/other-slug`)替换为 `/article/{对应uuid}`。
+- [ ] 将站内链接(形如`/article/other-slug`)替换为 `/article/{对应uuid}`。
 
-读取md, 将原始资源引用(如 `![](sunny.png)`)替换为站内可用url。
+> - [ ] 读取md, 将原始资源引用(如 `![](sunny.png)`)替换为站内可用url。
 
-响应 (200 OK)：
+- [ ] 响应 (200 OK)：
 ```json
 {
   "uuid": "01234567-89ab-cdef-ffff-4321fedc9876",
@@ -282,7 +294,7 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ### `GET /api/article/{identifier}/raw`
 
-- [ ] 实现接口: 获取原始 Markdown 文件内容。
+> - [ ] 实现接口: 获取原始 Markdown 文件内容。
 
 **请求**：`GET /api/article/01234567-89ab-cdef-ffff-4321fedc9876/raw`
 
@@ -292,9 +304,9 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ### `POST /api/article/upload`
 
-上传文章，创建新文章。
+- [ ] 上传文章，创建新文章。
 
-- [ ] 可以一并上传附件
+> - [ ] 可以一并上传附件
 
 **请求**：`multipart/form-data`
 
@@ -308,12 +320,12 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 当前: 文件只包含main.md, 不包含其他附件.
 
-- 生成 UUID（v4）作为文章 ID。
-- 将 `main.md` 预处理: 将 Markdown 中站内文章链接（如 `[title](/article/some-slug)`）替换为 `[title](/article/{对应uuid})`
-- 上述内容保存。
-- [ ] 遍历其他文件，计算哈希后, 存储记录。
+- [ ] 生成 UUID（v4）作为文章 ID。
+- [ ] 将 `main.md` 预处理: 将 Markdown 中站内文章链接（如 `[title](/article/some-slug)`）替换为 `[title](/article/{对应uuid})`
+- [ ] 上述内容保存。
+> - [ ] 遍历其他文件，计算哈希后, 存储记录。
 
-**响应** (201 Created)
+- [ ] **响应** (201 Created)
 
 
 

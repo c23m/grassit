@@ -16,9 +16,11 @@ const loading = ref(false)
 const error = ref(null)
 
 const article = ref({
+    title: '',
     content: '',
     slug: '',
     uuid: '',
+    author: ''
 })
 
 const html = computed(() => {
