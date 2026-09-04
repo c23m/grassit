@@ -172,10 +172,9 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 ---
 ### `GET /api/test/time/now`
 
+- [x] 返回当前时间(`yyyy-MM-dd HH:mm:ss`).
+
 响应 (200 OK):
-
-返回当前时间(`yyyy-MM-dd HH:mm:ss`).
-
 ```json
 {
   "time": "2026-09-04 08:22:44"
@@ -189,8 +188,10 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 > - [ ] 后续添加更多信息
 
+响应(200 OK):
 ```json
 {
+  "nickname": "ming",
   "createdAt": "2026-09-01",
   "avatar": "/files/{sth}.jpeg"
 }
@@ -198,7 +199,8 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ### `POST /api/user/register`
 
-- [ ] 创建用户. 暂时不涉及其他字段
+- [ ] 创建用户
+
 ```json
 {
   "username": "Hello",
@@ -210,12 +212,12 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 成功响应: 201
 
-不需要其他返回
+暂时不需要其他返回
 
 ---
 
 ### `GET /api/article`
->- [ ] 实现本接口:根据`?`后的查询条件, 返回符合条件的article. 没找到返回空数组即可.
+>- [ ] 根据`?`后的查询条件, 返回符合条件的article. 没找到返回空数组即可.
 
 | 查询参数 | 示例值       | 描述                                 |
 | -------- | ------------ | ------------------------------------ |
@@ -257,7 +259,7 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 > - [ ] 读取md, 将原始资源引用(如 `![](sunny.png)`)替换为站内可用url。
 
-- [ ] 响应 (200 OK)：
+响应 (200 OK)：
 ```json
 {
   "uuid": "01234567-89ab-cdef-ffff-4321fedc9876",
@@ -294,7 +296,7 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ### `GET /api/article/{identifier}/raw`
 
-> - [ ] 实现接口: 获取原始 Markdown 文件内容。
+> - [ ] 获取原始 Markdown 文件内容。
 
 **请求**：`GET /api/article/01234567-89ab-cdef-ffff-4321fedc9876/raw`
 
@@ -325,7 +327,7 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 - [ ] 上述内容保存。
 > - [ ] 遍历其他文件，计算哈希后, 存储记录。
 
-- [ ] **响应** (201 Created)
+**响应** (201 Created)
 
 
 
