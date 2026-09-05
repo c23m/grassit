@@ -29,6 +29,7 @@ const article = ref({
 
 const content = computed(() => {
     if (!article.value.content) return ''
+    return article.value.content
     return marked.parse(article.value.content)
 })
 
