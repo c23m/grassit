@@ -13,7 +13,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://gst-backend:8090',
-        // target: 'http://debian:8090',
+        // target: 'http://10.42.0.1:8090',
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, '') // 可选：重写路径
       }

@@ -1,17 +1,17 @@
 <script setup>
 
+import '@/assets/styles/base.css'
 import NavBar from '@/components/layouts/NavBar.vue';
 import Footer from '@/components/layouts/Footer.vue';
-import Button from '@/components/common/Button.vue'
-import Link from '@/components/common/Link.vue';
 
 import ArticleView from './ArticleView.vue';
 
-import { onMounted, ref, reactive } from 'vue'
+import { onMounted, ref, reactive, watch } from 'vue'
 import { get } from '@/utils/request.js';
 import { useAsync } from '@/composables/useAysnc.js';
+import { useCache } from '@/composables/useCache.js';
 import { request } from '@/utils/request.js';
-import Radio from '@/components/common/Radio.vue';
+import { Button, Radio, TextInput, TextArea } from '@/components/common';
 
 const form = reactive({
     method: 'GET',
@@ -19,8 +19,13 @@ const form = reactive({
     body: ''
 })
 
-const { data, loading, error, execute } = useAsync(async (form) => {
+const urlCache = useCache(true)
+const bodyCache = useCache(true)
 
+
+const { data, loading, error, execute } = useAsync(async (form) => {
+    urlCache.insert(form.target)
+    bodyCache.insert(form.body)
     const response = await request(form.target, {
         method: form.method,
         headers: {
@@ -32,14 +37,20 @@ const { data, loading, error, execute } = useAsync(async (form) => {
 }
 )
 
+watch(() => urlCache.current.value, (newVal) => {
+    form.target = newVal
+})
+
+watch(() => bodyCache.current.value, (newVal) => {
+    form.body = newVal
+})
+
+
 const refresh = () => {
     execute(form)
 }
 
-onMounted(() => {
-    form.method = 'GET'
-    refresh()
-})
+onMounted(refresh)
 
 </script>
 
@@ -51,7 +62,7 @@ onMounted(() => {
                 <h2>测试表单</h2>
                 <fieldset>
                     <legend>
-                        方法
+                        <h4>方法</h4>
                     </legend>
                     <div class="method">
                         <Radio value="GET" v-model="form.method"> GET </Radio>
@@ -62,13 +73,19 @@ onMounted(() => {
                 </fieldset>
                 <fieldset>
                     <legend>
-                        目标
+                        <h4>目标</h4>
+                        <Button @click="urlCache.indexDec"> &lt; </Button>
+                        <Button @click="urlCache.indexInc"> &gt; </Button>
                     </legend>
-                    <input class="target" v-model="form.target" placeholder="/api/..." @keyup.enter="refresh" />
+                    <TextInput class="target" v-model="form.target" placeholder="/api/..." @keyup.enter="refresh" />
                 </fieldset>
                 <fieldset>
-                    <legend>主体</legend>
-                    <code><pre><textarea class="request-body" v-model="form.body"></textarea></pre></code>
+                    <legend>
+                        <h4>主体</h4>
+                        <Button @click="bodyCache.indexDec"> &lt; </Button>
+                        <Button @click="bodyCache.indexInc"> &gt; </Button>
+                    </legend>
+                    <code><pre><TextArea class="request-body" v-model="form.body" :disabled="form.method === 'GET'" /></pre></code>
                 </fieldset>
                 <Button type="submit"> 请求 </Button>
             </form>
@@ -99,6 +116,11 @@ h3 {
     margin-bottom: 30px;
 }
 
+h4 {
+    display: inline;
+    margin-right: auto;
+}
+
 main {
     display: flex;
     flex: 1;
@@ -107,14 +129,33 @@ main {
 
 form {
     width: 50vw;
+    padding: 1em;
 }
 
 fieldset {
+    padding: 1em 0;
+    width: 600px;
     margin: 20px 0;
+}
+
+legend {
+    padding: 0 10px;
+    display: flex;
+    width: 600px;
+    gap: 30px;
+}
+
+legend button {
+    padding: 5px 10px;
 }
 
 .method label {
     margin-right: 20px;
+}
+
+.target {
+    font-family: "consolas";
+    width: 600px;
 }
 
 .request-body {
@@ -128,19 +169,12 @@ fieldset {
 
 .query {
     padding: 20px;
-    border: 1px var(--boeder);
 }
 
 pre {
     font-family: 'consolas';
-
     white-space: pre-wrap;
     word-wrap: break-word;
 
-}
-
-.target {
-    width: 600px;
-    font-family: "consolas";
 }
 </style>
