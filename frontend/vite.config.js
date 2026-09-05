@@ -7,6 +7,9 @@ import path from 'path'
 export default defineConfig({
   plugins: [vue()],
   server: {
+    allowedHosts: [
+      "debian"
+    ],
     proxy: {
       '/api': {
         target: 'http://gst-backend:8090',

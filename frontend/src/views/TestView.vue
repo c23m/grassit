@@ -29,9 +29,9 @@ const request = ref({
 })
 
 const refresh = () => {
+    request.value.method = form.method
+    request.value.url = form.url
     execute(form.url)
-    request.method = form.method
-    request.url = form.url
 }
 
 onMounted(refresh)
@@ -51,22 +51,22 @@ onMounted(refresh)
                 </p>
                 <p>
                     <label>
-                        请输入URL <input v-model="form.url" placeholder="/api/..." />
+                        请输入URL <input class="url-input" v-model="form.url" placeholder="/api/..." />
                     </label>
                 </p>
-                <Button @click="refresh"> 刷新 </Button>
+                <Button @click="refresh"> 重新抓取 </Button>
             </form>
             <div>
-                <h4>测试: {{ request.method.toUpperCase() }} {{ request.url }}</h4>
+                <h4>查询: {{ request.method.toUpperCase() }} {{ request.url }}</h4>
 
                 <p v-if="loading">
                     加载中
                 </p>
-                <p v-else-if="error">
-                    出错: {{ error }}
+                <p v-else-if="error" class="error">
+                    {{ error }}
                 </p>
                 <p v-else>
-                    查询结果: {{ JSON.stringify(data, null, 2) }}
+                    {{ JSON.stringify(data, null, 2) }}
                 </p>
             </div>
 
@@ -94,5 +94,13 @@ h4 {
 main {
     flex: 1;
     padding: 40px;
+}
+
+.error {
+    color: red;
+}
+
+.url-input {
+    width: 800px;
 }
 </style>

@@ -13,7 +13,7 @@ export function useAsync(asyncFn, immediate = false) {
 
         } catch (err) {
             error.value = err.message || '请求失败'
-            throw err
+            console.error(err)
         }
         finally {
             loading.value = false
