@@ -68,7 +68,7 @@
 - [x] test页会向后端询问当前时间, 返回即可. 
 
 **参考**:
-[`GET /api/test/time/now`](#get-apitesttimenow)
+[`GET /api/test`](#get-apitest)
 
 ### 0.0.2
 
@@ -187,6 +187,8 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ---
 ### `GET /api/test`
+
+`GET /api/`返回和这个一样的内容
 
 返回一些测试内容, 包括:
 1. 当前时间(`yyyy-MM-dd HH:mm:ss`).

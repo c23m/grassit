@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { marked } from 'marked'
 import BaseLayout from '@/components/layouts/BaseLayout.vue';
+import { useAsync } from '@/composables/useAysnc';
 import { get } from '@/utils';
 import Aside from '@/components/common/Aside.vue';
 
@@ -11,9 +12,6 @@ const { url } = defineProps({
         required: true
     }
 })
-
-const loading = ref(false)
-const error = ref(null)
 
 const article = ref({
     title: '',
@@ -33,10 +31,16 @@ const content = computed(() => {
     return marked.parse(article.value.content)
 })
 
+const { data, loading, error, execute } = useAsync(async () => {
+    const response = await get(url)
+    return response
+}
+)
+
 async function loadArticle() {
 
     try {
-        const data = await get(`api/article/${url}`)
+        const data = await get(`/api/article/${url}`)
         article.value = data
     } catch (err) {
         error.value = err.message || '加载文章失败'

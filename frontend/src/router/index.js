@@ -18,12 +18,14 @@ const routes = [
         children: [
             {
                 path: "",
-                redirect: to => `/${to.params.lang ? to.params.lang + '/' : ''}home`,
+                redirect: to =>
+                    `/${to.params.lang ? to.params.lang + '/' : ''}home`,
             },
             {
-                path: 'article/:slug',
+                path: 'article/:identifier',
                 name: 'article',
                 component: ArticleView,
+                props: true
             },
         ]
     },
