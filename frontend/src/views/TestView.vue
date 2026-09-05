@@ -53,6 +53,7 @@ onMounted(() => {
     if (urlCache.items.value) {
         form.target = urlCache.current.value
     }
+    form.target = form.target ?? '/api/'
     if (bodyCache.items.value) {
         form.body = bodyCache.current.value
     }
