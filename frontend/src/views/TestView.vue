@@ -19,8 +19,11 @@ const form = reactive({
     body: ''
 })
 
-const urlCache = useCache(true)
-const bodyCache = useCache(true)
+const urlCache = useCache('url-cache', true)
+
+
+const bodyCache = useCache('body-cache', true)
+
 
 
 const { data, loading, error, execute } = useAsync(async (form) => {
@@ -46,11 +49,24 @@ watch(() => bodyCache.current.value, (newVal) => {
 })
 
 
+onMounted(() => {
+    if (urlCache.items.value) {
+        form.target = urlCache.current.value
+    }
+    if (bodyCache.items.value) {
+        form.body = bodyCache.current.value
+    }
+    refresh()
+})
+
 const refresh = () => {
     execute(form)
 }
 
-onMounted(refresh)
+const clear = () => {
+    urlCache.clear()
+    bodyCache.clear()
+}
 
 </script>
 
@@ -74,20 +90,32 @@ onMounted(refresh)
                 <fieldset>
                     <legend>
                         <h4>目标</h4>
-                        <Button @click="urlCache.indexDec"> &lt; </Button>
-                        <Button @click="urlCache.indexInc"> &gt; </Button>
+                        <Button @click="urlCache.indexDec" :disabled="urlCache.index === 0">
+                            &lt;
+                        </Button>
+                        <Button @click="urlCache.indexInc" :disabled="urlCache.index === urlCache.items.length">
+                            &gt;
+                        </Button>
                     </legend>
                     <TextInput class="target" v-model="form.target" placeholder="/api/..." @keyup.enter="refresh" />
                 </fieldset>
                 <fieldset>
                     <legend>
                         <h4>主体</h4>
-                        <Button @click="bodyCache.indexDec"> &lt; </Button>
-                        <Button @click="bodyCache.indexInc"> &gt; </Button>
+                        <Button @click="bodyCache.indexDec" :disabled="bodyCache.index === 0">
+                            &lt;
+                        </Button>
+                        <Button @click="bodyCache.indexInc" :disabled="bodyCache.index === bodyCache.items.length">
+                            &gt;
+                        </Button>
                     </legend>
                     <code><pre><TextArea class="request-body" v-model="form.body" :disabled="form.method === 'GET'" /></pre></code>
                 </fieldset>
-                <Button type="submit"> 请求 </Button>
+                <fieldset class="buttons">
+                    <Button type="submit"> 请求 </Button>
+                    <Button @click="" disabled> 上传文件 </Button>
+                    <Button @click="clear"> 清除缓存 </Button>
+                </fieldset>
             </form>
             <div class="query">
                 <h3>查询结果</h3>
@@ -161,6 +189,11 @@ legend button {
 .request-body {
     width: 600px;
     height: 200px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
 }
 
 .error {
