@@ -7,18 +7,34 @@ import Link from '@/components/common/Link.vue';
 
 import ArticleView from './ArticleView.vue';
 
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, reactive, computed } from 'vue'
 import { get } from '@/utils/request.js';
 import { useAsync } from '@/composables/useAysnc.js';
 
+const form = reactive({
+    method: 'get',
+    url: '/api/test'
+})
+
 const { data, loading, error, execute } = useAsync(
-    () => get("/api/test/time/now"),
-    true
+    async (url) => {
+        const response = await get(url)
+        return response
+    }, false
 )
 
+const request = ref({
+    method: '',
+    url: ''
+})
+
 const refresh = () => {
-    execute()
+    execute(form.url)
+    request.method = form.method
+    request.url = form.url
 }
+
+onMounted(refresh)
 
 </script>
 
@@ -26,22 +42,33 @@ const refresh = () => {
     <div class="layout">
         <NavBar />
         <main>
-            查看: <Button>Hello</Button>
-            <p>获得更多.</p>
-            <p>
-                <Link url="https://example.com"> 一个链接 </Link>
-            </p>
+            <h2>测试表单</h2>
+            <form @submit.prevent="">
+                <p>
+                    <label>
+                        请指定方法: <input type="radio" value="get" v-model="form.method" checked /> GET
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        请输入URL <input v-model="form.url" placeholder="/api/..." />
+                    </label>
+                </p>
+                <Button @click="refresh"> 刷新 </Button>
+            </form>
+            <div>
+                <h4>测试: {{ request.method.toUpperCase() }} {{ request.url }}</h4>
 
-            <p v-if="loading">
-                加载中
-            </p>
-            <p v-else-if="error">
-                出错: {{ error }}
-            </p>
-            <p v-else>
-                查询时间: {{ data?.time }}
-            </p>
-            <Button @click="refresh">刷新时间</Button>
+                <p v-if="loading">
+                    加载中
+                </p>
+                <p v-else-if="error">
+                    出错: {{ error }}
+                </p>
+                <p v-else>
+                    查询结果: {{ JSON.stringify(data, null, 2) }}
+                </p>
+            </div>
 
         </main>
         <Footer />
@@ -55,7 +82,17 @@ const refresh = () => {
     min-height: 100vh;
 }
 
+p {
+    margin: 30px 0;
+}
+
+h4 {
+    margin-top: 60px;
+
+}
+
 main {
     flex: 1;
+    padding: 40px;
 }
 </style>

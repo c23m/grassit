@@ -10,6 +10,7 @@
     - [0.0.1](#001)
     - [0.0.2](#002)
     - [0.0.3](#003)
+    - [0.0.4](#004)
     - [0.1.0](#010)
     - [0.1.1](#011)
     - [0.1.2](#012)
@@ -21,23 +22,30 @@
     - [文章](#文章)
     - [存储](#存储)
   - [接口](#接口)
-    - [`GET /api/test/time/now`](#get-apitesttimenow)
-    - [`GET /api/user/{username}`](#get-apiuserusername)
+    - [`GET /api/test`](#get-apitest)
+    - [`GET /api/user/:username`](#get-apiuserusername)
     - [`POST /api/user/register`](#post-apiuserregister)
     - [`GET /api/article`](#get-apiarticle)
-    - [`GET /api/article/{identifier}`](#get-apiarticleidentifier)
-    - [`GET /api/article/{identifier}/raw`](#get-apiarticleidentifierraw)
+    - [`GET /api/article/:identifier`](#get-apiarticleidentifier)
+    - [`GET /api/article/:identifier/raw`](#get-apiarticleidentifierraw)
     - [`POST /api/article/upload`](#post-apiarticleupload)
 
 ## 日志
 
-9/4
+**时间**: 9/5
 
-做了前后端职责分离.
+**版本**: 0.0.2
+
+
+更改了一处接口: [`GET /api/test`](#get-apitest)
+
+将本文档url参数样式从`/{username}`改为了`/:username`
 
 
 
 ## 注意事项
+
+1. 开始工作前, 先拉取最新版本的TODO.md, 查看日志.
 
 本文的描述里, 
 - [ ] 这种样式的内容表示需要做
@@ -65,8 +73,8 @@
 
 ### 0.0.2
 
-- [ ] 实现了文档查看页.
-- [ ] 添加测试数据
+- [x] 实现了文档查看页.
+- [x] 添加测试数据
 
 测试用例与说明: 
 
@@ -75,7 +83,7 @@
 [测试文档2](../storage/test/v0-0-2-1.md)
 
 **参考**:
-[`GET /api/article/{identifier}`](#get-apiarticleidentifier)
+[`GET /api/article/:identifier`](#get-apiarticleidentifier)
 
 ### 0.0.3
 
@@ -85,6 +93,16 @@
 **参考**:
 [`POST /api/article/upload`](#post-apiarticleupload)
 
+### 0.0.4
+
+前端:
+
+- [ ] 完善test页, 支持检查任意url.
+
+后端:
+
+可以在这个版本可以提前处理用户了
+
 ### 0.1.0
 
 从本版本开始, 需要处理用户
@@ -93,7 +111,10 @@
 - [ ] 可以注册
 
 **参考**:
+
 [`POST /api/user/register`](#post-apiuserregister)
+
+[`GET /api/user/:username`](#get-apiuserusername)
 
 ### 0.1.1
 
@@ -170,19 +191,22 @@
 CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ---
-### `GET /api/test/time/now`
+### `GET /api/test`
 
-- [x] 返回当前时间(`yyyy-MM-dd HH:mm:ss`).
+返回一些测试内容, 包括:
+1. 当前时间(`yyyy-MM-dd HH:mm:ss`).
+2. 版本(前三位与[日志](#日志)的版本相同, 最后一位按需变动)
 
 响应 (200 OK):
 ```json
 {
-  "time": "2026-09-04 08:22:44"
+  "time": "2026-09-04 08:22:44",
+  "version": "0.0.2.1"
 }
 ```
 
 
-### `GET /api/user/{username}`
+### `GET /api/user/:username`
 
 - [ ] 返回用户的详细信息.
 
@@ -247,7 +271,7 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ---
 
-### `GET /api/article/{identifier}`
+### `GET /api/article/:identifier`
 
 - [ ] 获取文章详细信息.
 
@@ -297,7 +321,7 @@ CORS: 开发环境通过 Vite 代理解决，生产环境由 Nginx 处理。
 
 ---
 
-### `GET /api/article/{identifier}/raw`
+### `GET /api/article/:identifier/raw`
 
 > - [ ] 获取原始 Markdown 文件内容。
 

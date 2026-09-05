@@ -20,10 +20,14 @@ const article = ref({
     content: '',
     slug: '',
     uuid: '',
-    author: ''
+    author: {
+        username: '',
+        nickname: ''
+    },
+    updateAt: ' '
 })
 
-const html = computed(() => {
+const content = computed(() => {
     if (!article.value.content) return ''
     return marked.parse(article.value.content)
 })
@@ -55,10 +59,10 @@ onMounted(() => {
         <div class="content">
             <h2>{{ article.title }}</h2>
             <div class="info">
-                <span class="author"> {{ article.authorName }} </span>
+                <span class="author"> {{ article.author.nickname }} </span>
                 <span class="date">{{ article.updateTime }}</span>
             </div>
-            <article class="markdown-body" v-html="html"></article>
+            <article class="markdown-body" v-html="content"></article>
         </div>
 
     </div>

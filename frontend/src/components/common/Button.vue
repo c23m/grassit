@@ -1,9 +1,19 @@
 <script setup>
-const { disabled } = defineProps(['disabled'])
+
+const { type, disabled } = defineProps({
+    type: {
+        type: String,
+        default: "button"
+    },
+    disabled: {
+        type: Boolean,
+        default: false
+    }
+})
 </script>
 
 <template>
-    <button :disabled>
+    <button :type :disabled>
         <slot>按钮</slot>
     </button>
 </template>

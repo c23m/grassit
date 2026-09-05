@@ -1,6 +1,6 @@
 import { ref, watchEffect } from 'vue'
 
-export async function useAsync(asyncFn, immediate = false) {
+export function useAsync(asyncFn, immediate = false) {
     const data = ref(null)
     const loading = ref(false)
     const error = ref(null)
@@ -25,6 +25,5 @@ export async function useAsync(asyncFn, immediate = false) {
             execute()
         })
     }
-
     return { data, loading, error, execute }
 }
