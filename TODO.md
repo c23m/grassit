@@ -4,6 +4,7 @@
 - [TODO](#todo)
   - [目录](#目录)
   - [日志](#日志)
+  - [待办](#待办)
   - [注意事项](#注意事项)
   - [版本](#版本)
     - [0.0.0](#000)
@@ -31,14 +32,27 @@
 
 ## 日志
 
-**时间**: 9/5
+**时间**: 9/8
 
-**版本**: 0.0.2
+**版本**: 0.1.0-开发中
+
+## 待办
 
 
-更改了一处接口: [`GET /api/test`](#get-apitest)
 
-将本文档url参数样式从`/{username}`改为了`/:username`
+1. 创建一条或多条测试文章数据, 如
+  - uuid: `00010001-ffee-ddcc-bbaa-000123456789`
+  - slug: `test-0-1-0-1`
+  - title: `0.1.0 通用测试文章-1`
+  - content: `# 测试标题\n\n0.1.0.1 Hello world`
+
+2. 创建一些用户. username/nickname之外的属性随意设置即可
+  - username: admin
+    - nickname: 管理员
+  - username: alice
+    - nickname: Alice 
+  - username: bob
+    - nickname: Bob
 
 
 
@@ -88,7 +102,7 @@
 
 前端:
 
-- [ ] 完善test页.
+- [x] 完善test页.
 
 后端:
 
