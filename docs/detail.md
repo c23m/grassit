@@ -13,20 +13,21 @@
 
 修改了上传文章的接口路径与查询参数
 
-增加了登出(logout)接口
-
+增加了登出, 删除用户与删除文章接口
 
 
 ## 接口
 
-允许尾后斜杠, 即"/test"与"/test/" 匹配同一个
+允许尾后斜杠, 即"/test"与"/test/" 匹配同一个  
 BaseURL: `/api`, 以下url都是相对与此的
 
-生产环境用`/api`, 
+生产环境用`/api`,  
 开发环境用`https://api.grassit.cn`
 
-将来生产环境使用HTTPS协议
-Authorization头: `Bearer <token>`
+将来生产环境使用HTTPS协议  
+Authorization头: `Bearer <token>`  
+access token: 15min 过期  
+refresh token: 30days 过期
 
 ```js
 [
@@ -47,9 +48,6 @@ Authorization头: `Bearer <token>`
     },
 
     // ==================== auth ====================
-
-    // access token 15min 过期
-    // refresh token 30days 过期
 
     {
         // 登录
@@ -121,6 +119,7 @@ Authorization头: `Bearer <token>`
             }
         }
     },
+    
 
     // ==================== user ====================
 
@@ -128,7 +127,6 @@ Authorization头: `Bearer <token>`
         // 返回用户的详细信息
         method: "GET",
         target: "/user/:username",
-
         response: {
             status: 200,
             body: {
@@ -138,8 +136,16 @@ Authorization头: `Bearer <token>`
             }
         }
     },
-
-
+    {
+        // 管理员直接删除用户(及其创建的文章与头像等)
+        // 需要管理员权限(假设现在有且只有admin有权限)
+        method: "DELETE",
+        target: "/user/:username",
+        response: {
+            status: 204
+            //403
+        }
+    },
 
     // ==================== article ====================
 
@@ -172,7 +178,7 @@ Authorization头: `Bearer <token>`
     {
         // 获取文章详细信息。
         // 正则判断是uuid还是slug。
-        // 处理规则：将站内链接(形如 /article/other-slug)替换为 /article/{对应uuid}
+        // 处理时将站内链接(形如 /article/other-slug)替换为 /article/{对应uuid}
         method: "GET",
         target: "/article/:identifier",
         response: {
@@ -189,18 +195,17 @@ Authorization头: `Bearer <token>`
                 createdAt: "2026-09-01 10:00:00",
                 updatedAt: "2026-09-02 14:30:00",
                 content: "# 一级标题\n\n正文内容...\n\n## 二级标题...",
-                tags: [],
-                attachments: []
+                tags: ["test", "grassit", "gst"],
             }
         },
     },
     {
-        // 上传文章，创建新文章。
+        // 创建新文章
         method: "POST",
         target: "/article",
         body: [
             content: "# 标题\n\n正文内容..." //
-            slug: "my-article",  //文章 slug: 唯一, 仅包含小写字母与连字符, 不能是合法的uuid
+            slug: "my-article",  // 格式详见需求-文章
             title: "标题内容", //
             author: "ming"// 作者用户名
         ],
@@ -213,17 +218,23 @@ Authorization头: `Bearer <token>`
             // 409: 存在slug相同的文章
             // 422: slug格式不正确
         }
+    },
+    {
+        // 删除文章, 作者才能成功
+        method: "DELETE",
+        target: "/article/:identifier",
+        response: {
+            status: 204
+            //403
+        }
     }
 ]
 ```
 
 ## 需求
 
-1. 前端在查询时不会请求和使用任何id(如`3`这类), 文章的uuid除外.
-2. 上传的文件如何存储, 自行决定. 需要文件的时候, 总是返回完整的可用url(如`/avatar/a1b2c3d4e5f6.jpeg`)
-
 ### 用户
-1. 需要记录用户名称(username), 唯一且必需. 不超过30个字符, 只允许`(a-z)|(A-Z)|(0-9)|-|_`. 不能改变.
+1. 需要记录用户名称(username), 唯一且必需, 不能改变. 不超过30个字符, 只允许`(a-z)|(A-Z)|(0-9)|-|_`, 不能以`-|_`开头.
 2. 需要记录用户昵称(不超过30字符, 必需, 不唯一, 可变)
 3. 需要记录用户创建时间(精确到日)
 4. 需要记录用户的上次在线时间(精确到分)与在线状态(在线/离线).
