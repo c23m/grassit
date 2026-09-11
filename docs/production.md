@@ -35,19 +35,21 @@
 
 ## 配置
 
-也许会使用的环境变量:
+不要写死在代码里, 使用环境变量.
 
-```bash
-SERVER_PORT=8080
-DB_URL=jdbc:mysql://localhost:3306/grassit
-DB_USER=grassit
-DB_PASSWORD=...
-JWT_SECRET=...
-STORAGE_PATH=/var/lib/grassit/public
+将使用到的环境变量放入下方, 如:
+
+```
+SERVER_PORT
+DB_URL
+DB_USER
+DB_PASSWORD
+JWT_SECRET
+STORAGE_PATH
 ```
 
 ## 容器
 
 后端环境也许用容器部署, 也许使用宿主机的环境(jdk21).
 
-其他的(nginx, mysql)等不使用容器.
+其他的(nginx, mysql)等大概不使用容器.

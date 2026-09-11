@@ -18,6 +18,12 @@
 
 ## 接口
 
+当前高优先级:
+- [ ] `POST /auth/register`
+- [ ] `POST /auth/login`
+- [ ] `GET /auth/me`
+- [ ] `POST /article`
+
 允许尾后斜杠, 即"/test"与"/test/" 匹配同一个  
 BaseURL: `/api`, 以下url都是相对与此的
 

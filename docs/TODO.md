@@ -23,10 +23,8 @@
 本版本完成下列内容.
 
 1. 至少实现下面的接口.
-
-- [ ] `POST /auth/register`
-- [ ] `POST /auth/login`
-- [ ] `GET /auth/me`
-- [ ] `POST /article`
-
+  - [ ] `POST /auth/register`
+  - [ ] `POST /auth/login`
+  - [ ] `GET /auth/me`
+  - [ ] `POST /article`
 2. 部署**生产环境**. 详见[生产环境](production.md)
