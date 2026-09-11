@@ -2,13 +2,13 @@
 
 ## 导航
 
-[**设计细节**](detail.md)
 
 - [TODO](#todo)
   - [导航](#导航)
   - [日志](#日志)
-  - [版本](#版本)
-    - [0.1](#01)
+  - [待办](#待办)
+
+设计详细要求请看[**设计细节**](detail.md)
 
 ## 日志
 
@@ -16,31 +16,17 @@
 
 **版本**: 0.1.0.0
 
-## 版本
+## 待办
 
-下面的每一项都是小版本内的内容
-
-### 0.1
+本版本为0.1.1
 
 本版本完成下列内容.
 
-**接口**:
-- [ ] `POST /api/auth/register`
-- [ ] `POST /api/auth/login`
-- [ ] `GET /api/auth/me`
-- [ ] `GET /api/user/:username`
-- [ ] `GET /api/article`
-- [ ] `POST /api/article/upload`
+1. 至少实现下面的接口.
 
+- [ ] `POST /auth/register`
+- [ ] `POST /auth/login`
+- [ ] `GET /auth/me`
+- [ ] `POST /article`
 
-
-
-
-
-
-
-
-
-
-
-
+2. 部署**生产环境**. 详见[生产环境](production.md)
