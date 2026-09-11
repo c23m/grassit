@@ -35,18 +35,14 @@
 
 ## 配置
 
-不要写死在代码里, 使用环境变量.
-
-将使用到的环境变量放入下方, 如:
+将使用到的环境变量放入下方:
 
 ```
 SERVER_PORT
-DB_URL
-DB_USER
-DB_PASSWORD
-JWT_SECRET
-STORAGE_PATH
+
 ```
+
+改动后在TODO的日志说明
 
 ## 容器
 
