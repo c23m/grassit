@@ -14,4 +14,21 @@ fi
 
 cd ..
 echo "Executing command: $DOCKER_COMPOSE_CMD"
-exec $DOCKER_COMPOSE_CMD up -d
+$DOCKER_COMPOSE_CMD up -d
+
+read -p "Create test data for database(grassit_db) [y/N] " answer
+if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+    read -p "Please input the password for MySQL root user: " mysql_root_password
+    echo "Creating test data..."
+    echo "Please copy the following command and execute it after you entered. Then you can exit the MySQL system by command 'exit'"
+    echo "    CREATE DATABASE IF NOT EXISTS grassit_db;"
+    confirm=n
+    while [[ "$confirm" != "y" && "$confirm" != "Y" ]]; do
+        read -p "You've got what to do next? [y/N] " confirm
+    done
+    docker exec -it mysql-server mysql -u root -p"$mysql_root_password"
+    docker exec -i mysql-server mysql -u root -p"$mysql_root_password" grassit_db < storage/test/grassit_db_test.sql
+    echo "Test data created."
+elif [[ "$answer" == "n" || "$answer" == "N" || -z "$answer" ]]; then
+    echo "Skipped test data creation."
+fi
