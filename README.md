@@ -4,7 +4,7 @@
 
 在线地址：<https://grassit.cn>
 
-请查看[**TODO**](TODO.md#注意事项)!
+请查看[**TODO**](docs/TODO.md#日志)
 
 ## 技术栈
 
