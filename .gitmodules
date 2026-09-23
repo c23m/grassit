@@ -1,6 +1,0 @@
-[submodule "backend"]
-	path = backend
-	url = git@github.com:AquerKing/gst-backend.git
-[submodule "frontend"]
-	path = frontend
-	url = git@github.com:c23m/gst-frontend.git

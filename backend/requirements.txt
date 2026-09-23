@@ -1,0 +1,9 @@
+fastapi
+pydantic[email]
+uvicorn[standard]
+sqlalchemy[asyncio]
+asyncmy
+python-dotenv
+pwdlib[argon2]
+pyjwt[crypto]
+httpx
