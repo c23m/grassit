@@ -8,6 +8,11 @@
     --link-hover: #33e;
     --border: #555;
     --shadow: rgba(0, 0, 0, 0.2);
+
+    --text-weight-bold: 700;
+    --text-weight-normal: 400;
+    --text-weight-thin: 300;
+
 }
 
 [data-theme="dark"] {

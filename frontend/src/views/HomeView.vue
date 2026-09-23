@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-
+import '@/assets/styles/base.css'
+import NavBar from '@/components/layouts/NavBar.vue'
+import Footer from '@/components/layouts/Footer.vue'
 import BaseLayout from '@/components/layouts/BaseLayout.vue'
 import Aside from '@/components/common/Aside.vue'
 import RecommendCard from '@/components/misc/RecommendCard.vue'
@@ -16,22 +18,21 @@ const colors = ["linear-gradient(to right bottom, #33e, #3ee)",
 </script>
 
 <template>
-    <BaseLayout>
-        <template #header>
-            <header v-if="isDesktop" :style="{ background: colors.at(pictIndex) }">
-                <h1>GRASSIT</h1>
-                <p>
-                    欢迎来到本站！
-                    <br>
-                    可以在此进行学习。
-                </p>
-                <div>
-                    <Button @click="pictIndex = (pictIndex - 1) % colors.length">&lt;</Button>
-                    <Button @click="pictIndex = (pictIndex + 1) % colors.length">&gt;</Button>
-                </div>
-            </header>
-        </template>
-        <div class="main">
+    <div class="layout">
+        <header v-if="isDesktop" :style="{ background: colors.at(pictIndex) }">
+            <h1>GRASSIT</h1>
+            <p>
+                欢迎来到本站！
+                <br>
+                可以在此进行学习。
+            </p>
+            <div>
+                <Button @click="pictIndex = (pictIndex - 1) % colors.length">&lt;</Button>
+                <Button @click="pictIndex = (pictIndex + 1) % colors.length">&gt;</Button>
+            </div>
+        </header>
+        <NavBar />
+        <main class="main">
             <Aside title="文章列表" :items="articles" class="articles" id="articles" />
             <section class="products">
                 <h2>推荐列表</h2>
@@ -39,11 +40,22 @@ const colors = ["linear-gradient(to right bottom, #33e, #3ee)",
                     <RecommendCard v-for="recommend in recommendations" :recommend />
                 </ul>
             </section>
-        </div>
-    </BaseLayout>
+        </main>
+        <Footer />
+    </div>
 </template>
 
 <style scoped>
+.layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
 /* Header */
 header {
     display: block flex;

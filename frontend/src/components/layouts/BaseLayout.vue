@@ -7,10 +7,9 @@ import Footer from '@/components/layouts/Footer.vue'
 
 <template>
     <div class="layout">
-        <slot name="header"></slot>
         <NavBar />
         <main>
-            <slot></slot>
+            <RouterView />
         </main>
         <Footer />
     </div>
