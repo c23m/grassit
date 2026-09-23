@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 
 cd .\backend
-docker buildx build . --tag grassit-backend:latest
+docker buildx build . --tag gst-backend:latest
 
 set DOCKER_COMPOSE_CMD=docker-compose
 

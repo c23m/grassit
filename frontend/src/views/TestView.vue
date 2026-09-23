@@ -6,6 +6,20 @@ import Button from '@/components/common/Button.vue'
 import Link from '@/components/common/Link.vue';
 
 import ArticleView from './ArticleView.vue';
+
+import { onMounted, ref, computed } from 'vue'
+import { get } from '@/utils/request.js';
+import { useAsync } from '@/composables/useAysnc.js';
+
+const { data, loading, error, execute } = useAsync(
+    () => get("/api/test/time/now"),
+    true
+)
+
+const refresh = () => {
+    execute()
+}
+
 </script>
 
 <template>
@@ -17,7 +31,18 @@ import ArticleView from './ArticleView.vue';
             <p>
                 <Link url="https://example.com"> 一个链接 </Link>
             </p>
-            <ArticleView url="html" />
+
+            <p v-if="loading">
+                加载中
+            </p>
+            <p v-else-if="error">
+                出错: {{ error }}
+            </p>
+            <p v-else>
+                查询时间: {{ data?.time }}
+            </p>
+            <Button @click="refresh">刷新时间</Button>
+
         </main>
         <Footer />
     </div>

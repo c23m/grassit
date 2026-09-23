@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd backend
-docker buildx build . --tag grassit-backend:latest
+docker buildx build . --tag gst-backend:latest
 
 if docker compose version &> /dev/null; then
     DOCKER_COMPOSE_CMD="docker compose"

@@ -9,9 +9,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8000', // 后端地址（FastAPI 默认端口）
+        target: 'http://gst-backend:8090',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '') // 可选：重写路径
+        // rewrite: (path) => path.replace(/^\/api/, '') // 可选：重写路径
       }
     }
   },
