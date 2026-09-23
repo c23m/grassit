@@ -27,7 +27,7 @@ request.interceptors.response.use(
             }
             else {
                 const response = await request.post('/auth/refresh')
-                token.value = response.data.token
+                token.value = response.token
                 return request({
                     _retry: true,
                     ...originalRequest

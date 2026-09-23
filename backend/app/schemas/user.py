@@ -1,7 +1,7 @@
 from datetime import date, datetime, time
 from typing import Annotated
 
-from pydantic import ConfigDict, EmailStr, Field, SecretStr
+from pydantic import ConfigDict, EmailStr, field_validator, Field, SecretStr
 
 from app.schemas import BaseSchema
 
@@ -23,6 +23,13 @@ class UserBase(BaseSchema):
             ]
         },
     )
+
+    @field_validator("created_at", mode="before")
+    @classmethod
+    def _truncate_to_date(cls, value):
+        if isinstance(value, datetime):
+            return value.date()
+        return value
 
 
 class UserMe(UserBase):

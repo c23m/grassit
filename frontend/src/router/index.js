@@ -4,8 +4,10 @@ import BaseLayout from '@/components/layouts/BaseLayout.vue'
 import Home from '@/views/Home.vue'
 import Article from '@/views/Article.vue'
 import ApiTest from '@/views/ApiTest.vue'
+import Login from '@/views/Login.vue'
 import NotFound from '@/views/NotFound.vue'
 import Playground from '@/views/Playground.vue'
+import Register from '@/views/Register.vue'
 
 const routes = [
     {
@@ -25,6 +27,12 @@ const routes = [
             {
                 path: 'register',
                 name: 'register',
+                component: Register,
+            },
+            {
+                path: 'login',
+                name: 'login',
+                component: Login,
             },
             {
                 path: 'article/:identifier?',

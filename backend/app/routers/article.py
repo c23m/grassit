@@ -9,7 +9,7 @@ router = APIRouter(prefix="/articles", tags=["article"])
 
 SAMPLE_LIST_ITEM = {
     "slug": "my-article",
-    "author": {"username": "admin", "nickname": "管理员"},
+    "author": {"username": "admin", "nickname": "管理员", "createdAt": "2026-09-01"},
     "title": "请输入文本",
     "createdAt": "2026-09-01 10:00:00",
     "updatedAt": "2026-09-02 14:30:00",
@@ -19,7 +19,7 @@ SAMPLE_LIST_ITEM = {
 SAMPLE_DETAIL = {
     "uuid": "01234567-89ab-cdef-ffff-4321fedc9876",
     "slug": "my-article",
-    "author": {"username": "admin", "nickname": "管理员"},
+    "author": {"username": "admin", "nickname": "管理员", "createdAt": "2026-09-01"},
     "title": "标题内容",
     "createdAt": "2026-09-01 10:00:00",
     "updatedAt": "2026-09-02 14:30:00",

@@ -22,7 +22,7 @@ const colors = ["linear-gradient(to right bottom, #33e, #3ee)",
     "linear-gradient(to right bottom, #3e3, #ee3)"]
 
 const items = computed(() => {
-    (articles.value || []).map(item => ({
+    return (articles.value || []).map(item => ({
         url: "/article/" + item.slug,
         title: item.title,
         subtitle: item.author.nickname

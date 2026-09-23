@@ -39,8 +39,9 @@ npm run dev                          # http://localhost:5173，/api 代理到 80
 
 | 文档 | 职责 |
 | ---- | ---- |
-| [docs/PLANNING.md](docs/PLANNING.md) | 产品需求：用户、认证、文章、存储、接口、关键决策 |
-| [docs/TODO.md](docs/TODO.md) | 现状与计划 |
+| [docs/planning.md](docs/planning.md) | 产品需求：用户、认证、文章、存储、接口、关键决策 |
+| [docs/todo.md](docs/todo.md) | 现状与计划 |
+| [docs/conventions.md](docs/conventions.md) | 协作约定：分工、依据、环境、文档规范 |
 | [CHANGELOG.md](CHANGELOG.md) | 变更历史 |
 | [docs/deploy.md](docs/deploy.md) | 部署（尚未开始） |
 | [docs/reference/](docs/reference/) | 参考笔记（学习用，不是项目规范） |

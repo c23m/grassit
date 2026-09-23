@@ -10,8 +10,10 @@ from app.schemas.user import UserMe
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-async def get_current_user(authorization: Annotated[str, Header()]) -> UserMe:
-    if not authorization.startswith("Bearer "):
+async def get_current_user(
+    authorization: Annotated[str | None, Header()] = None,
+) -> UserMe:
+    if authorization is None or not authorization.startswith("Bearer "):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "invalid token")
     token = authorization[7:]
     if token == "invalid-token":

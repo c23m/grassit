@@ -1,5 +1,5 @@
 import request from '@/utils/request'
 
-export const getArticles = (params) => request.get('/article', { params })
-export const getArticle = (identifier) => request.get(`/article/${identifier}`)
-export const uploadArticle = (data) => request.post('/article', data)
+export const getArticles = (params) => request.get('/articles', { params })
+export const getArticle = (identifier) => request.get(`/articles/${identifier}`)
+export const uploadArticle = (data) => request.post('/articles', data)

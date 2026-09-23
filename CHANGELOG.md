@@ -1,14 +1,25 @@
 # Changelog
 
-记录由 AI 助手代做的改动（主要是配置、文档、构建等重复性工作）。需求见 [docs/PLANNING.md](docs/PLANNING.md)，现状与计划见 [docs/TODO.md](docs/TODO.md)。
+只记项目的重要变更。需求见 [docs/planning.md](docs/planning.md)，现状与计划见 [docs/todo.md](docs/todo.md)，协作约定与收录标准见 [docs/conventions.md](docs/conventions.md)。
 
-## 约定（作者的偏好，长期有效）
+## 0.0.1（2026-09-22）
 
-- **分工**：业务代码由作者自己写；AI 只做 bug 修复、文档、配置、构建这类重复性工作，动代码前要单独确认
-- **依据**：结论一律以代码和实测为准；AI 生成且未经审查的文档不能当作事实来源（旧技术栈的错误表述就是这样一路传播开的）
-- **环境**：目前只有开发环境，生产部署尚未开始；开发配置不要按生产标准去设计
-- **文档**：每个文档职责单一、不允许内容重复；学习/参考类放 `docs/reference/`，过时内容放 `docs/archive/`
-- **本文件**：只用于记录 AI 代做的改动，保持简洁，过时信息及时删除
+**骨架**
+
+- 本地可启动后端并连通 MySQL，`/test` 返回 `dbStatus=OK`
+- `PUBLIC_DIR` 的相对路径改为以 `backend/` 为基准，不再依赖启动目录
+
+**接口契约**
+
+- 前端请求路径与后端对齐：`/articles`、`/users/{username}`、`/users/me`
+- 统一 axios 返回值层次（此前 store 与拦截器按 `response.data.token` 取值，实际已是 `response.token`）
+- 补 `/login` 路由，`register` 路由绑定组件
+- 缺少 `Authorization` 时返回 401 而非 422，前端的自动续期逻辑得以触发
+
+**修复**
+
+- `GET /articles`、`GET /articles/{identifier}` 因样例作者缺 `createdAt` 校验失败而 500
+- 首页文章列表的 `computed` 缺 `return`，列表恒为空
 
 ## 9/22 · 合并单仓库 / 统一 `/api` / 配置修正
 
@@ -31,9 +42,7 @@
 
 **文档**
 
-- 重组 `docs/`：`PLANNING.md`（需求）/ `TODO.md`（现状+计划）/ `deploy.md`（部署，未开始）/ `reference/`（参考笔记）
+- 重组 `docs/`：`planning.md`（需求）/ `todo.md`（现状+计划）/ `deploy.md`（部署，未开始）/ `reference/`（参考笔记）
 - 文档内容对齐实际实现：技术栈与接口路径以后端代码为准，清除旧技术栈（Spring Boot、jar 等）提法
 - 废弃手写接口样例与旧快照，接口契约改由后端导出 `openapi.json`
-- `README.md` 补充单仓库结构与本地开发步骤
-- 本文件改按「只记录 AI 代做的改动」定位重写，并记录上方协作约定
 

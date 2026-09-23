@@ -11,14 +11,14 @@ export const useAuthStore = defineStore('auth', () => {
 
     const login = async (username, password) => {
         const response = await loginApi({ username, password })
-        token.value = response.data.token
+        token.value = response.token
         await fetchMe()
         router.push('/')
     }
 
     const fetchMe = async () => {
         const response = await getMe()
-        user.value = response.data
+        user.value = response
     }
 
     const logout = async () => {

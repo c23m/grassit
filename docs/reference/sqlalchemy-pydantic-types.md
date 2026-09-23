@@ -1,6 +1,6 @@
 # SQLAlchemy / Pydantic 类型对照
 
-> 参考笔记（学习用），不是项目规范。项目的实际字段以 `backend/app/` 的代码为准。
+> 参考笔记（学习用），不是项目规范。
 
 分三层：**数据库列类型**、**ORM 类型标注**、**Pydantic 类型**。email 在数据库层就是普通字符串，只在 Pydantic 层有特殊格式。
 
@@ -36,7 +36,7 @@ pip install "pydantic[email]"
 
 ### 枚举写法
 
-`docs/` 里用户状态有 `normal / banned / deleted`，文章可见性有 `public / private`（当前 `backend/app/models/` 中尚未实现这些列）。
+例如用户状态 `normal / banned / deleted`、文章可见性 `public / private`。
 
 **数据库层：字符串**
 
@@ -70,70 +70,66 @@ class UserMe(BaseModel):
 
 `Literal` 更简单，`StrEnum` 更适合复用。
 
-### 你项目的具体字段
+### 示例：模型与 schema 的对应
 
 ```python
-# backend/app/schemas/auth.py
-from pydantic import EmailStr, Field, SecretStr
-
-from app.schemas import BaseSchema
-
-
-class RegisterRequest(BaseSchema):
-    username: str = Field(min_length=3, max_length=20, pattern=r"^[a-zA-Z-_]+$")
-    nickname: str = Field(min_length=1)
-    password: SecretStr = Field(min_length=6)
-    email: EmailStr | None = None
-```
-
-```python
-# backend/app/schemas/user.py
-from datetime import date
-
-from pydantic import EmailStr
-
-from app.schemas import BaseSchema
-
-
-class UserBase(BaseSchema):
-    username: str
-    nickname: str
-    avatar: str | None = None
-    created_at: date
-
-
-class UserMe(UserBase):
-    email: EmailStr | None = None
-    github: str | None = None
-```
-
-```python
-# backend/app/models/user.py
-from datetime import datetime, timezone
-
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
-
-from app.database import Base
-
-
-def utcnow():
-    return datetime.now(timezone.utc)
-
-
 class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(30), unique=True)
-    nickname: Mapped[str] = mapped_column(String(60))
-    password_hash: Mapped[str] = mapped_column(String(255))
+    username: Mapped[str] = mapped_column(String(30), unique=True)
     created_at: Mapped[datetime] = mapped_column(default=utcnow)
-    email: Mapped[str | None] = mapped_column(String(255), unique=True, default=None)
+
+
+class UserBase(BaseModel):
+    username: str
+    created_at: date          # 注意：这里和模型不同，见「易错点」
 ```
 
-> **注意**：模型里的 `name` 对应设计文档中的 `username`；`uuid`、`avatar`、`github`、`status`、`last_online_at`、`is_online`、`updated_at` 等字段尚未实现。
-> `BaseSchema` 使用 `alias_generator=to_camel`，所以 JSON 里是 `createdAt`，Python 里是 `created_at`。
+**模型与 schema 的字段名必须对得上**。`model_validate(orm_obj)` 是按属性名取的，模型叫 `name` 而 schema 要 `username`，只会得到 `username Field required`。
+
+如果 schema 配了 `alias_generator=to_camel`，JSON 里是 `createdAt`，Python 里仍是 `created_at`。
+
+### 易错点：`datetime` 与 `date` 不能互转
+
+Pydantic v2 的 `date` 字段只接受"时间为零点"的 `datetime`，带上时分秒会报：
+
+```
+Input should be a valid date ... Datetimes provided to dates should have zero time
+```
+
+（错误类型 `date_from_datetime_inexact`。）所以 ORM 里是 `DateTime`、schema 里是 `date` 时，必须显式转换：
+
+- 手动转换：`created_at=obj.created_at.date()`
+- 或在 schema 里加 `@field_validator("created_at", mode="before")`，把 `datetime` 截成 `date`，之后就能直接 `model_validate`
+
+推荐后者，写一次到处能用：
+
+```python
+from datetime import date, datetime
+
+from pydantic import field_validator
+
+
+class UserBase(BaseModel):
+    username: str
+    created_at: date
+
+    @field_validator("created_at", mode="before")
+    @classmethod
+    def _truncate_to_date(cls, value):
+        # datetime 是 date 的子类，必须先判 datetime
+        if isinstance(value, datetime):
+            return value.date()
+        return value
+```
+
+几个要点：
+
+- `mode="before"` 才会在 Pydantic 自身的 `date` 校验之前动手；用默认的 `after` 已经来不及（校验就失败了）
+- `from_attributes=True` 时，校验器收到的是 ORM 对象上的原始属性值，所以 `model_validate(orm_obj)` 能直接通过
+- 字段注解保持 `date`，输出才是 `2026-09-22`；想要完整时间就把注解改成 `datetime`
+- **时区陷阱**：`v.date()` 取的是该 datetime 所在时区的日期。若库里存 UTC，而站点面向东八区，那么北京时间 00:30 发的文章（UTC 前一天 16:30）会显示成前一天。要按本地日期显示就得先转换：`value.astimezone(ZoneInfo("Asia/Shanghai")).date()`，或者干脆按本地时间存储
 
 ### 关键点
 
@@ -161,6 +157,6 @@ class UserMe(BaseModel):
 | 手机号 | 自定义 pattern       | —    |
 | 密码   | `str` + `SecretStr`  | 无   |
 
-`SecretStr` 打印时显示 `**********`，适合密码字段的日志安全，但 API 输入输出一般直接用 `str`。
+`SecretStr` 打印时显示 `**********`，适合密码、token 这类字段；取值要用 `.get_secret_value()`，直接 `str(secret)` 只会得到掩码。
 
 **核心一句**：数据库层全是 `VARCHAR`，格式校验在 Pydantic 层用 `EmailStr`、`AnyUrl` 这类类型做。
