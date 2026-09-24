@@ -1,5 +1,6 @@
 fastapi
 pydantic[email]
+pydantic-settings
 uvicorn[standard]
 sqlalchemy[asyncio]
 asyncmy

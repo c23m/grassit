@@ -25,6 +25,7 @@ services:
       DB_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD in .env}
       DB_NAME: ${MYSQL_DATABASE:-grassit}
       PUBLIC_DIR: /app/public
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
     volumes:
       # 存储目录就是后端目录下的 public/（容器内 /app/public），无需额外挂载
       - ./backend:/app

@@ -1,13 +1,13 @@
 from fastapi import APIRouter
 
-from app.routers.auth import UserMeDepend
+from app.routers.auth import UserFromToken
 from app.schemas.user import UserMe
 
 router = APIRouter(prefix="/users", tags=["user"])
 
 
 @router.get("/me", status_code=200)
-async def me(user_me: UserMeDepend) -> UserMe:
+async def me(user_me: UserFromToken) -> UserMe:
     return user_me
 
 

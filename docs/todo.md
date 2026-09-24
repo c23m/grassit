@@ -3,7 +3,6 @@
 - [TODO](#todo)
     - [现状](#现状)
     - [版本规划](#版本规划)
-        - [0.0.3 · 登录与 access token](#003--登录与-access-token)
         - [0.0.4 · 鉴权与前端登录态](#004--鉴权与前端登录态)
         - [0.0.5 · refresh token 闭环](#005--refresh-token-闭环)
         - [0.1.0 · MVP](#010--mvp)
@@ -33,18 +32,6 @@
 ## 版本规划
 
 版本号是可验收的里程碑，不必每次改动都动版本；达成验收后打 `vX.Y.Z` tag，并在 [CHANGELOG.md](../CHANGELOG.md) 记一条（以版号作标题）。**版本完成后从本文件移除，记录只留在 CHANGELOG**；本文件始终只保留未完成的版本。每个版本自带最小回归验收，系统性测试集中在 0.1.1。规范见 [development.md](development.md)，协作规则见 [ai-collaboration.md](ai-collaboration.md)。
-
-### 0.0.3 · 登录与 access token
-
-让 `POST /auth/login` 用真密码换真 token。
-
-学习内容：JWT 结构与签名、密钥走环境变量、过期时间的意义。
-
-验收：密码正确换到 access token（15 分钟），错误返回 401。
-
-- [ ] 校验哈希并签发 access token
-- [ ] 新增 `JWT_SECRET` 环境变量，同步 `.env.example` 与 compose
-- [ ] 用户名或密码错误统一返回 401
 
 ### 0.0.4 · 鉴权与前端登录态
 
