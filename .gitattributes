@@ -1,0 +1,3 @@
+# 统一行尾为 LF：仓库存储与工作区一致，避免 Windows 与 Linux 之间来回转换
+# 二进制文件由 Git 按内容自动识别（text=auto），不受影响
+* text=auto eol=lf

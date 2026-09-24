@@ -1,14 +1,13 @@
 <script setup>
-
 const { type, disabled } = defineProps({
     type: {
         type: String,
-        default: "button"
+        default: 'button',
     },
     disabled: {
         type: Boolean,
-        default: false
-    }
+        default: false,
+    },
 })
 </script>
 

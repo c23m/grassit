@@ -3,8 +3,8 @@ const { placeholder, disabled } = defineProps({
     placeholder: String,
     disabled: {
         type: Boolean,
-        default: false
-    }
+        default: false,
+    },
 })
 
 const model = defineModel()
@@ -37,6 +37,6 @@ textarea:focus {
 
 textarea:disabled {
     background-color: var(--bg-primary);
-    border-color: var(--text-weak)
+    border-color: var(--text-weak);
 }
 </style>

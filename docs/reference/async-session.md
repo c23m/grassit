@@ -16,11 +16,11 @@ await session.refresh(obj)   # 仅在需要数据库侧生成的值时使用
 
 ## 默认值什么时候才有
 
-| 默认值写在哪 | 何时赋值 | 需要什么才拿得到 |
-| --- | --- | --- |
-| `mapped_column(default=...)` | flush 时由 Python 计算 | flush 之后 |
-| `mapped_column(server_default=...)` | INSERT 时由数据库计算 | `refresh` 之后 |
-| `__init__` 里手动赋值 | 构造时 | 立即 |
+| 默认值写在哪                        | 何时赋值               | 需要什么才拿得到 |
+| ----------------------------------- | ---------------------- | ---------------- |
+| `mapped_column(default=...)`        | flush 时由 Python 计算 | flush 之后       |
+| `mapped_column(server_default=...)` | INSERT 时由数据库计算  | `refresh` 之后   |
+| `__init__` 里手动赋值               | 构造时                 | 立即             |
 
 实测：`created_at: Mapped[datetime] = mapped_column(default=utcnow)` 这种写法，构造后是 `None`，`flush()` 后得到 `2026-09-22 14:43:44.102980+00:00`，同时主键从 `None` 变成 `1`。
 

@@ -1,5 +1,4 @@
 <script setup>
-
 // import { onMounted, ref, reactive, watch } from 'vue'
 // import { useRequest } from 'vue-request';
 // import { useCache } from '@/composables/useCache.js';
@@ -38,7 +37,6 @@
 //     form.body = newVal
 // })
 
-
 // onMounted(() => {
 //     if (urlCache.items.value) {
 //         form.target = urlCache.current.value
@@ -58,7 +56,6 @@
 //     urlCache.clear()
 //     bodyCache.clear()
 // }
-
 </script>
 
 <template>
@@ -161,7 +158,7 @@ legend button {
 }
 
 .target {
-    font-family: "consolas";
+    font-family: 'consolas';
     width: 600px;
 }
 
@@ -187,6 +184,5 @@ pre {
     font-family: 'consolas';
     white-space: pre-wrap;
     word-wrap: break-word;
-
 }
 </style>

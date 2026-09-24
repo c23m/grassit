@@ -1,16 +1,16 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { marked } from 'marked'
-import BaseLayout from '@/components/layouts/BaseLayout.vue';
-import { useAsync } from '@/composables/useAysnc';
+import BaseLayout from '@/components/layouts/BaseLayout.vue'
+import { useAsync } from '@/composables/useAysnc'
 // import { get } from '@/utils/request';
-import Aside from '@/components/common/Aside.vue';
+import Aside from '@/components/common/Aside.vue'
 
 const { identifier } = defineProps({
     identifier: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
 })
 
 // const article = ref({
@@ -46,7 +46,6 @@ const { identifier } = defineProps({
 //     execute(`/api/article/${identifier}`)
 // }
 // )
-
 </script>
 
 <template>
@@ -79,7 +78,6 @@ const { identifier } = defineProps({
 .container {
     display: flex;
     gap: 20px;
-
 }
 
 .menu {

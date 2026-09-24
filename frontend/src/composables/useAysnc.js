@@ -10,12 +10,10 @@ export function useAsync(asyncFn) {
         error.value = null
         try {
             data.value = await asyncFn(...args)
-
         } catch (err) {
             error.value = err.message || '请求失败'
             console.error(err)
-        }
-        finally {
+        } finally {
             loading.value = false
         }
     }

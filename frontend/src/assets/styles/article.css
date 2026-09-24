@@ -6,7 +6,10 @@
 
 html,
 body {
-    font: 16px/1.6 "Microsoft Yahei", "PingFang SC", -apple-system,
+    font:
+        16px/1.6 'Microsoft Yahei',
+        'PingFang SC',
+        -apple-system,
         BlinkMacSystemFont,
         'Segoe WPC',
         'Segoe UI',
@@ -62,22 +65,22 @@ a:hover {
     padding: 0.5rem 1rem;
     margin-bottom: 16px;
     color: inherit;
-    border-left: .25em solid #888;
+    border-left: 0.25em solid #888;
 }
 
-.markdown-alert>:first-child {
-    margin-top: 0
+.markdown-alert > :first-child {
+    margin-top: 0;
 }
 
-.markdown-alert>:last-child {
-    margin-bottom: 0
+.markdown-alert > :last-child {
+    margin-bottom: 0;
 }
 
 .markdown-alert .markdown-alert-title {
     display: flex;
     font-weight: 500;
     align-items: center;
-    line-height: 1
+    line-height: 1;
 }
 
 .markdown-alert.markdown-alert-note {
@@ -158,13 +161,13 @@ h6 {
     background-color: #444444;
     cursor: pointer;
     padding: 6px;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, .25);
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
 }
 
 #code-csp-warning:hover {
     text-decoration: none;
     background-color: #007acc;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, .25);
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
 }
 
 body.scrollBeyondLastLine {
@@ -177,7 +180,7 @@ body.showEditorSelection .code-line {
 
 body.showEditorSelection :not(tr, ul, ol).code-active-line:before,
 body.showEditorSelection :not(tr, ul, ol).code-line:hover:before {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     top: 0;
@@ -185,7 +188,9 @@ body.showEditorSelection :not(tr, ul, ol).code-line:hover:before {
     height: 100%;
 }
 
-.vscode-high-contrast.showEditorSelection :not(tr, ul, ol).code-line .code-line:hover:before {
+.vscode-high-contrast.showEditorSelection
+    :not(tr, ul, ol).code-line
+    .code-line:hover:before {
     border-left: none;
 }
 
@@ -199,7 +204,7 @@ body.showEditorSelection li.code-line:hover:before {
 }
 
 .vscode-light.showEditorSelection .code-line:hover:before {
-    border-left: 3px solid rgba(0, 0, 0, 0.40);
+    border-left: 3px solid rgba(0, 0, 0, 0.4);
 }
 
 .vscode-dark.showEditorSelection .code-active-line:before {
@@ -207,7 +212,7 @@ body.showEditorSelection li.code-line:hover:before {
 }
 
 .vscode-dark.showEditorSelection .code-line:hover:before {
-    border-left: 3px solid rgba(255, 255, 255, 0.60);
+    border-left: 3px solid rgba(255, 255, 255, 0.6);
 }
 
 .vscode-high-contrast.showEditorSelection .code-active-line:before {
@@ -218,14 +223,12 @@ body.showEditorSelection li.code-line:hover:before {
     border-left: 3px solid rgba(255, 160, 0, 1);
 }
 
-
-
 body.wordWrap pre {
     white-space: pre-wrap;
 }
 
 pre:not(.hljs),
-pre.hljs code>div {
+pre.hljs code > div {
     padding: 16px;
     border-radius: 3px;
     overflow: auto;
@@ -268,32 +271,32 @@ pre {
 .hljs-literal,
 .hljs-symbol,
 .hljs-name {
-    color: #569CD6;
+    color: #569cd6;
 }
 
 .hljs-link {
-    color: #569CD6;
+    color: #569cd6;
     text-decoration: underline;
 }
 
 .hljs-built_in,
 .hljs-type {
-    color: #4EC9B0;
+    color: #4ec9b0;
 }
 
 .hljs-number,
 .hljs-class {
-    color: #B8D7A3;
+    color: #b8d7a3;
 }
 
 .hljs-string,
 .hljs-meta-string {
-    color: #D69D85;
+    color: #d69d85;
 }
 
 .hljs-regexp,
 .hljs-template-tag {
-    color: #9A5334;
+    color: #9a5334;
 }
 
 .hljs-subst,
@@ -301,34 +304,34 @@ pre {
 .hljs-title,
 .hljs-params,
 .hljs-formula {
-    color: #DCDCDC;
+    color: #dcdcdc;
 }
 
 .hljs-comment,
 .hljs-quote {
-    color: #57A64A;
+    color: #57a64a;
     font-style: italic;
 }
 
 .hljs-doctag {
-    color: #608B4E;
+    color: #608b4e;
 }
 
 .hljs-meta,
 .hljs-meta-keyword,
 .hljs-tag {
-    color: #9B9B9B;
+    color: #9b9b9b;
 }
 
 .hljs-variable,
 .hljs-template-variable {
-    color: #BD63C5;
+    color: #bd63c5;
 }
 
 .hljs-attr,
 .hljs-attribute,
 .hljs-builtin-name {
-    color: #9CDCFE;
+    color: #9cdcfe;
 }
 
 .hljs-section {
@@ -353,18 +356,24 @@ pre {
 .hljs-selector-class,
 .hljs-selector-attr,
 .hljs-selector-pseudo {
-    color: #D7BA7D;
+    color: #d7ba7d;
 }
 
 .hljs-addition {
-    background-color: var(--vscode-diffEditor-insertedTextBackground, rgba(155, 185, 85, 0.2));
+    background-color: var(
+        --vscode-diffEditor-insertedTextBackground,
+        rgba(155, 185, 85, 0.2)
+    );
     color: rgb(155, 185, 85);
     display: inline-block;
     width: 100%;
 }
 
 .hljs-deletion {
-    background: var(--vscode-diffEditor-removedTextBackground, rgba(255, 0, 0, 0.2));
+    background: var(
+        --vscode-diffEditor-removedTextBackground,
+        rgba(255, 0, 0, 0.2)
+    );
     color: rgb(255, 0, 0);
     display: inline-block;
     width: 100%;
@@ -429,7 +438,6 @@ pre {
 .vscode-light .hljs-link {
     color: #00b0e8;
 }
-
 
 .vscode-light .hljs-emphasis {
     font-style: italic;
@@ -537,7 +545,7 @@ td {
     padding: 5px 10px;
 }
 
-table>tbody>tr+tr>td {
+table > tbody > tr + tr > td {
     border-top: 1px solid;
 }
 
@@ -550,7 +558,18 @@ blockquote {
 }
 
 code {
-    font-family: var(--vscode-editor-font-family, "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace);
+    font-family: var(
+        --vscode-editor-font-family,
+        'SF Mono',
+        Monaco,
+        Menlo,
+        Consolas,
+        'Ubuntu Mono',
+        'Liberation Mono',
+        'DejaVu Sans Mono',
+        'Courier New',
+        monospace
+    );
     font-size: 1em;
     line-height: 1.357em;
     background-color: #f0f0f0;
@@ -629,11 +648,8 @@ main {
     padding: 20px;
     padding-top: 50px;
     grid-template-columns: clamp(300px, 40%, 400px) 1fr;
-    grid-template-areas:
-        "aside article"
-    ;
+    grid-template-areas: 'aside article';
 }
-
 
 aside {
     display: none;
@@ -760,7 +776,6 @@ article {
 }
 
 @media screen and (min-width: 1024px) {
-
     aside {
         display: block;
     }

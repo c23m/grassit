@@ -1,6 +1,6 @@
 # Grassit
 
-全栈网站项目GST. 
+全栈网站项目GST.
 
 在线地址：<https://grassit.cn>
 
@@ -37,15 +37,15 @@ npm run dev                          # http://localhost:5173，/api 代理到 80
 
 ## 文档
 
-| 文档 | 职责 |
-| ---- | ---- |
-| [docs/planning.md](docs/planning.md) | 产品需求：用户、认证、文章、存储、接口、关键决策 |
-| [docs/todo.md](docs/todo.md) | 现状与计划 |
-| [docs/conventions.md](docs/conventions.md) | 协作约定：分工、依据、环境、文档规范 |
-| [CHANGELOG.md](CHANGELOG.md) | 变更历史 |
-| [docs/deploy.md](docs/deploy.md) | 部署（尚未开始） |
-| [docs/reference/](docs/reference/) | 参考笔记（学习用，不是项目规范） |
-| `docs/archive/` | 过时内容归档（当前为空，需要时再建） |
+| 文档                                       | 职责                                             |
+| ------------------------------------------ | ------------------------------------------------ |
+| [docs/planning.md](docs/planning.md)       | 产品需求：用户、认证、文章、存储、接口、关键决策 |
+| [docs/todo.md](docs/todo.md)               | 现状与计划                                       |
+| [docs/conventions.md](docs/conventions.md) | 协作约定：分工、依据、环境、文档规范             |
+| [CHANGELOG.md](CHANGELOG.md)               | 变更历史                                         |
+| [docs/deploy.md](docs/deploy.md)           | 部署（尚未开始）                                 |
+| [docs/reference/](docs/reference/)         | 参考笔记（学习用，不是项目规范）                 |
+| `docs/archive/`                            | 过时内容归档（当前为空，需要时再建）             |
 
 ## 技术栈
 
@@ -55,7 +55,7 @@ npm run dev                          # http://localhost:5173，/api 代理到 80
 - **桌面端**：Electron(计划)
 - **实时通信**：WebSocket / WebRTC(计划)
 - **部署（未开始）**：
-  - Linux / WSL
-  - Nginx（反向代理 + 静态资源）
-  - Cloudflare Tunnel（对外暴露）
-  - Docker Compose（编排所有服务）
+    - Linux / WSL
+    - Nginx（反向代理 + 静态资源）
+    - Cloudflare Tunnel（对外暴露）
+    - Docker Compose（编排所有服务）

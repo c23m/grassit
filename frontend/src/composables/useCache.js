@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue'
 
 export function useCache(name, unique = false, capacity = 20) {
     const items = ref([])
@@ -7,7 +7,6 @@ export function useCache(name, unique = false, capacity = 20) {
     const raw = localStorage.getItem(name)
     items.value = raw ? JSON.parse(raw) : []
     index.value = items.value.length - 1
-
 
     const current = computed(() => items.value[index.value] ?? null)
 
@@ -25,7 +24,7 @@ export function useCache(name, unique = false, capacity = 20) {
         }
         index.value = items.value.length - 1
 
-        localStorage.setItem(name, JSON.stringify(items.value));
+        localStorage.setItem(name, JSON.stringify(items.value))
     }
 
     const indexInc = () => {
@@ -42,7 +41,7 @@ export function useCache(name, unique = false, capacity = 20) {
 
     const clear = () => {
         items.value = []
-        localStorage.setItem(name, '[]');
+        localStorage.setItem(name, '[]')
         index.value = 0
     }
 

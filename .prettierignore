@@ -1,0 +1,7 @@
+# 生成物与依赖，不参与格式化
+package-lock.json
+node_modules/
+dist/
+backend/.venv/
+backend/public/
+*.log

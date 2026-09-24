@@ -12,15 +12,15 @@ const icons = {
     dark: IconDark,
     menu: IconMenu,
     translate: IconTranslate,
-    external: IconExternal
+    external: IconExternal,
 }
 
 const { name, title } = defineProps({
     name: {
         type: String,
-        required: true
+        required: true,
     },
-    title: String
+    title: String,
 })
 </script>
 

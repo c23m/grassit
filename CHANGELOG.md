@@ -45,4 +45,3 @@
 - 重组 `docs/`：`planning.md`（需求）/ `todo.md`（现状+计划）/ `deploy.md`（部署，未开始）/ `reference/`（参考笔记）
 - 文档内容对齐实际实现：技术栈与接口路径以后端代码为准，清除旧技术栈（Spring Boot、jar 等）提法
 - 废弃手写接口样例与旧快照，接口契约改由后端导出 `openapi.json`
-

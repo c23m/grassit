@@ -12,42 +12,52 @@ import Button from '@/components/common/Button.vue'
 import { useRequest } from 'vue-request'
 import { getArticles } from '@/api/article'
 
-const { data: articles, loading, error, refresh } = useRequest(() => getArticles())
+const {
+    data: articles,
+    loading,
+    error,
+    refresh,
+} = useRequest(() => getArticles())
 
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const pictIndex = ref(0)
-const colors = ["linear-gradient(to right bottom, #33e, #3ee)",
-    "linear-gradient(to right bottom, #e33, #e3e)",
-    "linear-gradient(to right bottom, #3e3, #ee3)"]
+const colors = [
+    'linear-gradient(to right bottom, #33e, #3ee)',
+    'linear-gradient(to right bottom, #e33, #e3e)',
+    'linear-gradient(to right bottom, #3e3, #ee3)',
+]
 
 const items = computed(() => {
-    return (articles.value || []).map(item => ({
-        url: "/article/" + item.slug,
+    return (articles.value || []).map((item) => ({
+        url: '/article/' + item.slug,
         title: item.title,
-        subtitle: item.author.nickname
+        subtitle: item.author.nickname,
     }))
 })
 
 const recommendations = [
     {
-        title: "访问学校官网",
-        description: "本站可以跳转到学校官网。真是一项实用的功能！本站可以跳转到学校官网。真是一项实用的功能啊！本站可以跳转到学校官网。真是一项实用的功能啊！",
-        link: "https://www.hfut.edu.cn",
-        image: "sunny"
+        title: '访问学校官网',
+        description:
+            '本站可以跳转到学校官网。真是一项实用的功能！本站可以跳转到学校官网。真是一项实用的功能啊！本站可以跳转到学校官网。真是一项实用的功能啊！',
+        link: 'https://www.hfut.edu.cn',
+        image: 'sunny',
     },
     {
-        title: "请输入文本",
-        description: "会跳转到本站测试界面。一个用来测试html/css/js的界面。会跳转到本站测试界面。一个用来测试html/css/js的界面。会跳转到本站测试界面。一个用来测试html/css/js的界面。",
-        link: "/test",
-        image: "dessert"
+        title: '请输入文本',
+        description:
+            '会跳转到本站测试界面。一个用来测试html/css/js的界面。会跳转到本站测试界面。一个用来测试html/css/js的界面。会跳转到本站测试界面。一个用来测试html/css/js的界面。',
+        link: '/test',
+        image: 'dessert',
     },
     {
-        title: "占位符",
-        description: "盼望着，盼望着，东风来了，春天的脚步近了。一切都像刚睡醒的样子，欣欣然张开了眼。山朗润起来了，水涨起来了，太阳的脸红起来了。小草偷偷地从土里钻出来，嫩嫩的，绿绿的。",
-        link: "https://deepseek.com",
-        image: "dark"
-    }
+        title: '占位符',
+        description:
+            '盼望着，盼望着，东风来了，春天的脚步近了。一切都像刚睡醒的样子，欣欣然张开了眼。山朗润起来了，水涨起来了，太阳的脸红起来了。小草偷偷地从土里钻出来，嫩嫩的，绿绿的。',
+        link: 'https://deepseek.com',
+        image: 'dark',
+    },
 ]
 </script>
 
@@ -57,12 +67,16 @@ const recommendations = [
             <h1>GRASSIT</h1>
             <p>
                 欢迎来到本站！
-                <br>
+                <br />
                 可以在此进行学习。
             </p>
             <div>
-                <Button @click="pictIndex = (pictIndex - 1) % colors.length">&lt;</Button>
-                <Button @click="pictIndex = (pictIndex + 1) % colors.length">&gt;</Button>
+                <Button @click="pictIndex = (pictIndex - 1) % colors.length"
+                    >&lt;</Button
+                >
+                <Button @click="pictIndex = (pictIndex + 1) % colors.length"
+                    >&gt;</Button
+                >
             </div>
         </header>
         <NavBar />
@@ -71,7 +85,10 @@ const recommendations = [
             <section class="products">
                 <h2>推荐列表</h2>
                 <ul>
-                    <RecommendCard v-for="recommend in recommendations" :recommend />
+                    <RecommendCard
+                        v-for="recommend in recommendations"
+                        :recommend
+                    />
                 </ul>
             </section>
         </main>
@@ -141,9 +158,8 @@ header button {
     padding: 20px;
     grid-template-columns: 1fr;
     grid-template-areas:
-        "articles"
-        "products"
-    ;
+        'articles'
+        'products';
 }
 
 /* Products */
@@ -168,19 +184,14 @@ header button {
     flex-direction: column;
     padding: 20px 0;
     gap: 30px;
-
 }
 
 /* Articles */
 
-
 @media screen and (min-width: 768px) {
-
     .main {
         grid-template-columns: 20em 1fr;
-        grid-template-areas:
-            "articles products"
-        ;
+        grid-template-areas: 'articles products';
     }
 
     .main .image a {
