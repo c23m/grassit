@@ -45,8 +45,9 @@ npm run dev                          # http://localhost:5173，/api 代理到 80
 | [docs/ai-collaboration.md](docs/ai-collaboration.md) | AI 协作说明：分工、依据、提交与历史整理          |
 | [CHANGELOG.md](CHANGELOG.md)                         | 变更历史                                         |
 | [docs/deploy.md](docs/deploy.md)                     | 部署（尚未开始）                                 |
-| [docs/reference/](docs/reference/)                   | 参考笔记（学习用，不是项目规范）                 |
-| `docs/archive/`                                      | 过时内容归档（学习目标已落地、不再演进的笔记）   |
+| [docs/backend/](docs/backend/)                       | 后端参考笔记：SQLAlchemy、JWT、正则校验等        |
+| [docs/frontend/](docs/frontend/)                     | 前端参考笔记：HTML 语义与表单、JS 常用方法       |
+| [docs/archive/](docs/archive/)                       | 归档：已完成、当下意义不明或与项目无关的笔记     |
 
 ## 技术栈
 
