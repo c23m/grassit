@@ -37,17 +37,16 @@ npm run dev                          # http://localhost:5173，/api 代理到 80
 
 ## 文档
 
-| 文档                                                 | 职责                                             |
-| ---------------------------------------------------- | ------------------------------------------------ |
-| [docs/planning.md](docs/planning.md)                 | 产品需求：用户、认证、文章、存储、接口、关键决策 |
-| [docs/todo.md](docs/todo.md)                         | 现状与计划                                       |
-| [docs/development.md](docs/development.md)           | 开发规范：环境、文档、命名、格式、版本           |
-| [docs/ai-collaboration.md](docs/ai-collaboration.md) | AI 协作说明：分工、依据、提交与历史整理          |
-| [CHANGELOG.md](CHANGELOG.md)                         | 变更历史                                         |
-| [docs/deploy.md](docs/deploy.md)                     | 部署（尚未开始）                                 |
-| [docs/backend/](docs/backend/)                       | 后端参考笔记：SQLAlchemy、JWT、正则校验等        |
-| [docs/frontend/](docs/frontend/)                     | 前端参考笔记：HTML 语义与表单、JS 常用方法       |
-| [docs/archive/](docs/archive/)                       | 归档：已完成、当下意义不明或与项目无关的笔记     |
+| 文档                                 | 职责                                             |
+| ------------------------------------ | ------------------------------------------------ |
+| [docs/planning.md](docs/planning.md) | 产品需求：用户、认证、文章、存储、接口、关键决策 |
+| [docs/todo.md](docs/todo.md)         | 现状与计划                                       |
+| [AGENTS.md](AGENTS.md)               | 仓库规范：结构、命令、风格、协作分工、提交与版本 |
+| [CHANGELOG.md](CHANGELOG.md)         | 变更历史                                         |
+| [docs/deploy.md](docs/deploy.md)     | 部署（尚未开始）                                 |
+| [docs/backend/](docs/backend/)       | 后端参考笔记：SQLAlchemy、JWT、正则校验等        |
+| [docs/frontend/](docs/frontend/)     | 前端参考笔记：HTML 语义与表单、JS 常用方法       |
+| [docs/archive/](docs/archive/)       | 归档：已完成、当下意义不明或与项目无关的笔记     |
 
 ## 技术栈
 

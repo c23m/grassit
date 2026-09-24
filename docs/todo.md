@@ -11,7 +11,7 @@
 
 ## 版本规划
 
-版本号是可验收的里程碑，不必每次改动都动版本；达成验收后打 `vX.Y.Z` tag，并在 [CHANGELOG.md](../CHANGELOG.md) 记一条（以版号作标题）。**版本完成后从本文件移除，记录只留在 CHANGELOG**；本文件始终只保留未完成的版本。每个版本自带最小回归验收，系统性测试集中在 0.1.1。规范见 [development.md](development.md)，协作规则见 [ai-collaboration.md](ai-collaboration.md)。
+版本号是可验收的里程碑，不必每次改动都动版本；达成验收后打 `vX.Y.Z` tag，并在 [CHANGELOG.md](../CHANGELOG.md) 记一条（以版号作标题）。**版本完成后从本文件移除，记录只留在 CHANGELOG**；本文件始终只保留未完成的版本。每个版本自带最小回归验收，系统性测试集中在 0.1.1。规范见 [AGENTS.md](../AGENTS.md)。
 
 ### 0.0.4 · 鉴权与前端登录态
 

@@ -1,6 +1,6 @@
 # Changelog
 
-只记项目的重要变更。需求见 [docs/planning.md](docs/planning.md)，现状与计划见 [docs/todo.md](docs/todo.md)，开发规范见 [docs/development.md](docs/development.md)，AI 协作说明见 [docs/ai-collaboration.md](docs/ai-collaboration.md)。
+只记项目的重要变更。需求见 [docs/planning.md](docs/planning.md)，现状与计划见 [docs/todo.md](docs/todo.md)，开发与协作规范见 [AGENTS.md](AGENTS.md)。
 
 ## 0.0.3（2026-09-24）
 
