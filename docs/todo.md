@@ -1,7 +1,6 @@
 # TODO
 
 - [TODO](#todo)
-    - [现状](#现状)
     - [版本规划](#版本规划)
         - [0.0.4 · 鉴权与前端登录态](#004--鉴权与前端登录态)
         - [0.0.5 · refresh token 闭环](#005--refresh-token-闭环)
@@ -10,51 +9,40 @@
         - [0.1.2 · 部署](#012--部署)
         - [0.2.0 及以后](#020-及以后)
 
-## 现状
-
-以代码为准（`backend/app/`）。与 [planning.md](planning.md) 的需求相比，以下差距均**尚未实现**：
-
-| 项                   | 需求                          | 现状                                                 |
-| -------------------- | ----------------------------- | ---------------------------------------------------- |
-| 用户名字段           | `username`                    | 模型中是 `name`（`String(30)`、唯一）                |
-| 用户名字长           | ≤30                           | `RegisterRequest` 限制 3~20，`pattern=^[a-zA-Z-_]+$` |
-| 账号状态             | 正常 / 封禁 / 已注销          | 无 `status` 字段                                     |
-| 在线状态             | `is_online`、`last_online_at` | 无                                                   |
-| 头像 / GitHub / uuid | 需要                          | 无                                                   |
-| 创建时间精度         | 精确到日                      | `DateTime`（含时间，UTC）                            |
-| 文章                 | 表 + 增删改查                 | 无 ORM 模型、无表；接口返回样例数据                  |
-| 标签                 | 可按标签查询                  | 无                                                   |
-| 认证                 | access / refresh token        | 假 token；`get_current_user` 固定返回样例用户        |
-| 静态资源             | 存储 `public/`                | 已挂载到 URL `/public`，目录为 `backend/public/`     |
-
-后端真实路由清单可用 `app.openapi()` 查看。
-
 ## 版本规划
 
 版本号是可验收的里程碑，不必每次改动都动版本；达成验收后打 `vX.Y.Z` tag，并在 [CHANGELOG.md](../CHANGELOG.md) 记一条（以版号作标题）。**版本完成后从本文件移除，记录只留在 CHANGELOG**；本文件始终只保留未完成的版本。每个版本自带最小回归验收，系统性测试集中在 0.1.1。规范见 [development.md](development.md)，协作规则见 [ai-collaboration.md](ai-collaboration.md)。
 
 ### 0.0.4 · 鉴权与前端登录态
 
-让登录状态贯通前后端。
+让登录状态贯通前后端：用户能在浏览器里注册、登录，并看到自己的登录状态。后端部分已在 0.0.3 完成。
 
-学习内容：FastAPI 依赖链（`Depends` 嵌套）、Pinia 状态持久化、前端路由守卫。
+学习内容：Pinia 状态持久化、前端路由守卫、表单与事件处理（见 [frontend/](frontend/) 的笔记）。
 
-验收：带 token 能取到 `/users/me`；未登录访问受限页被拦回 `/login`；导航栏显示当前用户头像。
+**页面**
 
-- [ ] `get_current_user` 从 token 解出用户并查库，失败返回 401
-- [ ] `GET /users/me` 返回真实用户
-- [ ] 前端登录页接入 store，token 存 localStorage
+- `Login.vue`：登录表单接 store，成功后回首页
+- `Register.vue`：注册表单，409 / 422 的报错要显示成人话
+- `NavAvatar.vue`：导航栏用户区，已登录显示头像、未登录显示登录入口
+
+**逻辑**
+
+- [ ] store 把 token 存进 localStorage，应用启动时用它拉 `/users/me`
 - [ ] 路由守卫：未登录访问受限页跳转 `/login`
-- [ ] 导航栏显示当前用户头像（`NavAvatar.vue` 目前是空壳）
+- [ ] 退出登录：清掉 token 与用户信息
+
+验收：注册新账号 → 登录 → 导航栏出现头像 → 刷新页面后仍在登录态；未登录访问受限页被拦回 `/login`。
 
 ### 0.0.5 · refresh token 闭环
 
 学习内容：HttpOnly Cookie 的作用域与路径、401 自动续期、并发刷新与重试标记。
 
-验收：access token 过期后能自动续期；刷新失败则清空登录态。
+**页面**：无新页面，登录态失效的表现体现在拦截器与跳回登录页。
 
-- [ ] 登录时下发 refresh token（HttpOnly、`path=/auth`、30 天）
-- [ ] `POST /auth/refresh` 校验并换发新的 access token
+验收：access token 过期后能自动续期；刷新失败则清空登录态并回到登录页。
+
+- [ ] 登录时下发 refresh token（HttpOnly、`path=/auth`、30 天；目前 cookie 里还是占位值）
+- [ ] `POST /auth/refresh` 校验 refresh token 并换发新的 access token
 - [ ] 前端拦截器：401 → 刷新 → 重放；刷新失败则清空登录态
 
 ### 0.1.0 · MVP
@@ -63,18 +51,25 @@
 
 学习内容：一对多关联、查询参数校验、Markdown 渲染与 XSS 防护。
 
+**页面**
+
+- `Home.vue`：首页文章列表接真实数据
+- `Article.vue`：详情页启用 `marked` 渲染（现在模板与逻辑整段被注释）
+- 发文页（新建）：标题、slug、标签、正文
+
 验收：用新注册的账号发一篇文章，未登录也能在首页列表和详情页读到。
 
 - [ ] `Article` 模型与表（slug 唯一、标签、可见性、字数）
 - [ ] `POST /articles` 创建，作者取自登录态而非请求体
 - [ ] `GET /articles` 筛选（author / title / slug / start / end / tags）与 `GET /articles/{identifier}` 详情
 - [ ] `DELETE /articles/{identifier}` 物理删除，仅作者可删
-- [ ] 前端首页文章列表接真实数据，详情页启用 `marked` 渲染
 - [ ] 渲染 Markdown 时做 sanitize（`v-html` 直接渲染用户内容是 XSS 入口）
 
 ### 0.1.1 · 测试补齐
 
 学习内容：pytest + httpx 异步客户端、fixture、测试数据库的隔离。
+
+**页面**：无。
 
 验收：注册、登录、鉴权失败、文章权限都有自动化覆盖。
 
@@ -87,6 +82,8 @@
 见 [deploy.md](deploy.md)。
 
 学习内容：Nginx 反向代理与静态资源、HTTPS、进程管理。
+
+**页面**：无（部署的是前端构建产物）。
 
 验收：域名可访问，HTTPS 正常，前端路由与 `/api`、`/public` 都通。
 
