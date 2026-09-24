@@ -3,9 +3,14 @@ from typing import Annotated
 
 from fastapi import APIRouter, Cookie, Depends, Header, HTTPException, Response, status
 from fastapi.security import OAuth2AuthorizationCodeBearer
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 
+from app.database import Database
+from app.models.user import User
 from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse
 from app.schemas.user import UserMe
+from app.security import hash_password, verify_password
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -31,8 +36,11 @@ UserMeDepend = Annotated[UserMe, Depends(get_current_user)]
 
 
 @router.post("/login", status_code=status.HTTP_200_OK)
-async def login(response: Response, user: LoginRequest) -> TokenResponse:
-    if user.password.get_secret_value() != user.username + "pwd":
+async def login(response: Response, body: LoginRequest, db: Database) -> TokenResponse:
+    pwd = await db.scalar(
+        select(User.password_hash).where(User.username == body.username)
+    )
+    if not pwd or not verify_password(body.password.get_secret_value(), pwd):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Wrong username or password")
     response.set_cookie(
         key="refreshToken",
@@ -52,9 +60,30 @@ async def logout(response: Response) -> None:
 
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-async def register(user: RegisterRequest) -> UserMe:
+async def register(body: RegisterRequest, db: Database) -> UserMe:
+    if await db.scalar(select(User).where(User.username == body.username)):
+        raise HTTPException(status.HTTP_409_CONFLICT, "Username already exists")
+    if body.email and await db.scalar(select(User).where(User.email == body.email)):
+        raise HTTPException(status.HTTP_409_CONFLICT, "Email already exists")
+    obj = User(
+        username=body.username,
+        nickname=body.nickname,
+        password_hash=hash_password(body.password.get_secret_value()),
+        email=body.email,
+    )
+    try:
+        db.add(obj)
+        await db.commit()
+    except IntegrityError:
+        await db.rollback()
+        raise HTTPException(
+            status.HTTP_409_CONFLICT, "Username or email already exists"
+        )
     return UserMe(
-        username=user.username, nickname=user.nickname, created_at=date.today()
+        username=obj.username,
+        nickname=obj.nickname,
+        created_at=obj.created_at,
+        email=obj.email,
     )
 
 

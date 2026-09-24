@@ -3,7 +3,6 @@
 - [TODO](#todo)
     - [现状](#现状)
     - [版本规划](#版本规划)
-        - [0.0.2 · 注册落库](#002--注册落库)
         - [0.0.3 · 登录与 access token](#003--登录与-access-token)
         - [0.0.4 · 鉴权与前端登录态](#004--鉴权与前端登录态)
         - [0.0.5 · refresh token 闭环](#005--refresh-token-闭环)
@@ -33,23 +32,7 @@
 
 ## 版本规划
 
-版本号是可验收的里程碑，不必每次改动都动版本；达成验收后打 `vX.Y.Z` tag，并在 [CHANGELOG.md](../CHANGELOG.md) 记一条（以版号作标题）。**版本完成后从本文件移除，记录只留在 CHANGELOG**；本文件始终只保留未完成的版本。每个版本自带最小回归验收，系统性测试集中在 0.1.1。提交与分工见 [conventions.md](conventions.md)。
-
-### 0.0.2 · 注册落库
-
-让 `POST /auth/register` 真正写库。
-
-学习内容：异步 Session 的依赖注入与事务、密码哈希（argon2）、唯一约束冲突转成明确的状态码。技术细节见 [reference/async-session.md](reference/async-session.md) 与 [reference/password-hashing.md](reference/password-hashing.md)。
-
-验收：注册成功返回 201 与用户信息；用户名或邮箱重复返回 409；用户名不合法返回 422；库里能查到该行，且密码列是哈希而非明文。
-
-- [x] 定：`User.name` 改为 `username`（改完跑 `python init_db.py --reset`，表当前为空）
-- [x] 定：`created_at` 库里保留 `DateTime`，对外按 [planning.md](planning.md) 只返回 `date`（schema 里用 `field_validator(mode="before")` 截断）
-- [x] 定：唯一冲突用 409，`detail` 区分用户名与邮箱（已写入 [planning.md](planning.md) 的「7.4 错误码」）
-- [ ] 新增 `app/security.py`，用 `PasswordHash.recommended()` 做哈希
-- [ ] `register` 路由改为：哈希 → 落库 → 冲突处理 → 返回 `UserMe`
-- [ ] 校验规则与 [planning.md](planning.md) 对齐（用户名长度与允许字符）
-- [ ] 验证三种输入：正常 201、重复 409、非法用户名 422
+版本号是可验收的里程碑，不必每次改动都动版本；达成验收后打 `vX.Y.Z` tag，并在 [CHANGELOG.md](../CHANGELOG.md) 记一条（以版号作标题）。**版本完成后从本文件移除，记录只留在 CHANGELOG**；本文件始终只保留未完成的版本。每个版本自带最小回归验收，系统性测试集中在 0.1.1。规范见 [development.md](development.md)，协作规则见 [ai-collaboration.md](ai-collaboration.md)。
 
 ### 0.0.3 · 登录与 access token
 

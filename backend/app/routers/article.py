@@ -41,8 +41,8 @@ def get_article(identifier: str) -> Article:
 
 
 @router.post("", status_code=201)
-def create_article(info: ArticleCreated):
-    uuid = info.slug
+def create_article(body: ArticleCreated):
+    uuid = body.slug
     return None
 
 
