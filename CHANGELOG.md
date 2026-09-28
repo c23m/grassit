@@ -2,6 +2,16 @@
 
 只记项目的重要变更。需求见 [docs/planning.md](docs/planning.md)，现状与计划见 [docs/todo.md](docs/todo.md)，开发规范见 [docs/development.md](docs/development.md)，AI 协作说明见 [docs/ai-collaboration.md](docs/ai-collaboration.md)。
 
+## 0.0.3（2026-09-24）
+
+**认证**
+
+- `POST /auth/login` 改为校验真实密码哈希并签发 access token（HS256、15 分钟）
+- `app/security.py` 新增 `create_token` / `decode_token`，两种 token 靠 payload 里的 `type` 区分，不能互相替代使用
+- `get_current_user` 改为真正解析 token 并查库（`UserFromToken` 依赖），`GET /users/me` 返回真实用户
+- `/auth/refresh` 改为用 refresh token 换发 access token；写入 cookie 的仍是占位值，属 0.0.5
+- `JWT_SECRET` / `JWT_ALGORITHM` / 有效期经由 `app/config.py` 读取，`.env.example` 与 compose 已同步
+
 ## 0.0.2（2026-09-24）
 
 **注册与登录**
