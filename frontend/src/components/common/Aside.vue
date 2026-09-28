@@ -1,7 +1,7 @@
 <script setup>
-import Link from '@/components/common/Link.vue';
+import Link from '@/components/common/Link.vue'
 const { items } = defineProps({
-    items: Array
+    items: Array,
 })
 </script>
 
@@ -37,7 +37,6 @@ aside h2 {
     text-align: center;
     padding-bottom: 10px;
     border-bottom: 2px solid var(--border);
-
 }
 
 aside ul {

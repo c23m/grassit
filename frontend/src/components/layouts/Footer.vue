@@ -1,5 +1,5 @@
 <script setup>
-import Link from '@/components/common/Link.vue';
+import Link from '@/components/common/Link.vue'
 </script>
 
 <template>
@@ -15,21 +15,18 @@ import Link from '@/components/common/Link.vue';
         </div>
 
         <div class="beian">
-            <Link url="https://beian.miit.gov.cn/">皖ICP备2025089416号
-            </Link>
+            <Link url="https://beian.miit.gov.cn/">皖ICP备2025089416号 </Link>
             <span class="footer-divider">|</span>
-            <Link url="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode= (公安备案号)">
+            <Link
+                url="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode= (公安备案号)"
+            >
                 <!-- 此处添加公安备案号 -->
             </Link>
         </div>
 
-        <div class="copyright">
-            &copy; 2026 版权所有
-        </div>
+        <div class="copyright">&copy; 2026 版权所有</div>
 
-        <div class="notice">
-            内容供个人学习交流使用
-        </div>
+        <div class="notice">内容供个人学习交流使用</div>
     </footer>
 </template>
 
@@ -81,7 +78,6 @@ a:hover {
 }
 
 @media screen and (min-width: 768px) {
-
     footer {
         padding: 30px 0;
     }

@@ -3,8 +3,8 @@ const { placeholder, disabled } = defineProps({
     placeholder: String,
     disabled: {
         type: Boolean,
-        default: false
-    }
+        default: false,
+    },
 })
 
 const model = defineModel()

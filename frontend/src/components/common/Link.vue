@@ -1,6 +1,8 @@
 <script setup>
 const { url, title } = defineProps(['url', 'title'])
-const isExternal = typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'))
+const isExternal =
+    typeof url === 'string' &&
+    (url.startsWith('http://') || url.startsWith('https://'))
 </script>
 
 <template>

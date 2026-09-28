@@ -1,5 +1,4 @@
 <script setup>
-
 import { ref, onMounted, computed } from 'vue'
 import { useDark, useToggle, useMediaQuery } from '@vueuse/core'
 import Icon from '@/components/common/Icon.vue'
@@ -12,8 +11,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)')
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 
-const theme = computed(() => isDark.value ? "dark" : "light")
-
+const theme = computed(() => (isDark.value ? 'dark' : 'light'))
 </script>
 
 <template>
@@ -43,7 +41,6 @@ const theme = computed(() => isDark.value ? "dark" : "light")
                 <Icon name="github" />
             </Link>
             <Icon v-if="!isDesktop" name="menu" @click="menuOpen = !menuOpen" />
-
         </div>
     </nav>
 </template>
@@ -106,7 +103,6 @@ ul a:hover {
 
     display: inline-block;
     background-color: var(--text-default);
-
 }
 
 .logo:hover {

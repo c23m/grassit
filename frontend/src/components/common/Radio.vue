@@ -2,12 +2,12 @@
 const { value, disabled } = defineProps({
     value: {
         type: String,
-        required: true
+        required: true,
     },
     disabled: {
         type: Boolean,
-        default: false
-    }
+        default: false,
+    },
 })
 
 const model = defineModel()
@@ -18,7 +18,6 @@ const model = defineModel()
         <input type="radio" :value v-model="model" :disabled />
         <slot></slot>
     </label>
-
 </template>
 
 <style scoped></style>

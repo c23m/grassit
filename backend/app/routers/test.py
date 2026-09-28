@@ -4,6 +4,7 @@ from typing import Annotated, Literal
 from fastapi import APIRouter, Depends, Path, Query
 from sqlalchemy import text
 
+from app import __version__
 from app.database import Database
 from app.schemas.test import Test
 
@@ -16,4 +17,4 @@ async def return_test_info(db: Database) -> Test:
     result = await db.execute(text("SELECT 1"))
     if result.scalar_one():
         db_status = "OK"
-    return Test(time=datetime.now(), version="0.1.0.1", db_status=db_status)
+    return Test(time=datetime.now(), version=__version__, db_status=db_status)

@@ -39,7 +39,7 @@
 
     transition-property: color, background-color, border-color, box-shadow;
     transition-duration: 0.2s;
-    transition-timing-function:ease;
+    transition-timing-function: ease;
 }
 
 html {
@@ -49,7 +49,13 @@ html {
 }
 
 body {
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    font-family:
+        system-ui,
+        -apple-system,
+        'Segoe UI',
+        Roboto,
+        'Helvetica Neue',
+        sans-serif;
     background-color: var(--bg-primary);
     color: var(--text-default);
     width: 100%;
@@ -127,10 +133,12 @@ strong {
 }
 
 code,
-pre{
+pre {
     font-family: consolas, monospace;
 }
 
-@media screen and (min-width: 1024px) {}
+@media screen and (min-width: 1024px) {
+}
 
-@media print {}
+@media print {
+}

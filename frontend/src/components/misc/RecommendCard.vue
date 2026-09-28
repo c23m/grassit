@@ -1,9 +1,9 @@
 <script setup>
-import sunny from "@/assets/images/sunny.png"
-import dessert from "@/assets/images/dessert.png"
-import dark from "@/assets/images/dark.png"
-import Link from '../common/Link.vue';
-import Button from '../common/Button.vue';
+import sunny from '@/assets/images/sunny.png'
+import dessert from '@/assets/images/dessert.png'
+import dark from '@/assets/images/dark.png'
+import Link from '../common/Link.vue'
+import Button from '../common/Button.vue'
 const { recommend } = defineProps(['recommend'])
 const images = { sunny, dessert, dark }
 </script>
@@ -18,10 +18,13 @@ const images = { sunny, dessert, dark }
                 {{ recommend.description }}
             </p>
         </div>
-        <div class="image-div" :style='{ backgroundImage: `url("${images[recommend.image]}")` }'>
-            <Link :url="recommend.link">
-                &rightarrow;
-            </Link>
+        <div
+            class="image-div"
+            :style="{
+                backgroundImage: `url(&quot;${images[recommend.image]}&quot;)`,
+            }"
+        >
+            <Link :url="recommend.link"> &rightarrow; </Link>
         </div>
     </li>
 </template>

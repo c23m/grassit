@@ -5,11 +5,10 @@
 > 目前唯一的编排文件是仓库根目录的 `docker-compose.yml`（只服务于本地开发）。
 
 - [生产环境的部署](#生产环境的部署)
-  - [整体架构](#整体架构)
-  - [服务器目录规划](#服务器目录规划)
-  - [配置](#配置)
-  - [容器](#容器)
-
+    - [整体架构](#整体架构)
+    - [服务器目录规划](#服务器目录规划)
+    - [配置](#配置)
+    - [容器](#容器)
 
 ## 整体架构
 
@@ -28,15 +27,14 @@
 
 - `/var/www/grassit/`: 前端打包产物(Nginx root)
 - `/var/lib/grassit`: 存储
-  - `/public`
-    - `/avatars`
-    - `/attachments`
-    - `/static`
+    - `/public`
+        - `/avatars`
+        - `/attachments`
+        - `/static`
 - `/var/log/grassit/`: 后端日志
 - `/etc/grassit/`: 配置
 
 后端以容器或虚拟环境部署。容器内后端的工作目录是 `/app`（见 `backend/Dockerfile`），存储目录通过 `PUBLIC_DIR` 挂载进去。
-
 
 ## 配置
 

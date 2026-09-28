@@ -1,6 +1,5 @@
 <script setup>
 import { Link } from '@/components/common'
-
 </script>
 
 <template>
