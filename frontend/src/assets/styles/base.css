@@ -1,0 +1,136 @@
+:root {
+    /* Basic */
+
+    --text-weight-bold: 700;
+    --text-weight-normal: 400;
+    --text-weight-thin: 300;
+
+    /* light-theme */
+    color-scheme: light;
+    --bg-primary: #eee;
+    --bg-secondary: #ddd;
+    --text-strong: #000;
+    --text-default: #333;
+    --text-weak: #666;
+    --link: #44d;
+    --link-hover: #33c;
+    --border: #555;
+    --shadow: rgba(0, 0, 0, 0.2);
+}
+
+:root.dark {
+    /* dark-theme */
+    color-scheme: dark;
+    --bg-primary: #111;
+    --bg-secondary: #222;
+    --text-strong: #fff;
+    --text-default: #ccc;
+    --text-weak: #999;
+    --link: #3dd;
+    --link-hover: #4ee;
+    --border: #aaa;
+    --shadow: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    transition-property: color, background-color, border-color, box-shadow;
+    transition-duration: 0.2s;
+    transition-timing-function:ease;
+}
+
+html {
+    line-height: 1.5;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-default);
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: var(--link);
+}
+
+a:hover {
+    text-decoration: underline;
+    color: var(--link-hover);
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+fieldset {
+    border: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* basic */
+
+h1,
+h2,
+h3,
+h4,
+strong {
+    color: var(--text-strong);
+    font-weight: var(--text-weight-bold);
+}
+
+code,
+pre{
+    font-family: consolas, monospace;
+}
+
+@media screen and (min-width: 1024px) {}
+
+@media print {}
