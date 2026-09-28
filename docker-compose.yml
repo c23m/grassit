@@ -1,0 +1,31 @@
+services:
+  frontend:
+    build:
+
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: gst-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-server
+    environment:
+      MYSQL_ROOT_PASSWORD: gstadmin
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./storage/database:/var/lib/mysql
+    restart: unless-stopped
+  grassit-backend:
+    image: gst-backend:latest
+    container_name: gst-backend
+    command: [ "java", "-jar", "app.jar" ]
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./storage:/var/lib/grassit
+    restart: unless-stopped

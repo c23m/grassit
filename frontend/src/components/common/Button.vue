@@ -1,0 +1,30 @@
+<script setup>
+const { disabled } = defineProps(['disabled'])
+</script>
+
+<template>
+    <button :disabled>
+        <slot>按钮</slot>
+    </button>
+</template>
+
+<style scoped>
+button {
+    background-color: var(--link);
+    color: var(--bg-secondary);
+    font-size: 1em;
+    border: none;
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
+}
+
+button:hover {
+    background-color: var(--link-hover);
+    color: var(--bg-primary);
+}
+
+button:disabled {
+    background-color: var(--border);
+    color: var(--bg-secondary);
+}
+</style>
