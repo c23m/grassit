@@ -37,15 +37,16 @@ npm run dev                          # http://localhost:5173，/api 代理到 80
 
 ## 文档
 
-| 文档                                       | 职责                                             |
-| ------------------------------------------ | ------------------------------------------------ |
-| [docs/planning.md](docs/planning.md)       | 产品需求：用户、认证、文章、存储、接口、关键决策 |
-| [docs/todo.md](docs/todo.md)               | 现状与计划                                       |
-| [docs/conventions.md](docs/conventions.md) | 协作约定：分工、依据、环境、文档规范             |
-| [CHANGELOG.md](CHANGELOG.md)               | 变更历史                                         |
-| [docs/deploy.md](docs/deploy.md)           | 部署（尚未开始）                                 |
-| [docs/reference/](docs/reference/)         | 参考笔记（学习用，不是项目规范）                 |
-| `docs/archive/`                            | 过时内容归档（当前为空，需要时再建）             |
+| 文档                                                 | 职责                                             |
+| ---------------------------------------------------- | ------------------------------------------------ |
+| [docs/planning.md](docs/planning.md)                 | 产品需求：用户、认证、文章、存储、接口、关键决策 |
+| [docs/todo.md](docs/todo.md)                         | 现状与计划                                       |
+| [docs/development.md](docs/development.md)           | 开发规范：环境、文档、命名、格式、版本           |
+| [docs/ai-collaboration.md](docs/ai-collaboration.md) | AI 协作说明：分工、依据、提交与历史整理          |
+| [CHANGELOG.md](CHANGELOG.md)                         | 变更历史                                         |
+| [docs/deploy.md](docs/deploy.md)                     | 部署（尚未开始）                                 |
+| [docs/reference/](docs/reference/)                   | 参考笔记（学习用，不是项目规范）                 |
+| `docs/archive/`                                      | 过时内容归档（学习目标已落地、不再演进的笔记）   |
 
 ## 技术栈
 

@@ -1,6 +1,24 @@
 # Changelog
 
-只记项目的重要变更。需求见 [docs/planning.md](docs/planning.md)，现状与计划见 [docs/todo.md](docs/todo.md)，协作约定与收录标准见 [docs/conventions.md](docs/conventions.md)。
+只记项目的重要变更。需求见 [docs/planning.md](docs/planning.md)，现状与计划见 [docs/todo.md](docs/todo.md)，开发规范见 [docs/development.md](docs/development.md)，AI 协作说明见 [docs/ai-collaboration.md](docs/ai-collaboration.md)。
+
+## 0.0.2（2026-09-24）
+
+**注册与登录**
+
+- `users` 表把 `name` 改名为 `username`，昵称列收紧为 `VARCHAR(30)`
+- `POST /auth/register` 真正落库：argon2 哈希、用户名与邮箱查重（409）、`IntegrityError` 兜底回滚、响应补齐 `email`
+- `POST /auth/login` 改为校验真实密码哈希，用户名不存在与密码错误返回同一条消息（token 仍是占位）
+- 字段限制定稿：用户名 ≤30 且只允许 `a-z A-Z 0-9 - _`、不以分隔符开头；昵称 ≤30；密码 6~128
+- 用户创建时间对内保留 `DateTime`、对外只返回日期
+
+**工程**
+
+- 新增 `backend/app/security.py`（`hash_password` / `verify_password`）
+- 请求体参数统一命名 `body`
+- 约定文档拆分：`docs/development.md`（项目规范）与 `docs/ai-collaboration.md`（AI 协作说明）
+- 文档命名统一为小写、行尾统一 LF（`.gitattributes`）、Prettier 样式固定（`.prettierrc`）
+- 参考笔记重组：SQLAlchemy 速查、正则校验速查新增，已完成的密码哈希笔记移入 `docs/archive/`
 
 ## 0.0.1（2026-09-22）
 

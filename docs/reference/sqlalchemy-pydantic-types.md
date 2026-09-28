@@ -103,6 +103,27 @@ Input should be a valid date ... Datetimes provided to dates should have zero ti
 - 手动转换：`created_at=obj.created_at.date()`
 - 或在 schema 里加 `@field_validator("created_at", mode="before")`，把 `datetime` 截成 `date`，之后就能直接 `model_validate`
 
+### 易错点：Pydantic 模型不能当元组解包
+
+```python
+username, nickname, password, email = user      # 错
+```
+
+Pydantic v2 的模型**可以**迭代，但每个元素是 `(字段名, 值)` 的元组（`dict(model)` 就是靠这个实现的）。所以上面这行只要字段数正好是 4 就不会报错，四个变量拿到的却是 `('username', 'v')` 这样的元组——一路带到 SQL 里会炸成 `Operand should contain 1 column(s)`，或者报 `too many values to unpack`（字段数对不上时）。实测参数长这样：
+
+```
+[parameters: (('username', 'reviewprobe'),)]
+```
+
+正确写法是按属性取值：
+
+```python
+username = user.username
+nickname = user.nickname
+```
+
+需要整体转字典时用 `user.model_dump()`，键就是字段名。
+
 推荐后者，写一次到处能用：
 
 ```python
@@ -156,6 +177,8 @@ class UserMe(BaseModel):
 | 颜色   | 自定义 pattern       | —    |
 | 手机号 | 自定义 pattern       | —    |
 | 密码   | `str` + `SecretStr`  | 无   |
+
+正则的写法、Pydantic `pattern` 的匹配语义与常见坑见 [regex.md](regex.md)。
 
 `SecretStr` 打印时显示 `**********`，适合密码、token 这类字段；取值要用 `.get_secret_value()`，直接 `str(secret)` 只会得到掩码。
 

@@ -16,8 +16,8 @@
 **必填：**
 
 - 用户名 `username`
-- 昵称 `nickname`
-- 密码 `password`
+- 昵称 `nickname`（≤30 字符）
+- 密码 `password`（6~128 字符）
 
 **可选：**
 
