@@ -1,6 +1,6 @@
 # Changelog
 
-只记项目的重要变更。需求见 [docs/planning.md](docs/planning.md)，现状与计划见 [docs/todo.md](docs/todo.md)，开发规范见 [docs/development.md](docs/development.md)，AI 协作说明见 [docs/ai-collaboration.md](docs/ai-collaboration.md)。
+只记项目的重要变更。需求见 [docs/planning.md](docs/planning.md)，现状与计划见 [docs/todo.md](docs/todo.md)，开发与协作规范见 [AGENTS.md](AGENTS.md)。
 
 ## 0.0.3（2026-09-24）
 
@@ -70,6 +70,6 @@
 
 **文档**
 
-- 重组 `docs/`：`planning.md`（需求）/ `todo.md`（现状+计划）/ `deploy.md`（部署，未开始）/ `reference/`（参考笔记）
+- 重组 `docs/`，把需求、现状与计划、部署、参考笔记分成独立文档
 - 文档内容对齐实际实现：技术栈与接口路径以后端代码为准，清除旧技术栈（Spring Boot、jar 等）提法
 - 废弃手写接口样例与旧快照，接口契约改由后端导出 `openapi.json`
