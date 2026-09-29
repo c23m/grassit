@@ -5,11 +5,36 @@ import { ref } from 'vue'
 
 const username = ref('')
 const password = ref('')
-const error = ref('') // 错误提示位，等 onSubmit 接上 store 后由它赋值
+const error = ref('')
+const loading = ref(false)
 
 const { login } = useAuthStore()
 
-const onSubmit = async () => {}
+const onSubmit = async () => {
+    error.value = ''
+
+    if (!username.value) {
+        error.value = '请输入用户名'
+        return
+    }
+    if (!password.value) {
+        error.value = '请输入密码'
+        return
+    }
+
+    loading.value = true
+    try {
+        // 成功后 store 内部会 router.push('/')
+        await login(username.value, password.value)
+    } catch (err) {
+        error.value =
+            err.response?.status === 401
+                ? '用户名或密码错误'
+                : '登录失败，请稍后再试'
+    } finally {
+        loading.value = false
+    }
+}
 </script>
 
 <template>
@@ -35,9 +60,8 @@ const onSubmit = async () => {}
                     autocomplete="current-password"
                 />
             </fieldset>
-
-            <Button type="submit"> 提交 </Button>
-            <p v-if="error" class="error" role="alert">{{ error }}</p>
+            <p class="error" role="alert">{{ error }}</p>
+            <Button type="submit" :disabled="loading"> 提交 </Button>
         </form>
 
         <hr />
@@ -46,11 +70,11 @@ const onSubmit = async () => {}
              （HTML 里的"占位链接"，样式像链接，但不可点击、也不进 Tab 顺序） -->
         <p class="other-methods">
             <span class="methods">
-                <a>邮箱</a>
+                <a>邮箱登录</a>
                 <span class="divider" aria-hidden="true">|</span>
-                <a>GitHub</a>
+                <a>GitHub 登录</a>
             </span>
-            <Link url="/register">注册</Link>
+            <Link url="/register">去注册</Link>
         </p>
     </section>
 </template>
@@ -88,10 +112,6 @@ hr {
     margin: 1.5rem 0;
 }
 
-form button {
-    margin-top: 0.5rem;
-}
-
 /* 用 flex + gap 控制间距：等价于给每个元素加左右 margin，
    但不会把 HTML 里的换行空格也算进去（flex 会忽略纯空白文本节点） */
 .other-methods {
@@ -110,6 +130,9 @@ form button {
 }
 
 .error {
+    margin-top: 0.5rem;
+    height: 1em;
     color: var(--color-danger);
+    text-align: left;
 }
 </style>

@@ -110,6 +110,15 @@ button {
     cursor: pointer;
 }
 
+/* 禁用态不给"可点击"的手型：cursor 不受 :hover 影响，
+   只要在这里盖掉 button 的 pointer 就够（表单控件的禁用态统一用 not-allowed） */
+button:disabled,
+input:disabled,
+textarea:disabled,
+select:disabled {
+    cursor: not-allowed;
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
