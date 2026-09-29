@@ -15,10 +15,10 @@
 
 要做什么见 [docs/todo.md](docs/todo.md) 的 0.0.4 一节，这里只记相关文件现在长什么样：
 
-- `views/Login.vue`：表单在，直接调 api 层，没接 store，401 没有提示
+- `views/Login.vue`：布局、样式、提交逻辑都在，已接 store（401 显示成人话）
 - `views/Register.vue`：空文件
 - `components/layouts/nav/NavAvatar.vue`：空壳；`NavBar.vue` 里还没引用它
-- `stores/auth.js`：token 已持久化，`login` / `fetchMe` / `logout` 都在，但**全项目还没有任何组件用过它**，刷新后 `user` 是 null
+- `stores/auth.js`：token 已持久化，`login` 的响应直接带 user；`fetchMe` 合并并发请求、失败清 token。**还缺启动时恢复**，所以刷新后 `user` 仍是 null
 - `router/index.js`：没有守卫，也没有 `meta`
 
 验收链路按 todo 那一节写的走：注册 → 登录 → 导航栏出现头像 → 刷新仍在登录态 → 未登录被拦回 `/login`。

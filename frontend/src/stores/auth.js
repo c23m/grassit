@@ -15,9 +15,26 @@ export const useAuthStore = defineStore('auth', () => {
         router.push('/')
     }
 
-    const fetchMe = async () => {
-        const response = await getMe()
-        user.value = response
+    // 同一时刻只让一个 /users/me 在飞：后来的调用复用同一个 Promise，
+    // 落定后清掉引用，否则之后每次都会拿到那份旧结果、永远不再请求
+    let pending = null
+
+    const fetchMe = () => {
+        pending ??= getMe()
+            .then((response) => {
+                // 请求期间如果登出了（token 已被清空），这次响应就作废
+                if (token.value) user.value = response
+            })
+            .catch((err) => {
+                // 拿不到用户信息，说明这份 token 已经不可用；清掉以免留下"假登录"
+                token.value = ''
+                user.value = null
+                throw err
+            })
+            .finally(() => {
+                pending = null
+            })
+        return pending
     }
 
     const logout = async () => {

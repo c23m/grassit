@@ -161,7 +161,7 @@ axios 实例：请求自动带 `Authorization: Bearer <token>`，成功响应解
 
 ### `stores/auth.js`
 
-登录态：`token`（`useLocalStorage('token')`）、`user`、`login(username, password)` / `fetchMe()` / `logout()`。登录是**位置参数**，且内部已经 `router.push('/')`。目前还没有任何组件用它。
+登录态：`token`（`useLocalStorage('token')`）、`user`、`login(username, password)` / `fetchMe()` / `logout()`。登录是**位置参数**，内部 `router.push('/')`，响应里直接带 user；`fetchMe` 会合并并发请求、失败时清掉 token。目前只有 `Login.vue` 用它，**启动时恢复还没做**（刷新后 `user` 仍是 null）。
 
 ### `composables/`
 
