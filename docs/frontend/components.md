@@ -32,9 +32,10 @@
 ### Login.vue · 登录
 
 - **路由**：`/:lang(zh|en)?/login`
-- **状态**：半成品
-- **结构**：用户名 + 密码 + 提交，一个错误提示位
-- **注意**：现在直接调 api 层的 `login`，没接 store；按 0.0.4 要改成接 store，并处理 401（见 [auth-form-parts.md](../reference/auth-form-parts.md)、[form-errors.md](../reference/form-errors.md)）
+- **状态**：半成品（布局已定，样式与提交逻辑待做）
+- **结构**：`section.login` > `h2` + `form`（用户名、密码两个 `fieldset`）+ 提交按钮 + 错误提示位 + `hr` + 其他登录方式占位
+- **布局需求**：[login.md](login.md)
+- **注意**：已接 store（`useAuthStore`），但 `onSubmit` 还是空函数；401 要显示成人话（见 [auth-form-parts.md](../reference/auth-form-parts.md)、[form-errors.md](../reference/form-errors.md)）
 
 ### Register.vue · 注册
 
