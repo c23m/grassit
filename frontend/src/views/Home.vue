@@ -1,7 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { get, useMediaQuery } from '@vueuse/core'
-import '@/assets/styles/base.css'
 import NavBar from '@/components/layouts/nav/NavBar.vue'
 import Footer from '@/components/layouts/Footer.vue'
 import BaseLayout from '@/components/layouts/BaseLayout.vue'
@@ -22,10 +21,11 @@ const {
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const pictIndex = ref(0)
+// 头图的三套背景渐变（按钮切换）。深色系配白字，避免整屏高亮刺眼
 const colors = [
-    'linear-gradient(to right bottom, #33e, #3ee)',
-    'linear-gradient(to right bottom, #e33, #e3e)',
-    'linear-gradient(to right bottom, #3e3, #ee3)',
+    'linear-gradient(to right bottom, #1d4ed8, #0e7490)',
+    'linear-gradient(to right bottom, #b91c1c, #a21caf)',
+    'linear-gradient(to right bottom, #15803d, #4d7c0f)',
 ]
 
 const items = computed(() => {
@@ -116,13 +116,13 @@ header {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background: linear-gradient(to right bottom, #33e, #3ee);
+    background: linear-gradient(to right bottom, #1d4ed8, #0e7490);
     color: #fff;
     transition: background-color 0.3s ease;
 }
 
 header h1 {
-    background: linear-gradient(135deg, #3e3, #3ec, #3ac);
+    background: linear-gradient(135deg, #6ee7b7, #7dd3fc, #a5b4fc);
     background-clip: text;
     color: transparent;
     font-size: 5rem;
@@ -172,10 +172,10 @@ header button {
     display: inline-block;
     font-size: 1.5em;
     margin: 20px 0;
-    background-color: var(--bg-secondary);
+    background-color: var(--color-bg-secondary);
     padding: 0.5em;
     border-radius: 20px;
-    box-shadow: 0px 0px 10px var(--shadow);
+    box-shadow: 0px 0px 10px var(--color-shadow);
 }
 
 .products ul {

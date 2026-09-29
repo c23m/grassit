@@ -1,3 +1,4 @@
+import '@/assets/styles/base.css'
 import '@/assets/styles/markdown.css'
 
 import { createApp } from 'vue'

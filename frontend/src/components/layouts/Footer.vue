@@ -32,11 +32,11 @@ import Link from '@/components/common/Link.vue'
 
 <style scoped>
 footer {
-    background-color: var(--bg-secondary);
+    background-color: var(--color-bg-secondary);
     padding: 20px 0;
     text-align: center;
     font-size: 14px;
-    color: var(--text-default);
+    color: var(--color-text-default);
     z-index: 5;
 }
 
@@ -45,18 +45,18 @@ footer {
 }
 
 a {
-    color: var(--text-default);
+    color: var(--color-text-default);
     margin: 0 10px;
 }
 
 a:hover {
-    color: var(--text-strong);
+    color: var(--color-text-strong);
     text-decoration: none;
 }
 
 .divider {
     margin: 0 5px;
-    color: var(--text-weak);
+    color: var(--color-text-weak);
 }
 
 .beian {

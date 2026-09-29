@@ -1,5 +1,4 @@
 <script setup>
-import '@/assets/styles/base.css'
 import NavBar from '@/components/layouts/nav/NavBar.vue'
 import Footer from '@/components/layouts/Footer.vue'
 </script>

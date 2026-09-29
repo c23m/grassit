@@ -19,8 +19,8 @@ const { type, disabled } = defineProps({
 
 <style scoped>
 button {
-    background-color: var(--link);
-    color: var(--bg-secondary);
+    background-color: var(--color-link);
+    color: var(--color-bg-secondary);
     font-size: 1em;
     border: none;
     border-radius: 0.5em;
@@ -28,12 +28,12 @@ button {
 }
 
 button:hover {
-    background-color: var(--link-hover);
-    color: var(--bg-primary);
+    background-color: var(--color-link-hover);
+    color: var(--color-bg-primary);
 }
 
 button:disabled {
-    background-color: var(--border);
-    color: var(--bg-secondary);
+    background-color: var(--color-border);
+    color: var(--color-bg-secondary);
 }
 </style>

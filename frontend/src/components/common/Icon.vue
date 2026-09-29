@@ -40,12 +40,12 @@ const { name, title } = defineProps({
 }
 
 .wrapper:hover {
-    background-color: var(--bg-secondary);
+    background-color: var(--color-bg-secondary);
 }
 
 .icon {
     display: inline-block;
-    color: var(--text-default);
+    color: var(--color-text-default);
     width: 24px;
     height: 24px;
 }

@@ -1,27 +1,3 @@
-:root {
-    --bg-primary: #eee;
-    --bg-secondary: #ddd;
-    --text-strong: #000;
-    --text-default: #333;
-    --text-weak: #666;
-    --link: #44d;
-    --link-hover: #33e;
-    --border: #555;
-    --shadow: rgba(0, 0, 0, 0.2);
-}
-
-[data-theme='dark'] {
-    --bg-primary: #111;
-    --bg-secondary: #222;
-    --text-strong: #fff;
-    --text-default: #ccc;
-    --text-weak: #999;
-    --link: #3bb;
-    --link-hover: #4ee;
-    --border: #aaa;
-    --shadow: rgba(255, 255, 255, 0.1);
-}
-
 .markdown-body {
     --base-size-16: 1rem;
     --base-size-24: 1.5rem;
@@ -161,16 +137,16 @@
 }
 
 .markdown-body {
-    --bgColor-default: var(--bg-primary);
-    --bgColor-muted: var(--bg-secondary);
-    --bgColor-neutral-muted: var(--bg-secondary);
-    --fgColor-default: var(--text-default);
-    --fgColor-muted: var(--text-weak);
-    --fgColor-accent: var(--link);
-    --borderColor-default: var(--border);
-    --borderColor-muted: var(--border);
-    --borderColor-neutral-muted: var(--border);
-    --focus-outlineColor: var(--link);
+    --bgColor-default: var(--color-bg-primary);
+    --bgColor-muted: var(--color-bg-secondary);
+    --bgColor-neutral-muted: var(--color-bg-secondary);
+    --fgColor-default: var(--color-text-default);
+    --fgColor-muted: var(--color-text-weak);
+    --fgColor-accent: var(--color-link);
+    --borderColor-default: var(--color-border);
+    --borderColor-muted: var(--color-border);
+    --borderColor-neutral-muted: var(--color-border);
+    --focus-outlineColor: var(--color-link);
 }
 
 .markdown-body {

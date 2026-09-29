@@ -5,31 +5,41 @@
     --text-weight-normal: 400;
     --text-weight-thin: 300;
 
-    /* light-theme */
+    /* light-theme
+       取值来自 Tailwind 默认调色板（gray / blue / red / amber / green），
+       灰色阶梯按“底色 → 正文 → 次要文字 → 边框”由强到弱排 */
     color-scheme: light;
-    --bg-primary: #eee;
-    --bg-secondary: #ddd;
-    --text-strong: #000;
-    --text-default: #333;
-    --text-weak: #666;
-    --link: #44d;
-    --link-hover: #33c;
-    --border: #555;
-    --shadow: rgba(0, 0, 0, 0.2);
+    --color-bg-primary: #f3f4f6;
+    --color-bg-secondary: #e5e7eb;
+    --color-text-strong: #111827;
+    --color-text-default: #374151;
+    --color-text-weak: #6b7280;
+    --color-link: #2563eb;
+    --color-link-hover: #1d4ed8;
+    --color-border: #4b5563;
+    --color-shadow: rgba(0, 0, 0, 0.2);
+    --color-danger: #dc2626;
+    --color-danger-hover: #b91c1c;
+    --color-warning: #b45309;
+    --color-success: #15803d;
 }
 
 :root.dark {
     /* dark-theme */
     color-scheme: dark;
-    --bg-primary: #111;
-    --bg-secondary: #222;
-    --text-strong: #fff;
-    --text-default: #ccc;
-    --text-weak: #999;
-    --link: #3dd;
-    --link-hover: #4ee;
-    --border: #aaa;
-    --shadow: rgba(255, 255, 255, 0.1);
+    --color-bg-primary: #111827;
+    --color-bg-secondary: #1f2937;
+    --color-text-strong: #f9fafb;
+    --color-text-default: #d1d5db;
+    --color-text-weak: #9ca3af;
+    --color-link: #60a5fa;
+    --color-link-hover: #93c5fd;
+    --color-border: #4b5563;
+    --color-shadow: rgba(255, 255, 255, 0.1);
+    --color-danger: #f87171;
+    --color-danger-hover: #fca5a5;
+    --color-warning: #fbbf24;
+    --color-success: #4ade80;
 }
 
 * {
@@ -56,19 +66,19 @@ body {
         Roboto,
         'Helvetica Neue',
         sans-serif;
-    background-color: var(--bg-primary);
-    color: var(--text-default);
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-default);
     width: 100%;
 }
 
 a {
     text-decoration: none;
-    color: var(--link);
+    color: var(--color-link);
 }
 
 a:hover {
     text-decoration: underline;
-    color: var(--link-hover);
+    color: var(--color-link-hover);
 }
 
 ul,
@@ -128,7 +138,7 @@ h2,
 h3,
 h4,
 strong {
-    color: var(--text-strong);
+    color: var(--color-text-strong);
     font-weight: var(--text-weight-bold);
 }
 

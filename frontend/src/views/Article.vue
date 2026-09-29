@@ -96,7 +96,7 @@ const { identifier } = defineProps({
 }
 
 .info {
-    color: var(--text-weak);
+    color: var(--color-text-weak);
     font-weight: 400;
 }
 </style>

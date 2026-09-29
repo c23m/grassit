@@ -5,23 +5,33 @@
 
 ## 本仓库的样式从哪来
 
-| 文件                          | 内容                                | 谁导入                              |
-| ----------------------------- | ----------------------------------- | ----------------------------------- |
-| `assets/styles/base.css`      | reset + 配色变量（`:root` / `.dark`） | `BaseLayout.vue`、`Home.vue`        |
-| `assets/styles/markdown.css`  | 文章正文排版                        | `main.js`                           |
-| 组件里的 `<style scoped>`     | 单个组件的样式                      | 组件自己                            |
+| 文件                         | 内容                                         | 谁导入                       |
+| ---------------------------- | -------------------------------------------- | ---------------------------- |
+| `assets/styles/base.css`     | reset + 配色变量（`:root` / `:root.dark`）    | `main.js`（全局）            |
+| `assets/styles/markdown.css` | 文章正文排版，规则都挂在 `.markdown-body` 下  | `main.js`（全局，0.1.0 启用） |
+| 组件里的 `<style scoped>`    | 单个组件的样式                               | 组件自己                     |
 
-`base.css` 由 `BaseLayout` 导入，所以挂在它下面的路由（含 `/login`）都能拿到那套变量。
+`base.css` 由 `main.js` 全局导入，所有页面都能拿到那套变量；暗色是给 `<html>` 加 `class="dark"`（`NavBar.vue` 里的 `useDark()`），对应 `:root.dark`。
 
 配色变量：
 
-| 变量                                         | 亮色 / 暗色                    | 用途             |
-| -------------------------------------------- | ------------------------------ | ---------------- |
-| `--bg-primary`                               | `#eee` / `#111`                | 页面底色         |
-| `--bg-secondary`                             | `#ddd` / `#222`                | 输入框、卡片     |
-| `--text-strong` / `--text-default` / `--text-weak` | `#000` / `#333` / `#666`（亮） | 标题 / 正文 / 次要 |
-| `--link` / `--link-hover`                    | `#44d` / `#33c`（亮）          | 链接、主按钮     |
-| `--border`                                   | `#555` / `#aaa`                | 禁用态、边框     |
+| 变量                    | 亮色                 | 暗色                   | 用途                 |
+| ----------------------- | -------------------- | ---------------------- | -------------------- |
+| `--color-bg-primary`    | `#f3f4f6`            | `#111827`              | 页面底色             |
+| `--color-bg-secondary`  | `#e5e7eb`            | `#1f2937`              | 输入框、卡片         |
+| `--color-text-strong`   | `#111827`            | `#f9fafb`              | 标题                 |
+| `--color-text-default`  | `#374151`            | `#d1d5db`              | 正文                 |
+| `--color-text-weak`     | `#6b7280`            | `#9ca3af`              | 次要文字、占位符     |
+| `--color-border`        | `#4b5563`            | `#4b5563`              | 边框、禁用态底色     |
+| `--color-link`          | `#2563eb`            | `#60a5fa`              | 链接、主按钮         |
+| `--color-link-hover`    | `#1d4ed8`            | `#93c5fd`              | 链接的 hover         |
+| `--color-danger`        | `#dc2626`            | `#f87171`              | 错误、删除           |
+| `--color-danger-hover`  | `#b91c1c`            | `#fca5a5`              | 危险按钮的 hover     |
+| `--color-warning`       | `#b45309`            | `#fbbf24`              | 警告                 |
+| `--color-success`       | `#15803d`            | `#4ade80`              | 成功                 |
+| `--color-shadow`        | `rgba(0, 0, 0, 0.2)` | `rgba(255, 255, 255, 0.1)` | 阴影             |
+
+值取自 Tailwind 的默认调色板（gray / blue / red / amber / green）；`--text-weight-*` 是字重不是颜色，所以不带 `--color-` 前缀。一对"本色 / hover"只差亮度（同色相同饱和度，亮色调暗、暗色调亮），所以 hover 不会看起来是另一种颜色。
 
 暗色由 `:root.dark` 那一段整体覆盖，所以**颜色一律用变量**：硬写 `#fff` 在暗色下会刺眼；变量名写错不会报错，只是那条声明整条失效（回退到默认值）。
 
@@ -143,9 +153,9 @@ flex 是"一维"（只管一行或一列），grid 是"二维"（行列一起定
 | 属性                                              | 说明                                                                 |
 | ------------------------------------------------- | -------------------------------------------------------------------- |
 | `margin` / `padding`                              | 简写按「上 右 下 左」；两个值时 = 上下、左右；`margin: 0 auto` 左右自动 |
-| `border`                                          | `border: 2px solid var(--border)`，简写顺序 宽 样式 颜色               |
+| `border`                                          | `border: 2px solid var(--color-border)`，简写顺序 宽 样式 颜色         |
 | `border-radius`                                   | 圆角，`50%` 是正圆（配合等宽高）                                       |
-| `box-shadow`                                      | 阴影，`0 2px 8px var(--shadow)`                                       |
+| `box-shadow`                                      | 阴影，`0 2px 8px var(--color-shadow)`                                 |
 | `overflow`                                        | `hidden` 裁剪、`auto` 需要时才出滚动条                                |
 | `max-width`                                       | 比 `width` 更好用，小屏自动收缩                                       |
 | `opacity`                                         | 整体透明度，子元素跟着变                                              |
@@ -171,7 +181,7 @@ flex 是"一维"（只管一行或一列），grid 是"二维"（行列一起定
 - `fieldset { border: none }` 已在 reset 里；`legend` 的默认样式没动过
 - 焦点：`:focus` 鼠标点击也触发，`:focus-visible` 只在键盘导航时触发
 - 用 `outline: none` 去掉默认焦点框，**必须**换成别的可见反馈（本仓库 `TextInput` 是让边框变深）
-- 占位符：`::placeholder { color: var(--text-weak) }`
+- 占位符：`::placeholder { color: var(--color-text-weak) }`
 - 禁用：`:disabled`；表单校验还可以用 `:invalid` / `:user-invalid`
 - `appearance: none` 去掉系统原生外观，只在自己画控件时用
 
@@ -195,7 +205,7 @@ flex 是"一维"（只管一行或一列），grid 是"二维"（行列一起定
 
 .card {
     padding: var(--gap);
-    color: var(--text-default, #333); /* 第二个参数是兜底值 */
+    color: var(--color-text-default, #374151); /* 第二个参数是兜底值 */
 }
 ```
 

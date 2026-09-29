@@ -19,8 +19,8 @@ const model = defineModel()
 <style scoped>
 textarea {
     padding: 3px;
-    background-color: var(--bg-secondary);
-    border: 2px var(--text-weak) solid;
+    background-color: var(--color-bg-secondary);
+    border: 2px var(--color-text-weak) solid;
     border-radius: 4px;
     outline: none;
     min-height: 100px;
@@ -28,15 +28,15 @@ textarea {
 }
 
 textarea:hover {
-    border-color: var(--text-default);
+    border-color: var(--color-text-default);
 }
 
 textarea:focus {
-    border-color: var(--text-strong);
+    border-color: var(--color-text-strong);
 }
 
 textarea:disabled {
-    background-color: var(--bg-primary);
-    border-color: var(--text-weak);
+    background-color: var(--color-bg-primary);
+    border-color: var(--color-text-weak);
 }
 </style>

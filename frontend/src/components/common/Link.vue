@@ -16,11 +16,11 @@ const isExternal =
 
 <style scoped>
 a {
-    color: var(--link);
+    color: var(--color-link);
 }
 
 a:hover {
-    color: var(--link-hover);
+    color: var(--color-link-hover);
 }
 
 .no-underline {

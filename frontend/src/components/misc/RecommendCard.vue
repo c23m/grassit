@@ -33,10 +33,10 @@ const images = { sunny, dessert, dark }
 li {
     width: 100%;
     height: unset;
-    background: var(--bg-secondary);
+    background: var(--color-bg-secondary);
     display: flex;
     flex-direction: column;
-    box-shadow: 0px 0px 10px var(--shadow);
+    box-shadow: 0px 0px 10px var(--color-shadow);
     transition: all, 0.2s;
     border-radius: 20px;
 }
@@ -74,16 +74,16 @@ a {
     bottom: 20px;
     right: 20px;
     font-size: 20px;
-    color: var(--link-hover);
-    border: 2px solid var(--link-hover);
-    background-color: var(--bg-secondary);
+    color: var(--color-link-hover);
+    border: 2px solid var(--color-link-hover);
+    background-color: var(--color-bg-secondary);
     opacity: 0.8;
     border-radius: 20%;
 }
 
 a:hover {
-    color: var(--bg-secondary);
-    background-color: var(--link-hover);
+    color: var(--color-bg-secondary);
+    background-color: var(--color-link-hover);
     text-decoration: none;
     opacity: 1;
 }

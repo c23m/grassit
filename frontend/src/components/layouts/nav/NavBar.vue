@@ -9,6 +9,8 @@ const menuOpen = ref(false)
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const isDark = useDark()
+// 模板里必须写成 toggleDark()，括号不能省：不带括号时 Vue 会把点击事件当参数传进来，
+// useToggle 收到参数就"直接设值"，事件对象是真值 → 只会切到暗色，再也切不回来
 const toggleDark = useToggle(isDark)
 
 const theme = computed(() => (isDark.value ? 'dark' : 'light'))
@@ -35,7 +37,7 @@ const theme = computed(() => (isDark.value ? 'dark' : 'light'))
             </li>
         </ul>
         <div class="buttons">
-            <Icon :name="theme" @click="toggleDark" />
+            <Icon :name="theme" @click="toggleDark()" />
 
             <Link url="https://github.com/c23m">
                 <Icon name="github" />
@@ -51,19 +53,19 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 0 0.75rem var(--shadow);
+    box-shadow: 0 0 0.75rem var(--color-shadow);
     backdrop-filter: blur(4px);
     position: sticky;
     top: 0;
     height: var(--nav-height);
     padding: 0 0.5rem;
-    background: var(--bg-primary);
-    color: var(--text-strong);
+    background: var(--color-bg-primary);
+    color: var(--color-text-strong);
     z-index: 20;
 }
 
 ul {
-    color: var(--text-default);
+    color: var(--color-text-default);
     display: flex;
     position: absolute;
     left: 50%;
@@ -76,11 +78,11 @@ ul {
 }
 
 ul a {
-    color: var(--text-default);
+    color: var(--color-text-default);
 }
 
 ul a:hover {
-    color: var(--link-hover);
+    color: var(--color-link-hover);
     text-decoration: none;
 }
 
@@ -102,11 +104,11 @@ ul a:hover {
     width: auto;
 
     display: inline-block;
-    background-color: var(--text-default);
+    background-color: var(--color-text-default);
 }
 
 .logo:hover {
-    background-color: var(--text-strong);
+    background-color: var(--color-text-strong);
 }
 
 @media print {
