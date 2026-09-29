@@ -30,6 +30,8 @@ npm run build                     # 生产构建
 docker compose up                 # mysql + backend + frontend
 ```
 
+- 读文件注意编码：仓库文档是无 BOM 的 UTF-8，而本机 PowerShell 5.1 的 `Get-Content` 默认按 GBK 解码，会乱码并吞行；读文件用 `-Encoding utf8`，或直接用 `rg`
+
 ## 代码风格与命名
 
 - Python：Black，4 空格缩进，snake_case；模型与 schema 用 PascalCase
