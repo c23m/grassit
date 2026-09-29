@@ -64,6 +64,7 @@
 - [ ] `GET /articles` 筛选（author / title / slug / start / end / tags）与 `GET /articles/{identifier}` 详情
 - [ ] `DELETE /articles/{identifier}` 物理删除，仅作者可删
 - [ ] 渲染 Markdown 时做 sanitize（`v-html` 直接渲染用户内容是 XSS 入口）
+- [ ] `markdown.css` 的配色走 `prefers-color-scheme`（跟随系统），和应用的手动暗色（`<html class="dark">`）不一致；启用文章页时统一到 `.dark`
 
 ### 0.1.1 · 测试补齐
 
@@ -98,4 +99,5 @@
 - **0.2.x 界面完善**：优化提交页、导航栏搜索框、仪表盘（用户主页）、测试页直连真实接口
 - **0.3.0 用户状态**：账号状态（封禁/注销）、注销后文章保留逻辑
 - **token 撤销（不急）**：登出与封禁时把 access / refresh token 拉黑，名单存 Redis；本地与生产 compose 都要加 Redis 服务
+- **全仓补注释（不急）**：现有文件几乎没有注释。约定"够用即可"——写清这个模块/函数负责什么、为什么这么写，不逐行翻译代码；读到哪个文件顺手补哪个，不必单独安排一轮
 - **0.4.0 存储**：头像上传、附件上传、静态资源服务

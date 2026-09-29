@@ -38,6 +38,7 @@ docker compose up                 # mysql + backend + frontend
 - JS / Vue / Markdown：Prettier（样式由根目录 `.prettierrc` 固定：无分号、单引号、4 空格；`package.json`、`vite.config.js` 等工具配置 2 空格）；行尾统一 LF
 - Vue 组件文件名用 PascalCase；`docs/` 内文件名用小写短横线，根目录文档用大写（`README.md`、`CHANGELOG.md`）
 - 请求体参数统一叫 `body`，取值直接写 `body.field`，只有值被计算/转换过、或需要重命名表达领域含义时才抽局部变量
+- 注释够用即可：写清这段代码负责什么、为什么这么写，不逐行翻译代码；AI 读到哪个文件就可以顺手补注释，不必事先确认
 - `config.py` 只放原始配置值（含读取与校验），不 import 业务模块、不做 I/O、不放工具函数；需要由配置派生的东西（如 SQLAlchemy 的 `DATABASE_URL`）留在各自模块里组装
 - 版本号只写在 `backend/app/__init__.py` 的 `__version__`，其他位置（如 `/test`）引用它
 
