@@ -26,9 +26,12 @@ export const useAuthStore = defineStore('auth', () => {
                 if (token.value) user.value = response
             })
             .catch((err) => {
-                // 拿不到用户信息，说明这份 token 已经不可用；清掉以免留下"假登录"
-                token.value = ''
-                user.value = null
+                // 只有 401 说明这份 token 不可用，清掉以免留下"假登录"；
+                // 网络抖动之类的错误保留 token，下次还能重试
+                if (err.response?.status === 401) {
+                    token.value = ''
+                    user.value = null
+                }
                 throw err
             })
             .finally(() => {
