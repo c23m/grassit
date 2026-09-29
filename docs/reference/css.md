@@ -98,6 +98,33 @@
 - `flex-wrap: wrap` 允许换行；默认 `nowrap` 会硬挤
 - 子项：`flex: 1`（平分剩余空间并可收缩）、`flex: none`（保持自身尺寸）、`align-self: flex-end`（单独改交叉轴对齐）
 
+## grid 速查
+
+flex 是"一维"（只管一行或一列），grid 是"二维"（行列一起定），整块布局用它：
+
+```css
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+}
+```
+
+| 写法                                       | 作用                                             |
+| ------------------------------------------ | ------------------------------------------------ |
+| `grid-template-columns: 200px 1fr`         | 固定 200px + 剩余空间，两列                        |
+| `grid-template-columns: repeat(3, 1fr)`    | 三等分                                           |
+| `repeat(auto-fill, minmax(240px, 1fr))`    | 每列至少 240px，不够就自动换行（卡片墙）           |
+| `grid-template-rows`                       | 行高，省略时由内容撑开                            |
+| `gap: 1rem` / `gap: 1rem 2rem`             | 行列间距 / 行距 列距                              |
+| `grid-column: span 2`                      | 某个子项横跨两列                                  |
+| `place-items: center`                      | `align-items` + `justify-items` 的简写            |
+| `grid-template-areas`                      | 用名字划区域，适合整页骨架                        |
+
+- `fr` 表示"剩余空间里的一份"，只在这个容器内有效
+- 子项默认一格占一格，不用给它们写宽度
+- 只排一行或一列的，flex 更顺手；要行列同时对齐、或要卡片自动换行，grid 更省事
+
 ## 尺寸与间距单位
 
 | 单位         | 相对谁                    | 什么时候用                          |
