@@ -15,3 +15,4 @@
 
 - [html-semantics.md](../reference/html-semantics.md)——语义化标签、表单与可访问性、Vue 与原生写法对照
 - [js-methods.md](../reference/js-methods.md)——JavaScript 数组 / 对象 / 字符串常用方法与实测结果
+- [vue-events.md](../reference/vue-events.md)——`@click="fn"` 与 `fn()` 的区别、事件修饰符、组件上的事件与 `v-model`
