@@ -28,7 +28,6 @@
 **逻辑**
 
 - [ ] store 把 token 存进 localStorage，应用启动时用它拉 `/users/me`（失败就清掉 token；多处触发时合并成一次请求）
-- [ ] 可选：登录响应直接带用户信息（`{ token, user }`），省掉登录后紧接着的一次 `/users/me`
 - [ ] 路由守卫：未登录访问受限页跳转 `/login`
 - [ ] 退出登录：清掉 token 与用户信息
 

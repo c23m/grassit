@@ -1,10 +1,18 @@
 from pydantic import EmailStr, Field, SecretStr
 
 from app.schemas import BaseSchema
+from app.schemas.user import UserMe
 
 
 class TokenResponse(BaseSchema):
     token: str
+
+
+class LoginResponse(BaseSchema):
+    """登录响应：token 之外带上用户信息，前端登录后不必再拉一次 /users/me"""
+
+    token: str
+    user: UserMe
 
 
 class RegisterRequest(BaseSchema):

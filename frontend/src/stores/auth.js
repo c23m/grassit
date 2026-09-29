@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
     const login = async (username, password) => {
         const response = await loginApi({ username, password })
         token.value = response.token
-        await fetchMe()
+        user.value = response.user
         router.push('/')
     }
 

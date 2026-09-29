@@ -193,7 +193,7 @@ public/
 | 接口                            | 说明                                                                       |
 | ------------------------------- | -------------------------------------------------------------------------- |
 | `POST /auth/register`           | 注册                                                                       |
-| `POST /auth/login`              | 密码登录，返回 access token                                                |
+| `POST /auth/login`              | 密码登录，返回 access token 与当前用户信息                                 |
 | `POST /auth/logout`             | 登出，清除 refresh cookie                                                  |
 | `POST /auth/refresh`            | 用 refresh token 换新的 access token                                       |
 | `GET /users/me`                 | 当前登录用户                                                               |

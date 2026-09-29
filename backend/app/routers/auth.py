@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from app import security
 from app.database import Database
 from app.models.user import User
-from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse
+from app.schemas.auth import LoginRequest, LoginResponse, RegisterRequest, TokenResponse
 from app.schemas.user import UserMe
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -31,7 +31,7 @@ UserFromToken = Annotated[UserMe, Depends(get_current_user)]
 
 
 @router.post("/login", status_code=status.HTTP_200_OK)
-async def login(response: Response, body: LoginRequest, db: Database) -> TokenResponse:
+async def login(response: Response, body: LoginRequest, db: Database) -> LoginResponse:
     user = await db.scalar(select(User).where(User.username == body.username))
     if user is None or not security.verify_password(
         body.password.get_secret_value(), user.password_hash
@@ -46,7 +46,7 @@ async def login(response: Response, body: LoginRequest, db: Database) -> TokenRe
         path="/auth",
     )
     token = security.create_token(user.id, "access")
-    return TokenResponse(token=token)
+    return LoginResponse(token=token, user=UserMe.model_validate(user))
 
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)

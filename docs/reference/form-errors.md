@@ -126,7 +126,7 @@ const toMessage = (err) => {
 
 ## 和登录态相关的两件事
 
-- 登录成功返回的是 `{ token }`，**没有用户信息**。要显示头像得再请求 `GET /users/me`，这就是 store 的 login 里接着调 `fetchMe` 的原因
+- 登录成功返回 `{ token, user }`，用户信息随响应一次拿到，store 的 `login` 直接写进 `user`。`GET /users/me` 留给"刷新后恢复登录态"那条路
 - 注册成功返回 UserMe，但**不会自动登录**（响应里没有 token）。0.0.4 的流程是"注册 → 自己去登录"，所以注册成功跳 `/login` 比跳首页更合理
 
 密码输入框记得 `type="password"`，`autocomplete` 分别用 `current-password`（登录）和 `new-password`（注册），否则密码管理器会存错。

@@ -25,7 +25,7 @@
 
 ## 接手前先知道的几件事
 
-- 登录响应只有 token、没有用户信息，注册响应也没有 token：要显示头像得再拉 `/users/me`，注册成功后跳登录页而不是直接进首页（细节见 [form-errors.md](docs/reference/form-errors.md)）
+- 登录响应带 token 与用户信息；注册响应只有用户信息、没有 token，所以注册成功后跳登录页而不是直接进首页（细节见 [form-errors.md](docs/reference/form-errors.md)）
 - localStorage 的 token key 被 `stores/auth.js` 和 `utils/request.js` 各持一份；拦截器里已经写着 401 → refresh → 重放，那属于 0.0.5，动它要注意 store ↔ api ↔ 拦截器的循环依赖
 - 前端路由带可选语言前缀 `/:lang(zh|en)?`，跳转写 `{ name: 'login' }` 比手拼路径省事
 - 哪些页面算"受限页"还没定；`views/Dashboard.vue` 有文件但没进路由
