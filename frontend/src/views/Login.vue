@@ -131,7 +131,9 @@ hr {
 
 .error {
     margin-top: 0.5rem;
-    height: 1em;
+    /* 预留一行，出错时不跳动。用 min-height 而不是 height（换行时盒子要能长高），
+       单位 lh 就是"一行的高度"，等价写法是 1.5em（本仓库行高 1.5） */
+    min-height: 1lh;
     color: var(--color-danger);
     text-align: left;
 }
