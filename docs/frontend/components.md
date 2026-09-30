@@ -146,7 +146,7 @@
 ### RecommendCard.vue
 
 - **接口**：props `recommend`
-- **结构**：`<li>` 卡片，按图片名在 `sunny` / `desert` / `pict` / `dark` 四张图里选，内部用 `Link` 和 `Button`
+- **结构**：`<li>` 卡片，按图片名在 `sunny` / `desert` / `play` / `test` / `dark` 五张图里选，内部用 `Link`（`Button` 是没用到的死导入）
 - **用法**：`Home` 的推荐列表
 
 ## 配套模块（非组件）
