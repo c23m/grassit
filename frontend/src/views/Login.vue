@@ -13,13 +13,14 @@ const loading = ref(false)
 // 成功后到跳转之间那段空窗，按钮要一直禁用，免得又点一次
 const succeeded = ref(false)
 // 留出看提示的时间再跳转，单位毫秒
-const REDIRECT_DELAY = 3000
+const REDIRECT_DELAY = 1000
 let redirectTimer = null
 onBeforeUnmount(() => clearTimeout(redirectTimer))
 
 // 按钮上方那一行：错误和成功共用同一个位置，靠 tone 决定颜色
 const notice = reactive({ text: '', tone: 'error' })
-const showNotice = (text, tone = 'error') => Object.assign(notice, { text, tone })
+const showNotice = (text, tone = 'error') =>
+    Object.assign(notice, { text, tone })
 
 const onSubmit = async () => {
     notice.text = ''
@@ -37,7 +38,7 @@ const onSubmit = async () => {
     try {
         await login(username.value, password.value)
         succeeded.value = true
-        showNotice('登录成功，正在返回首页…', 'success')
+        showNotice('登录成功', 'success')
         redirectTimer = setTimeout(() => router.push('/'), REDIRECT_DELAY)
     } catch (err) {
         showNotice(
@@ -62,6 +63,7 @@ const onSubmit = async () => {
                     id="username"
                     v-model="username"
                     autocomplete="username"
+                    :disabled="succeeded"
                 />
             </fieldset>
 
@@ -72,12 +74,15 @@ const onSubmit = async () => {
                     type="password"
                     v-model="password"
                     autocomplete="current-password"
+                    :disabled="succeeded"
                 />
             </fieldset>
             <p class="notice" :class="notice.tone" role="alert">
                 {{ notice.text }}
             </p>
-            <Button type="submit" :disabled="loading || succeeded"> 提交 </Button>
+            <Button type="submit" :disabled="loading || succeeded">
+                提交
+            </Button>
         </form>
 
         <hr />
@@ -150,7 +155,7 @@ hr {
    单位 lh 就是"一行的高度"，等价写法是 1.5em（本仓库行高 1.5） */
 .notice {
     min-height: 1lh;
-    text-align: left;
+    text-align: center;
     color: var(--color-danger);
 }
 

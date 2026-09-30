@@ -9,7 +9,7 @@ const loading = ref(false)
 // 成功后到跳转之间那段空窗，按钮要一直禁用，免得又点一次
 const succeeded = ref(false)
 // 留出看提示的时间再跳转，单位毫秒
-const REDIRECT_DELAY = 3000
+const REDIRECT_DELAY = 1000
 let redirectTimer = null
 onBeforeUnmount(() => clearTimeout(redirectTimer))
 
@@ -29,7 +29,8 @@ const error = reactive({
 })
 // 按钮上方那一行：错误和成功共用同一个位置，靠 tone 决定颜色
 const notice = reactive({ text: '', tone: 'error' })
-const showNotice = (text, tone = 'error') => Object.assign(notice, { text, tone })
+const showNotice = (text, tone = 'error') =>
+    Object.assign(notice, { text, tone })
 const clearNotice = () => (notice.text = '')
 
 const FIELD_LABELS = {
@@ -143,7 +144,7 @@ const onSubmit = async () => {
         // 邮箱可选：空字符串会被后端的 EmailStr 判成格式错误，所以空值发 null
         await register({ ...data, email: data.email || null })
         succeeded.value = true
-        showNotice('注册成功，正在跳转登录页…', 'success')
+        showNotice('注册成功', 'success')
         redirectTimer = setTimeout(
             () => router.push({ name: 'login' }),
             REDIRECT_DELAY,
@@ -174,6 +175,7 @@ const onSubmit = async () => {
                     id="username"
                     v-model="data.username"
                     autocomplete="username"
+                    :disabled="succeeded"
                     @blur="onBlur('username')"
                 />
             </fieldset>
@@ -191,6 +193,7 @@ const onSubmit = async () => {
                     id="nickname"
                     v-model="data.nickname"
                     autocomplete="nickname"
+                    :disabled="succeeded"
                     @blur="onBlur('nickname')"
                 />
             </fieldset>
@@ -209,6 +212,7 @@ const onSubmit = async () => {
                     type="password"
                     v-model="data.password"
                     autocomplete="new-password"
+                    :disabled="succeeded"
                     @blur="onBlur('password')"
                 />
             </fieldset>
@@ -224,6 +228,7 @@ const onSubmit = async () => {
                     id="email"
                     v-model="data.email"
                     autocomplete="email"
+                    :disabled="succeeded"
                     @blur="onBlur('email')"
                 />
             </fieldset>
@@ -298,7 +303,7 @@ label .error {
 /* 按钮上方那一行：错误和成功共用同一处，预留一行，出错时按钮不会往下跳 */
 form > .notice {
     min-height: 1lh;
-    text-align: left;
+    text-align: center;
     color: var(--color-danger);
 }
 
