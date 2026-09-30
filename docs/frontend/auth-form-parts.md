@@ -22,20 +22,20 @@ const submitting = ref(false)
 
 ## 现成组件的能力与限制
 
-| 组件                   | props                      | 登录页里的用法                                     |
-| ---------------------- | -------------------------- | -------------------------------------------------- |
-| `TextInput`            | `placeholder`、`disabled`  | `<TextInput v-model="username" />`                 |
-| `Button`               | `type`（默认 `button`）、`disabled` | 提交按钮**必须写 `type="submit"`**，见下方说明 |
-| `Link`                 | 走 `url` 属性              | "去注册"这类站内跳转                               |
-| `Textarea` / `Radio`   | —                          | 登录页用不上                                       |
+| 组件                 | props                                | 登录页里的用法                                        |
+| -------------------- | ------------------------------------ | ----------------------------------------------------- |
+| `TextInput`          | `type`（默认 `text`）、`placeholder`、`disabled` | `<TextInput v-model="username" />`、密码框传 `type="password"` |
+| `Button`             | `type`（默认 `button`）、`disabled`  | 提交按钮**必须写 `type="submit"`**，见下方说明        |
+| `Link`               | 走 `url` 属性                        | "去注册"这类站内跳转                                  |
+| `Textarea` / `Radio` | —                                    | 登录页用不上                                          |
 
 三个容易踩的点：
 
-1. **`Button` 默认是 `type="button"`**，不是 HTML 原生的默认值。表单里写 `<Button>提交</Button>` 点一下**不会**触发表单提交，得写 `<Button type="submit">提交</Button>`。当前 `Login.vue` 里正是漏了这一处。
-2. **`TextInput` 的 `type` 写死成 `text`**，没有 `type` 属性可传，所以密码框直接用它会把密码明文显示。两条路：给它加一个 `type` prop（默认 `'text'`，透传到 `<input>`），或者密码那一栏直接写原生 `<input type="password">`。
+1. **`Button` 默认是 `type="button"`**，不是 HTML 原生的默认值。表单里写 `<Button>提交</Button>` 点一下**不会**触发表单提交，得写 `<Button type="submit">提交</Button>`（`Login.vue` 已经这么用了）。
+2. **`TextInput` 的 `type` 默认是 `text`**，密码框要显式传 `<TextInput type="password" v-model="password" />`，否则密码明文显示。
 3. **`Button` 没有 loading / 禁用态之外的反馈**：提交中用 `:disabled="submitting"` 兜住防连点，转圈之类的得自己做。
 
-## 数据层：三个入口，选一个
+## 数据层：两个入口，选一个
 
 | 入口                              | 签名                                                     | 说明                                                                 |
 | --------------------------------- | -------------------------------------------------------- | -------------------------------------------------------------------- |
@@ -51,6 +51,19 @@ const submitting = ref(false)
 
 顺带一个坑：`@/utils/index.js` 写的是 `export * from './request.js'`，而 `request` 是 default export——`import { request } from '@/utils'` 拿不到东西，要引就引 `@/utils/request.js`。
 
+## Register.vue 的字段
+
+`POST /auth/register`（见 `backend/app/schemas/auth.py`）收四个字段：
+
+| 字段       | 限制                                        |
+| ---------- | ------------------------------------------- |
+| `username` | 3~30，`^[a-zA-Z0-9][a-zA-Z0-9_-]*$`         |
+| `nickname` | 1~30                                        |
+| `password` | 6~128                                       |
+| `email`    | 可选，`EmailStr \| None`                     |
+
+响应是 UserMe，**不带 token**，所以注册成功后跳 `/login` 而不是首页。
+
 ## 提交态与错误提示
 
 没有现成的提示组件（没有 Toast / Alert，也没装 UI 库），错误就在模板里用 `v-if="error"` 渲染一段文本，样式自己定。可以参考 [form-errors.md](form-errors.md) 里 409 / 422 两种 `detail` 的转法。
@@ -62,10 +75,9 @@ const submitting = ref(false)
 
 ## 缺口清单（这些都得自己做）
 
-- 密码框的 `type="password"`（要么改 `TextInput`，要么用原生 input）
-- 前端表单校验（用户名 3~30 且只允许 `a-z A-Z 0-9 - _`、密码 6~128），仓库里没有校验库；准的永远是后端校验，前端只是省一次往返
+- 前端表单校验（限制见上表），仓库里没有校验库；准的永远是后端校验，前端只是省一次往返
 - 错误提示的展示样式与位置
-- 输入框的 `autocomplete`（登录 `username` / `current-password`，注册 `new-password`）
+- 输入框的 `autocomplete`（用户名 `username`、邮箱 `email`、注册的密码 `new-password`；`Login.vue` 里已经用上）
 
 ## 顺带一提
 
