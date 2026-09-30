@@ -9,7 +9,7 @@ Grassit 是个人博客 / Wiki 全栈项目（FastAPI + Vue 3 + MySQL）。本�
 - `backend/app/`：FastAPI 应用，按 `models/` / `routers/` / `schemas/` 分组；跨层的单一职责基础模块（`database.py`、`config.py`、`security.py`）直接平铺，同类模块到三个以上再收进子包
 - `backend/init_db.py` 建表，`backend/public/` 放对外提供的静态资源
 - `frontend/src/`：`api/`、`components/`、`composables/`、`router/`、`stores/`、`views/`、`utils/`、`assets/`
-- `docs/`：顶层放项目文档；`docs/backend/`、`docs/frontend/` 放与当前工作直接相关的文档（各自的 `references.md` 说明引用了哪些参考件），`docs/reference/` 放参考件（笔记、速查、已被代码取代的旧文）
+- `docs/`：顶层放项目文档；`docs/backend/`、`docs/frontend/` 放与当前工作直接相关的文档：规范，以及跟着任务走的指南（做完就删）；`docs/reference/` 放不绑任务的参考件（速查、学习笔记、旧文）。两边各自的 `references.md` 说明引用了哪些
 - 根目录：`docker-compose.yml`、`.env.example`、`.prettierrc`、`.gitattributes`、`CHANGELOG.md`、`HANDOVER.md`
 
 ## 常用命令
@@ -58,8 +58,9 @@ docker compose up                 # mysql + backend + frontend
 - [HANDOVER.md](HANDOVER.md)：交接快照（现在在哪、下一步做什么、已知问题），每个里程碑收尾时更新一次
 - [CHANGELOG.md](CHANGELOG.md)：已完成版本的重要变更
 - `docs/frontend/components.md`：前端页面与组件的结构基准，算规范——加页面、改组件前先对齐它
+- `docs/frontend/`、`docs/backend/` 下的任务指南（照做就能落地的那种，如某个任务的组件清单、错误处理模板）：只为那个任务存在，做完任务、代码里已经有答案了就删，别留在仓库里
 - `docs/backend/references.md`、`docs/frontend/references.md`：各自引用了哪些参考件——当前任务在用的在上，全部引用在下
-- `docs/reference/`：参考件（学习笔记、速查、已被代码取代的旧文），不是规范；引用了哪些见两边的 `references.md`
+- `docs/reference/`：不绑任务的参考件（速查、学习笔记、已被代码取代的旧文），不是规范；引用了哪些见两边的 `references.md`
 
 ## 测试
 

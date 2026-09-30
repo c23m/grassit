@@ -45,9 +45,9 @@ npm run dev                          # http://localhost:5173，/api 代理到 80
 | [HANDOVER.md](HANDOVER.md)           | 交接快照：当前进度、下一步做什么、已知不一致     |
 | [CHANGELOG.md](CHANGELOG.md)         | 变更历史                                         |
 | [docs/deploy.md](docs/deploy.md)     | 部署（尚未开始）                                 |
-| [docs/backend/](docs/backend/)       | 后端文档：当前工作说明与引用说明                 |
-| [docs/frontend/](docs/frontend/)     | 前端文档：页面与组件基准、引用说明               |
-| [docs/reference/](docs/reference/)   | 参考件：学习笔记、速查、旧文（各自引用见两边 `references.md`） |
+| [docs/backend/](docs/backend/)       | 后端文档：规范、任务指南与引用说明               |
+| [docs/frontend/](docs/frontend/)     | 前端文档：页面与组件基准、任务指南、引用说明     |
+| [docs/reference/](docs/reference/)   | 参考件：速查与学习笔记，不绑任务（引用见两边 `references.md`） |
 
 ## 技术栈
 

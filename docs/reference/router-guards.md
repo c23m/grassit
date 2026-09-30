@@ -84,5 +84,5 @@ app.mount('#app')
 ## 本项目现状
 
 - 路由带可选语言前缀（`/:lang(zh|en)?`），`to.fullPath` 会带上它；跳转时用 `{ name: 'login' }` 比手拼路径省事
-- 哪些页面算"受限页"还没定（见 [todo.md](../todo.md) 的 0.0.4），目前只有 `login` / `register` 是明确的公开页
+- 受限页定为用户主页与发文页（见 [todo.md](../todo.md) 的 0.0.4）；`login` / `register` 公开，`/test`、`/playground` 是调试用的临时页，不拦
 - 守卫还没写，`meta.requiresAuth` 也还没打

@@ -2,7 +2,7 @@
 
 > 参考笔记（学习用），不是项目规范。示例代码由 AI 生成、未经审阅，以实测与官方文档为准。
 > 版本按本仓库实际安装的核对过：vue 3.5.32、@vueuse/core 14.4.0（`useToggle`、`useDark` 的行为是从 node_modules 源码里读出来的）。
-> 相关笔记：[js-methods.md](js-methods.md)（数组/对象方法）、[html-semantics.md](html-semantics.md)（表单与可访问性）、[auth-form-parts.md](auth-form-parts.md)（认证表单的现成组件）。
+> 相关笔记：[js-methods.md](js-methods.md)（数组/对象方法）、[html-semantics.md](html-semantics.md)（表单与可访问性）、[auth-form-parts.md](../frontend/auth-form-parts.md)（认证表单的现成组件）。
 
 ## `@click="fn"` 和 `@click="fn()"` 不是一回事
 

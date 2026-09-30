@@ -8,8 +8,8 @@
 - 最新 tag `v0.0.3`（登录签发 access token），已推送到 `origin/main`
 - 进行中：**0.0.4 · 鉴权与前端登录态**。后端部分在 0.0.3 已完成，前端还没开始
 - 按协作分工，0.0.4 的动手部分由作者本人写；AI 这边负责参考笔记、核对接口契约、跑验收
-- 文档分两类：跟当前工作走的留在 `docs/`（`docs/frontend/components.md` 是规范，两边的 `references.md` 说明各自引用了哪些参考件），参考笔记与旧文统一在 `docs/reference/`
-- 前端参考笔记刚补齐（[pinia.md](docs/reference/pinia.md)、[router-guards.md](docs/reference/router-guards.md)、[form-errors.md](docs/reference/form-errors.md)），正好覆盖 0.0.4 的三个学习内容
+- 文档分两类：跟当前工作走的在 `docs/`（`docs/frontend/components.md` 是规范，同目录下还有跟着任务走的指南，做完即删），不绑任务的速查与旧文在 `docs/reference/`；两边的 `references.md` 说明各自引用了什么
+- 0.0.4 要用的笔记都齐了：[pinia.md](docs/reference/pinia.md)、[router-guards.md](docs/reference/router-guards.md)、[vue-events.md](docs/reference/vue-events.md)，以及同任务的两份指南 [auth-form-parts.md](docs/frontend/auth-form-parts.md)、[form-errors.md](docs/frontend/form-errors.md)
 
 ## 下一步：0.0.4 前端
 
@@ -25,7 +25,7 @@
 
 ## 接手前先知道的几件事
 
-- 登录响应带 token 与用户信息；注册响应只有用户信息、没有 token，所以注册成功后跳登录页而不是直接进首页（细节见 [form-errors.md](docs/reference/form-errors.md)）
+- 登录响应带 token 与用户信息；注册响应只有用户信息、没有 token，所以注册成功后跳登录页而不是直接进首页（细节见 [form-errors.md](docs/frontend/form-errors.md)）
 - localStorage 的 token key 被 `stores/auth.js` 和 `utils/request.js` 各持一份；拦截器里已经写着 401 → refresh → 重放，那属于 0.0.5，动它要注意 store ↔ api ↔ 拦截器的循环依赖
 - 前端路由带可选语言前缀 `/:lang(zh|en)?`，跳转写 `{ name: 'login' }` 比手拼路径省事
 - 受限页定为**用户主页**与**发文页**；`/test`、`/playground` 是调试用临时页，不拦，上线前删（记在 0.1.2）。`views/Dashboard.vue` 有文件但还没进路由，所以"未登录被拦回 `/login`"这条验收暂时没有可测的对象

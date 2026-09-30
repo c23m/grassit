@@ -1,14 +1,21 @@
-# 前端引用说明
+# 前端文档索引
 
-> 这个目录放**与前端当前工作直接相关**的文档，其中 [components.md](components.md) 是页面与组件的结构基准（规范）。参考件都在 [docs/reference/](../reference/)：学习笔记、速查、旧文。本文件说明这边引用了哪些参考件——**当前任务在用的在上，全部引用在下**。
-> 参考件不是规范，结论以代码和实测为准。
+> 这个目录放**与前端当前工作直接相关**的文档，分两类：
+>
+> - **规范**：[components.md](components.md) 是页面与组件的结构基准，加页面、改组件前先对齐它
+> - **任务指南**：为某个任务写的、照做就能落地的文档。任务做完、代码里已经有答案的就删掉，不留在仓库里
+>
+> 不绑任务的速查表与学习笔记在 [docs/reference/](../reference/)，本文件也说明这边引用了哪些。参考件不是规范，结论以代码和实测为准。
 
-## 当前任务（0.0.4 · 鉴权与前端登录态）在用
+## 任务指南
+
+- [auth-form-parts.md](auth-form-parts.md)——认证表单能用哪些现成组件、有哪些缺口、数据层有哪几个入口（0.0.4；Register 写完即删）
+- [form-errors.md](form-errors.md)——AxiosError 的结构、FastAPI 的 409 与 422 两种 `detail` 怎么转人话（0.0.4；Register 写完即删）
+
+## 当前任务（0.0.4 · 鉴权与前端登录态）在用的速查
 
 - [pinia.md](../reference/pinia.md)——store 怎么写、`useLocalStorage` 持久化、刷新后怎么恢复登录态
 - [router-guards.md](../reference/router-guards.md)——导航守卫、返回值语义、`meta` 鉴权与跳转
-- [form-errors.md](../reference/form-errors.md)——AxiosError 的结构、FastAPI 的 409 与 422 两种 `detail`
-- [auth-form-parts.md](../reference/auth-form-parts.md)——认证表单能用哪些现成组件、有哪些缺口、数据层有哪几个入口
 - [css.md](../reference/css.md)——选择器与优先级、flex、单位、状态伪类、scoped 样式的命中规则
 
 ## 全部引用
