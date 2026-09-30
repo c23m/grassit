@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { register } from '@/api/auth'
 import { Button, Link, TextInput } from '@/components/common'
@@ -81,15 +81,38 @@ const applyError = (err) => {
     formError.value = '注册失败，请稍后再试'
 }
 
-const onSubmit = async () => {
-    for (const field in error) error[field] = ''
-    formError.value = ''
+// 前端能自己判的规则：返回空串就代表这个字段没问题。
+// 邮箱没有能判的规则，所以改它时直接清掉错误——格式对不对交给后端
+const RULES = {
+    username: () => (data.username ? '' : '用户名不能为空'),
+    nickname: () => (data.nickname ? '' : '昵称不能为空'),
+    password: () => (data.password ? '' : '密码不能为空'),
+}
 
-    // 三个必填项一次查完，缺哪个标哪个——发现一个就 return 的话，用户得来回改好几轮
-    if (!data.username) error.username = '用户名不能为空'
-    if (!data.nickname) error.nickname = '昵称不能为空'
-    if (!data.password) error.password = '密码不能为空'
-    if (error.username || error.nickname || error.password) return
+const validate = (field) => {
+    error[field] = RULES[field]?.() ?? ''
+}
+
+// 改哪个字段就重查哪个：填好了错误立刻消失，删空了立刻又出现
+for (const field of Object.keys(data)) {
+    watch(
+        () => data[field],
+        () => {
+            validate(field)
+            // 内容变过，上一次那种跟字段无关的提示（网络异常之类）也过时了
+            formError.value = ''
+        },
+    )
+}
+
+// 还有字段级错误没清掉就一直禁用提交（后端给的错误也一样，改动那个字段就会被清掉）
+const hasError = computed(() => Object.values(error).some(Boolean))
+
+const onSubmit = async () => {
+    // 一次把所有前端规则都跑一遍，缺哪个标哪个——发现一个就 return 的话，用户得来改好几轮
+    for (const field of Object.keys(error)) validate(field)
+    formError.value = ''
+    if (hasError.value) return
 
     loading.value = true
     try {
@@ -173,7 +196,7 @@ const onSubmit = async () => {
             </fieldset>
 
             <p class="error" role="alert">{{ formError }}</p>
-            <Button type="submit" :disabled="loading"> 提交 </Button>
+            <Button type="submit" :disabled="loading || hasError"> 提交 </Button>
         </form>
 
         <hr />
