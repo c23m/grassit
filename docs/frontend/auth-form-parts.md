@@ -39,12 +39,12 @@ const submitting = ref(false)
 
 | 入口                              | 签名                                                     | 说明                                                                 |
 | --------------------------------- | -------------------------------------------------------- | -------------------------------------------------------------------- |
-| `useAuthStore().login`            | `login(username, password)`                              | **位置参数**，和 api 层不一致；内部会写 token 和 user、`router.push('/')` |
+| `useAuthStore().login`            | `login(username, password)`                              | **位置参数**，和 api 层不一致；内部只写 token 和 user，不管跳转       |
 | `@/api/auth.js` 的 `login`        | `login({ username, password })`                          | 直接打接口，绕过 store；返回 `{ token, user }`                       |
 
 两个必须知道的点：
 
-- 走 store 的话，**成功分支不用自己跳首页**——store 里已经 `router.push('/')` 了。想支持"被守卫拦下来后回跳原页"（`?redirect=`），要么改 store 的签名，要么页面自己调 api 层
+- 跳转由页面自己做（`Login.vue` 里是"显示成功提示 → 等几秒 → `router.push('/')`"）。store 只写状态，这样以后要支持"被守卫拦下来后回跳原页"（`?redirect=`）时，页面直接换掉跳转目标就行
 - 登录响应直接带 user，登录后**不需要**再拉 `/users/me`；`fetchMe()` 只服务于"刷新后恢复登录态"
 
 `@/utils/request.js` 已经做掉的事：请求自动带 `Authorization: Bearer <token>`、成功响应解包成 `response.data`、401 时尝试刷新再重放（这条属于 0.0.5）。所以页面层拿到的是纯数据，不用碰 axios。

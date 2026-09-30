@@ -1,11 +1,17 @@
 <script setup>
-import { computed, reactive, ref } from 'vue'
+import { computed, onBeforeUnmount, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { register } from '@/api/auth'
 import { Button, Link, TextInput } from '@/components/common'
 
 const router = useRouter()
 const loading = ref(false)
+// 成功后到跳转之间那段空窗，按钮要一直禁用，免得又点一次
+const succeeded = ref(false)
+// 留出看提示的时间再跳转，单位毫秒
+const REDIRECT_DELAY = 3000
+let redirectTimer = null
+onBeforeUnmount(() => clearTimeout(redirectTimer))
 
 const data = reactive({
     username: '',
@@ -21,8 +27,10 @@ const error = reactive({
     password: '',
     email: '',
 })
-// 落不到具体字段的错误（网络异常、认不出来的 409）放这里
-const formError = ref('')
+// 按钮上方那一行：错误和成功共用同一个位置，靠 tone 决定颜色
+const notice = reactive({ text: '', tone: 'error' })
+const showNotice = (text, tone = 'error') => Object.assign(notice, { text, tone })
+const clearNotice = () => (notice.text = '')
 
 const FIELD_LABELS = {
     username: '用户名',
@@ -53,7 +61,7 @@ const VALIDATION_MESSAGES = {
 const applyError = (err) => {
     // 网络断了、后端没起、被 CORS 拦掉这三种情况都没有 response
     if (!err.response) {
-        formError.value = '网络异常，请稍后再试'
+        showNotice('网络异常，请稍后再试')
         return
     }
 
@@ -61,14 +69,14 @@ const applyError = (err) => {
     if (typeof detail === 'string') {
         const messages = CONFLICT_MESSAGES[detail]
         if (messages) Object.assign(error, messages)
-        else formError.value = '注册失败，请稍后再试'
+        else showNotice('注册失败，请稍后再试')
         return
     }
     if (Array.isArray(detail)) {
         detail.forEach((item) => {
             const field = item.loc?.at(-1)
             if (!(field in error)) {
-                formError.value = '提交的内容有误，请检查后重试'
+                showNotice('提交的内容有误，请检查后重试')
                 return
             }
             const describe = VALIDATION_MESSAGES[item.type]
@@ -78,7 +86,7 @@ const applyError = (err) => {
         })
         return
     }
-    formError.value = '注册失败，请稍后再试'
+    showNotice('注册失败，请稍后再试')
 }
 
 // 镜像 backend/app/schemas/auth.py 里 RegisterRequest 的限制。准的永远是后端校验，
@@ -117,8 +125,8 @@ const validate = (field) => {
 // 失焦时才查这个字段：边输边报"太短了"太吵。Enter 走的是表单提交，会一次查完所有字段
 const onBlur = (field) => {
     validate(field)
-    // 内容动过，上一次那种跟字段无关的提示（网络异常之类）也过时了
-    formError.value = ''
+    // 内容动过，上一次那种跟字段无关的提示（网络异常之类）也过时了；成功提示留着
+    if (!succeeded.value) clearNotice()
 }
 
 // 还有字段级错误没清掉就一直禁用提交（后端给的错误也一样，改动那个字段就会被清掉）
@@ -127,14 +135,19 @@ const hasError = computed(() => Object.values(error).some(Boolean))
 const onSubmit = async () => {
     // 一次把所有前端规则都跑一遍，缺哪个标哪个——发现一个就 return 的话，用户得来改好几轮
     for (const field of Object.keys(error)) validate(field)
-    formError.value = ''
+    clearNotice()
     if (hasError.value) return
 
     loading.value = true
     try {
         // 邮箱可选：空字符串会被后端的 EmailStr 判成格式错误，所以空值发 null
         await register({ ...data, email: data.email || null })
-        router.push({ name: 'login' })
+        succeeded.value = true
+        showNotice('注册成功，正在跳转登录页…', 'success')
+        redirectTimer = setTimeout(
+            () => router.push({ name: 'login' }),
+            REDIRECT_DELAY,
+        )
     } catch (err) {
         applyError(err)
     } finally {
@@ -215,8 +228,12 @@ const onSubmit = async () => {
                 />
             </fieldset>
 
-            <p class="error" role="alert">{{ formError }}</p>
-            <Button type="submit" :disabled="loading || hasError"> 提交 </Button>
+            <p class="notice" :class="notice.tone" role="alert">
+                {{ notice.text }}
+            </p>
+            <Button type="submit" :disabled="loading || hasError || succeeded">
+                提交
+            </Button>
         </form>
 
         <hr />
@@ -278,9 +295,14 @@ label .error {
     text-align: right;
 }
 
-/* 表单级错误：预留一行，出错时上面那个按钮不会往下跳 */
-form > .error {
+/* 按钮上方那一行：错误和成功共用同一处，预留一行，出错时按钮不会往下跳 */
+form > .notice {
     min-height: 1lh;
     text-align: left;
+    color: var(--color-danger);
+}
+
+form > .notice.success {
+    color: var(--color-success);
 }
 </style>

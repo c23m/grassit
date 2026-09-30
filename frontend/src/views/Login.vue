@@ -1,36 +1,50 @@
 <script setup>
+import { onBeforeUnmount, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { Button, Link, TextInput } from '@/components/common'
-import { ref } from 'vue'
+
+const router = useRouter()
+const { login } = useAuthStore()
 
 const username = ref('')
 const password = ref('')
-const error = ref('')
 const loading = ref(false)
+// 成功后到跳转之间那段空窗，按钮要一直禁用，免得又点一次
+const succeeded = ref(false)
+// 留出看提示的时间再跳转，单位毫秒
+const REDIRECT_DELAY = 3000
+let redirectTimer = null
+onBeforeUnmount(() => clearTimeout(redirectTimer))
 
-const { login } = useAuthStore()
+// 按钮上方那一行：错误和成功共用同一个位置，靠 tone 决定颜色
+const notice = reactive({ text: '', tone: 'error' })
+const showNotice = (text, tone = 'error') => Object.assign(notice, { text, tone })
 
 const onSubmit = async () => {
-    error.value = ''
+    notice.text = ''
 
     if (!username.value) {
-        error.value = '请输入用户名'
+        showNotice('请输入用户名')
         return
     }
     if (!password.value) {
-        error.value = '请输入密码'
+        showNotice('请输入密码')
         return
     }
 
     loading.value = true
     try {
-        // 成功后 store 内部会 router.push('/')
         await login(username.value, password.value)
+        succeeded.value = true
+        showNotice('登录成功，正在返回首页…', 'success')
+        redirectTimer = setTimeout(() => router.push('/'), REDIRECT_DELAY)
     } catch (err) {
-        error.value =
+        showNotice(
             err.response?.status === 401
                 ? '用户名或密码错误'
-                : '登录失败，请稍后再试'
+                : '登录失败，请稍后再试',
+        )
     } finally {
         loading.value = false
     }
@@ -60,8 +74,10 @@ const onSubmit = async () => {
                     autocomplete="current-password"
                 />
             </fieldset>
-            <p class="error" role="alert">{{ error }}</p>
-            <Button type="submit" :disabled="loading"> 提交 </Button>
+            <p class="notice" :class="notice.tone" role="alert">
+                {{ notice.text }}
+            </p>
+            <Button type="submit" :disabled="loading || succeeded"> 提交 </Button>
         </form>
 
         <hr />
@@ -129,11 +145,16 @@ hr {
     gap: 0.75rem;
 }
 
-.error {
-    /* 预留一行，出错时不跳动。用 min-height 而不是 height（换行时盒子要能长高），
-       单位 lh 就是"一行的高度"，等价写法是 1.5em（本仓库行高 1.5） */
+/* 按钮上方那一行：错误和成功共用同一处，靠 tone 决定颜色。
+   预留一行，出错时不跳动；用 min-height 而不是 height（换行时盒子要能长高），
+   单位 lh 就是"一行的高度"，等价写法是 1.5em（本仓库行高 1.5） */
+.notice {
     min-height: 1lh;
-    color: var(--color-danger);
     text-align: left;
+    color: var(--color-danger);
+}
+
+.notice.success {
+    color: var(--color-success);
 }
 </style>

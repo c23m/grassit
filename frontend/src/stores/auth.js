@@ -8,11 +8,11 @@ export const useAuthStore = defineStore('auth', () => {
     const token = useLocalStorage('token', '')
     const user = ref(null)
 
+    // 只管写状态，不负责跳转：跳转时机与提示语是页面的事（见 views/Login.vue）
     const login = async (username, password) => {
         const response = await loginApi({ username, password })
         token.value = response.token
         user.value = response.user
-        router.push('/')
     }
 
     // 同一时刻只让一个 /users/me 在飞：后来的调用复用同一个 Promise，
