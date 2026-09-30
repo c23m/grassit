@@ -9,14 +9,7 @@
 
 ## 全部引用
 
-动手前可能用到的：
-
 - [sqlalchemy.md](../reference/sqlalchemy.md)——ORM 思路、Model、Engine 与 Session、CRUD、查询与表关系
 - [sqlalchemy-pydantic-types.md](../reference/sqlalchemy-pydantic-types.md)——SQLAlchemy 字段类型与 Pydantic 类型的对应关系
 - [regex.md](../reference/regex.md)——正则速查，以及 Pydantic `pattern` 的匹配语义（是否全匹配）
 - [jwt.md](../reference/jwt.md)——JWT 结构、签名与校验，access / refresh 靠 payload 区分（0.0.5 会用到）
-
-已被代码取代，只作备查：
-
-- [configuration.md](../reference/configuration.md)——pydantic-settings 与 `.env` 的优先级，实现见 `backend/app/config.py`
-- [password-hashing.md](../reference/password-hashing.md)——pwdlib + argon2 的用法，实现见 `backend/app/security.py`
