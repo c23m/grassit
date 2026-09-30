@@ -32,16 +32,16 @@
 ### Login.vue · 登录
 
 - **路由**：`/:lang(zh|en)?/login`
-- **状态**：半成品（布局已定，样式与提交逻辑待做）
-- **结构**：`section.login` > `h2` + `form`（用户名、密码两个 `fieldset`）+ 提交按钮 + 错误提示位 + `hr` + 其他登录方式占位
-- **注意**：已接 store（`useAuthStore`），但 `onSubmit` 还是空函数；401 要显示成人话（见 [auth-form-parts.md](auth-form-parts.md)、[form-errors.md](form-errors.md)）
+- **状态**：完成
+- **结构**：`section.login` > `h2` + `form`（用户名、密码两个 `fieldset`）+ 提交按钮 + 错误提示位 + `hr` + 其他登录方式占位行（邮箱 / GitHub 是不带 `href` 的占位 `<a>`，右侧「去注册」）
+- **注意**：走 store 的 `login()`，成功后由 store 跳首页；401 转成「用户名或密码错误」
 
 ### Register.vue · 注册
 
 - **路由**：`/:lang(zh|en)?/register`
-- **状态**：空壳
-- **结构**：待定，按 0.0.4 是用户名 / 昵称 / 密码 / 邮箱四个字段 + 提交
-- **注意**：409 的 `detail` 是字符串、422 的是数组，两种都要能显示成人话
+- **状态**：完成
+- **结构**：`section.register` > `h2` + `form`（用户名、昵称、密码三个必填 + 邮箱可选）+ 提交按钮 + 错误提示位 + `hr` + 底部「登录」链接
+- **注意**：直连 `api/auth.js` 的 `register`（注册响应没有 token，回登录页自己登）；字段级错误显示在各自标签旁，落不到字段的错误显示在按钮上方；邮箱留空要发 `null`，空字符串会被后端 `EmailStr` 判成格式错误
 
 ### Playground.vue · 调试页
 
