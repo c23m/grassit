@@ -42,7 +42,7 @@ const recommendations = [
         description:
             '开发自用的一页：登录、注册、接口测试都从这里进，省得手敲 url。上线前会删掉。',
         link: '/playground',
-        image: 'play',
+        image: 'test',
     },
     {
         title: '访问学校官网',
@@ -56,7 +56,7 @@ const recommendations = [
         description:
             '会跳转到本站测试界面。一个用来测试html/css/js的界面。会跳转到本站测试界面。一个用来测试html/css/js的界面。会跳转到本站测试界面。一个用来测试html/css/js的界面。',
         link: '/test',
-        image: 'test',
+        image: 'desert',
     },
     {
         title: '占位符',
