@@ -45,7 +45,8 @@ const CONFLICT_MESSAGES = {
 const VALIDATION_MESSAGES = {
     string_too_short: (item) => `太短，至少 ${item.ctx?.min_length} 个字符`,
     string_too_long: (item) => `太长，最多 ${item.ctx?.max_length} 个字符`,
-    string_pattern_mismatch: () => '只能用字母、数字、- 和 _，且以字母或数字开头',
+    string_pattern_mismatch: () =>
+        '只能用字母、数字、- 和 _，且以字母或数字开头',
     value_error: () => '格式不正确',
 }
 
@@ -84,18 +85,11 @@ const onSubmit = async () => {
     for (const field in error) error[field] = ''
     formError.value = ''
 
-    if (!data.username) {
-        error.username = '用户名不能为空'
-        return
-    }
-    if (!data.nickname) {
-        error.nickname = '昵称不能为空'
-        return
-    }
-    if (!data.password) {
-        error.password = '密码不能为空'
-        return
-    }
+    // 三个必填项一次查完，缺哪个标哪个——发现一个就 return 的话，用户得来回改好几轮
+    if (!data.username) error.username = '用户名不能为空'
+    if (!data.nickname) error.nickname = '昵称不能为空'
+    if (!data.password) error.password = '密码不能为空'
+    if (error.username || error.nickname || error.password) return
 
     loading.value = true
     try {
@@ -120,7 +114,9 @@ const onSubmit = async () => {
                     <span class="field">
                         用户名<span class="required">*</span>
                     </span>
-                    <span v-if="error.username"> {{ error.username }}</span>
+                    <span v-if="error.username" class="error">
+                        {{ error.username }}
+                    </span>
                 </label>
                 <TextInput
                     id="username"
@@ -134,7 +130,9 @@ const onSubmit = async () => {
                     <span class="field">
                         昵称<span class="required">*</span>
                     </span>
-                    <span v-if="error.nickname"> {{ error.nickname }}</span>
+                    <span v-if="error.nickname" class="error">
+                        {{ error.nickname }}
+                    </span>
                 </label>
                 <TextInput
                     id="nickname"
@@ -148,7 +146,9 @@ const onSubmit = async () => {
                     <span class="field">
                         密码<span class="required">*</span>
                     </span>
-                    <span v-if="error.password"> {{ error.password }}</span>
+                    <span v-if="error.password" class="error">
+                        {{ error.password }}
+                    </span>
                 </label>
                 <TextInput
                     id="password"
@@ -161,7 +161,7 @@ const onSubmit = async () => {
             <fieldset>
                 <label for="email">
                     <span class="field">邮箱</span>
-                    <span v-if="error.email">
+                    <span v-if="error.email" class="error">
                         {{ error.email }}
                     </span>
                 </label>
@@ -210,6 +210,10 @@ fieldset input {
     width: 100%;
 }
 
+label {
+    display: flex;
+}
+
 .field {
     margin-right: auto;
 }
@@ -224,5 +228,16 @@ hr {
 
 .error {
     color: var(--color-danger);
+}
+
+/* 字段级错误：贴右，文案长了换行也还是贴边 */
+label .error {
+    text-align: right;
+}
+
+/* 表单级错误：预留一行，出错时上面那个按钮不会往下跳 */
+form > .error {
+    min-height: 1lh;
+    text-align: left;
 }
 </style>
