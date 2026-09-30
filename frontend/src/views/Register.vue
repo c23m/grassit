@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { register } from '@/api/auth'
 import { Button, Link, TextInput } from '@/components/common'
@@ -81,28 +81,44 @@ const applyError = (err) => {
     formError.value = '注册失败，请稍后再试'
 }
 
-// 前端能自己判的规则：返回空串就代表这个字段没问题。
-// 邮箱没有能判的规则，所以改它时直接清掉错误——格式对不对交给后端
+// 镜像 backend/app/schemas/auth.py 里 RegisterRequest 的限制。准的永远是后端校验，
+// 这里只是让用户不必为了一句"太短了"往返一次；邮箱那条还刻意放宽，
+// 宁可放过可疑的（后端会拦），也别把能用的邮箱挡在门外
 const RULES = {
-    username: () => (data.username ? '' : '用户名不能为空'),
-    nickname: () => (data.nickname ? '' : '昵称不能为空'),
-    password: () => (data.password ? '' : '密码不能为空'),
+    username: (value) => {
+        if (!value) return '用户名不能为空'
+        if (value.length < 3) return '用户名太短，至少 3 个字符'
+        if (value.length > 30) return '用户名太长，最多 30 个字符'
+        if (!/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(value))
+            return '用户名只能用字母、数字、- 和 _，且以字母或数字开头'
+        return ''
+    },
+    nickname: (value) => {
+        if (!value) return '昵称不能为空'
+        if (value.length > 30) return '昵称太长，最多 30 个字符'
+        return ''
+    },
+    password: (value) => {
+        if (!value) return '密码不能为空'
+        if (value.length < 6) return '密码太短，至少 6 个字符'
+        if (value.length > 128) return '密码太长，最多 128 个字符'
+        return ''
+    },
+    email: (value) => {
+        if (!value) return ''
+        return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value) ? '' : '邮箱格式不正确'
+    },
 }
 
 const validate = (field) => {
-    error[field] = RULES[field]?.() ?? ''
+    error[field] = RULES[field]?.(data[field]) ?? ''
 }
 
-// 改哪个字段就重查哪个：填好了错误立刻消失，删空了立刻又出现
-for (const field of Object.keys(data)) {
-    watch(
-        () => data[field],
-        () => {
-            validate(field)
-            // 内容变过，上一次那种跟字段无关的提示（网络异常之类）也过时了
-            formError.value = ''
-        },
-    )
+// 失焦时才查这个字段：边输边报"太短了"太吵。Enter 走的是表单提交，会一次查完所有字段
+const onBlur = (field) => {
+    validate(field)
+    // 内容动过，上一次那种跟字段无关的提示（网络异常之类）也过时了
+    formError.value = ''
 }
 
 // 还有字段级错误没清掉就一直禁用提交（后端给的错误也一样，改动那个字段就会被清掉）
@@ -145,6 +161,7 @@ const onSubmit = async () => {
                     id="username"
                     v-model="data.username"
                     autocomplete="username"
+                    @blur="onBlur('username')"
                 />
             </fieldset>
 
@@ -161,6 +178,7 @@ const onSubmit = async () => {
                     id="nickname"
                     v-model="data.nickname"
                     autocomplete="nickname"
+                    @blur="onBlur('nickname')"
                 />
             </fieldset>
 
@@ -178,6 +196,7 @@ const onSubmit = async () => {
                     type="password"
                     v-model="data.password"
                     autocomplete="new-password"
+                    @blur="onBlur('password')"
                 />
             </fieldset>
 
@@ -192,6 +211,7 @@ const onSubmit = async () => {
                     id="email"
                     v-model="data.email"
                     autocomplete="email"
+                    @blur="onBlur('email')"
                 />
             </fieldset>
 
