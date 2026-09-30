@@ -16,6 +16,12 @@ const { data, loading, error } = useRequest((message) => {
 
 <template>
     <div class="">
+        <!-- 登录页和注册页是游客页，不在导航栏里，入口都收在这儿，省得手敲 url -->
+        <nav class="entries">
+            <Link url="/login">登录</Link>
+            <Link url="/register">注册</Link>
+            <Link url="/test">api 测试</Link>
+        </nav>
         <h2>登录</h2>
         <form
             @submit.prevent="
@@ -44,4 +50,10 @@ const { data, loading, error } = useRequest((message) => {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.entries {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem;
+}
+</style>

@@ -19,7 +19,7 @@
 - **路由**：`/:lang(zh|en)?/home`，以及 `/:lang(zh|en)?` 重定向过来
 - **状态**：在用
 - **结构**：自带整页骨架（header + `NavBar` + `main` + `Footer`），不套 `BaseLayout`——它在路由表里是顶层路由，不在布局父路由底下
-- **数据**：`useRequest(() => getArticles())` 拉文章列表塞给 `Aside`；右侧"推荐列表"是写死的数组，不走接口
+- **数据**：`useRequest(() => getArticles())` 拉文章列表塞给 `Aside`；右侧"推荐列表"是写死的数组，不走接口，第一条是通往 `/playground` 的调试页
 - **注意**：import 了 `BaseLayout` 和 `@vueuse/core` 的 `get`，模板里都没用到，属于残留
 
 ### Article.vue · 文章详情
@@ -47,7 +47,7 @@
 
 - **路由**：`/:lang(zh|en)?/playground`
 - **状态**：在用（开发自用）
-- **结构**：`useRequest` 打 `/test` 系列接口，附一个直接调 `login` 的表单
+- **结构**：顶部是开发入口（登录 / 注册 / api 测试），下面 `useRequest` 打 `/test` 系列接口，附一个直接调 `login` 的表单（老代码，参数直接传了 ref）
 - **注意**：属于临时工具，不承诺长期存在
 
 ### ApiTest.vue · 接口测试页
@@ -80,7 +80,7 @@
 ### nav/NavBar.vue
 
 - **状态**：在用
-- **结构**：logo、桌面端菜单（首页 / 文档 / api测试 / 调试 / 文本）、主题切换（`useDark`）、GitHub 链接、移动端菜单图标
+- **结构**：logo、桌面端菜单（首页 / 文档 / api测试 / 文本）、主题切换（`useDark`）、GitHub 链接、移动端菜单图标
 - **注意**：`menuOpen` 目前只切换状态，移动端菜单面板还没渲染；用户区（`NavAvatar`）也还没挂进来——这是 0.0.4 的活
 
 ### nav/NavAvatar.vue
@@ -146,7 +146,7 @@
 ### RecommendCard.vue
 
 - **接口**：props `recommend`
-- **结构**：`<li>` 卡片，按图片名在 `sunny` / `dessert` / `dark` 三张图里选，内部用 `Link` 和 `Button`
+- **结构**：`<li>` 卡片，按图片名在 `sunny` / `desert` / `pict` / `dark` 四张图里选，内部用 `Link` 和 `Button`
 - **用法**：`Home` 的推荐列表
 
 ## 配套模块（非组件）

@@ -1,11 +1,12 @@
 <script setup>
 import sunny from '@/assets/images/sunny.png'
-import dessert from '@/assets/images/dessert.png'
+import desert from '@/assets/images/desert.png'
+import pict from '@/assets/images/pict.png'
 import dark from '@/assets/images/dark.png'
 import Link from '../common/Link.vue'
 import Button from '../common/Button.vue'
 const { recommend } = defineProps(['recommend'])
-const images = { sunny, dessert, dark }
+const images = { sunny, desert, pict, dark }
 </script>
 
 <template>

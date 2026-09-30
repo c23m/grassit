@@ -30,9 +30,6 @@ const theme = computed(() => (isDark.value ? 'dark' : 'light'))
                 <Link url="/test">api测试</Link>
             </li>
             <li>
-                <Link url="/playground">调试</Link>
-            </li>
-            <li>
                 <Link url="">文本</Link>
             </li>
         </ul>
