@@ -2,19 +2,9 @@
 
 ## 版本规划
 
-版本号是可验收的里程碑，不必每次改动都动版本；达成验收后打 `vX.Y.Z` tag，并在 [CHANGELOG.md](../CHANGELOG.md) 记一条（以版号作标题）。**版本完成后从本文件移除，记录只留在 CHANGELOG**；本文件始终只保留未完成的版本。每个版本自带最小回归验收，系统性测试集中在 0.1.1。规范见 [AGENTS.md](../AGENTS.md)。
+版本号是可验收的里程碑，不必每次改动都动版本；达成验收后打 `vX.Y.Z` tag，并在 [CHANGELOG.md](../CHANGELOG.md) 记一条（以版号作标题）。
 
-### 0.0.5 · refresh token 闭环
-
-学习内容：HttpOnly Cookie 的作用域与路径、401 自动续期、并发刷新与重试标记。
-
-**页面**：无新页面，登录态失效的表现体现在拦截器与跳回登录页。
-
-验收：access token 过期后能自动续期；刷新失败则清空登录态并回到登录页。
-
-- [ ] 登录时下发 refresh token（HttpOnly、`path=/auth`、30 天；目前 cookie 里还是占位值）
-- [ ] `POST /auth/refresh` 校验 refresh token 并换发新的 access token
-- [ ] 前端拦截器：401 → 刷新 → 重放；刷新失败则清空登录态
+**本文件只写未来版本**（还没开始做的），所以是普通清单、不打勾。**当前开发版本的详细待办在 [guides/](guides/) 里**，带 `- [ ]` 勾选框，版本收尾时连同它一起清掉；已完成版本的记录只留在 CHANGELOG。每个版本自带最小回归验收，系统性测试集中在 0.1.1。规范见 [AGENTS.md](../AGENTS.md)。
 
 ### 0.1.0 · MVP
 
@@ -30,12 +20,12 @@
 
 验收：用新注册的账号发一篇文章，未登录也能在首页列表和详情页读到。
 
-- [ ] `Article` 模型与表（slug 唯一、标签、可见性、字数）
-- [ ] `POST /articles` 创建，作者取自登录态而非请求体
-- [ ] `GET /articles` 筛选（author / title / slug / start / end / tags）与 `GET /articles/{identifier}` 详情
-- [ ] `DELETE /articles/{identifier}` 物理删除，仅作者可删
-- [ ] 渲染 Markdown 时做 sanitize（`v-html` 直接渲染用户内容是 XSS 入口）
-- [ ] `markdown.css` 的配色走 `prefers-color-scheme`（跟随系统），和应用的手动暗色（`<html class="dark">`）不一致；启用文章页时统一到 `.dark`
+- `Article` 模型与表（slug 唯一、标签、可见性、字数）
+- `POST /articles` 创建，作者取自登录态而非请求体
+- `GET /articles` 筛选（author / title / slug / start / end / tags）与 `GET /articles/{identifier}` 详情
+- `DELETE /articles/{identifier}` 物理删除，仅作者可删
+- 渲染 Markdown 时做 sanitize（`v-html` 直接渲染用户内容是 XSS 入口）
+- `markdown.css` 的配色走 `prefers-color-scheme`（跟随系统），和应用的手动暗色（`<html class="dark">`）不一致；启用文章页时统一到 `.dark`
 
 ### 0.1.1 · 测试补齐
 
@@ -45,9 +35,9 @@
 
 验收：注册、登录、鉴权失败、文章权限都有自动化覆盖。
 
-- [ ] 搭 pytest 脚手架与测试数据库
-- [ ] 覆盖注册、登录、鉴权失败、文章权限
-- [ ] 视情况接入 CI
+- 搭 pytest 脚手架与测试数据库
+- 覆盖注册、登录、鉴权失败、文章权限
+- 视情况接入 CI
 
 ### 0.1.2 · 部署
 
@@ -59,11 +49,11 @@
 
 验收：域名可访问，HTTPS 正常，前端路由与 `/api`、`/public` 都通。
 
-- [ ] 生产 compose（nginx + backend + mysql）
-- [ ] 前端构建产物与 `/api`、`/public` 的反代规则
-- [ ] `PUBLIC_DIR` 挂载到 `/var/lib/grassit/public`
-- [ ] 导出 `openapi.json` 作为接口契约
-- [ ] 上线前删掉调试页 `/test`、`/playground` 与导航栏里的入口
+- 生产 compose（nginx + backend + mysql）
+- 前端构建产物与 `/api`、`/public` 的反代规则
+- `PUBLIC_DIR` 挂载到 `/var/lib/grassit/public`
+- 导出 `openapi.json` 作为接口契约
+- 上线前删掉调试页 `/test`、`/playground` 与导航栏里的入口
 
 ### 0.2.0 及以后
 

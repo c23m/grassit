@@ -5,28 +5,28 @@
 
 ## 现在在哪（2026-10-03）
 
-- 最新 tag `v0.0.4`（鉴权与前端登录态），**只在本地**；`v0.0.3` 已推送，`v0.0.3` 之后的提交都还没 `git push`
+- 最新 tag `v0.0.4`（鉴权与前端登录态），指向收尾那笔 `f0c646c`，**只在本地**；之后还有一笔文档工作流调整
 - **0.0.4 已验收并收尾**：作者在浏览器里走过"注册 → 登录 → 导航栏出现昵称 → 刷新仍在登录态 → 未登录被拦回 `/login`"；CHANGELOG 已记一条，`docs/todo.md` 里的那一节已移除
-- 本轮 5 笔提交：`chore：接入 prettier 与 Black`（全仓统一 2 空格）→ `0.0.4：前端登录态…` → `文档：项目知识导读…` → `文档：重组 docs 目录…` → 本次收尾
+- 本轮共 6 笔提交（都未推送）：`chore：接入 prettier 与 Black`（全仓统一 2 空格）→ `0.0.4：前端登录态…` → `文档：项目知识导读…` → `文档：重组 docs 目录…` → `文档：0.0.4 收尾…` → `文档：工作流调整…`
 - **`origin/main` 落后 HEAD 35 个提交**（`v0.0.3` 那批之后的都还没推）；按 AGENTS.md 的"提交与推送分开"，等作者说推再推
-- 文档现状：`docs/` 为「根下 / `specs/` 领域规范 / `guides/` 临时指南 / `notes/` 学习与速查」，哪份管什么见 [docs/README.md](docs/README.md)；`guides/` 目前为空（0.0.4 的三份指南已按"做完即删"处理，可用部分提炼进了 notes）
+- 文档现状：`docs/` 为「根下 / `specs/` 领域规范 / `guides/` 当前阶段在用 / `notes/` 学习与速查」，哪份管什么见 [docs/README.md](docs/README.md)。**当前开发版本的详细待办在 [docs/guides/todo-0.0.5.md](docs/guides/todo-0.0.5.md)**（带勾选框），`docs/todo.md` 只写未来版本
 - 本机有格式化工具：prettier 装在根目录（`npm run format` / `format:check`），Black 装在 `backend/.venv`（命令见 [AGENTS.md](AGENTS.md) 的"常用命令"）
 
 ## 下一步（按顺序）
 
-1. **0.0.5 · refresh token 闭环**：后端已经就绪（`login` 下发真实 refresh JWT，`POST /auth/refresh` 会校验并换发 access token），**只剩前端拦截器**——401 → 刷新 → 重放、并发刷新去重、刷新失败清空登录态。注意 `docs/todo.md` 里那两条勾还写着"后端未做、cookie 是占位值"，与代码不符，动手前先对一遍
+1. **0.0.5 · refresh token 闭环**：详细待办在 [docs/guides/todo-0.0.5.md](docs/guides/todo-0.0.5.md)。**后端那半已经实测通过**（`login` 下发真实 refresh JWT、`POST /auth/refresh` 能换发、换发的 token 可用、不带 cookie 是 401），**只剩前端拦截器**：401 → 刷新 → 重放、并发刷新去重、刷新失败清空登录态
 2. 顺手可做：`routers/article.py` 还是写死样例 / `return None` 的空实现（0.1.0 的活）
 3. 待作者定：`backend/app/__init__.py` 的 `__version__` 还是 `0.0.2`，没跟着 tag 走（属代码改动）
 
 ## 接手前先知道的几件事
 
 - **登录态恢复在路由守卫里**：`router/index.js` 的 `beforeEach` 先 `await auth.restore()`（幂等：没 token 或已有 user 立刻返回），再按 `meta.requiresAuth` / `meta.guestOnly` 放行或跳转。这是首屏不再闪「注册 | 登录」的原因，代价是有 token 时首次渲染要等这次请求。当时踩的坑与排查过程见 [docs/notes/login-state-recovery.md](docs/notes/login-state-recovery.md)
-- **token 只活 15 分钟，而 refresh 闭环是 0.0.5**：过期后刷新会走拦截器的 401 → `/auth/refresh` → 清 token 并跳登录页（后端接口是好的，缺前端重放那半）。看到"被踢回登录页"先想到这条，不是恢复逻辑坏了
+- **token 只活 15 分钟，而 refresh 闭环是 0.0.5**：过期后刷新会走拦截器的 401 → `/auth/refresh` → 清 token 并跳登录页（后端接口是好的也已实测，缺前端重放那半）。看到"被踢回登录页"先想到这条，不是恢复逻辑坏了
 - **NavAvatar 取 store 必须用 `storeToRefs`**：`const { user } = useAuthStore()` 拿到的是快照，`me` 回来界面也不会变（踩过一次，[docs/notes/pinia.md](docs/notes/pinia.md) 里也写了）
 - 守卫用的 `/user/:username` 指向还是空壳的 `views/Dashboard.vue` —— 特意挂上路由，好让"未登录被拦回 `/login`"这条验收有可测对象；页面内容是 0.2.x 的事
 - 移动端菜单面板是**基线版**（绝对定位在导航栏下方、纵向排列、点一下收起），样式随作者改
 - `router/index.js` import store、store 又 import router，是循环依赖，但两边都只在函数体里用（守卫回调 / `logout`），延迟解析没问题；别在模块顶层调 `useAuthStore()`
-- localStorage 的 token key 被 `stores/auth.js` 和 `utils/request.js` 各持一份（两个 ref），拦截器清 token 时 store 那份 ref 的值不会跟着变 —— 动 0.0.5 的拦截器时要注意
+- localStorage 的 token key 被 `stores/auth.js` 和 `utils/request.js` 各持一份（两个 ref），拦截器清 token 时 store 那份 ref 的值不会跟着变 —— 动 0.0.5 的拦截器时要注意，清单里已列了"顺手统一成一处"
 - 前端路由带可选语言前缀 `/:lang(zh|en)?`，跳转写 `{ name: 'login' }` 比手拼路径省事
 
 ## 已知问题（还没排进版本）
@@ -42,5 +42,6 @@
 - **被 spawn 出来的进程不能覆盖工作区里已存在的文件**（EPERM，连根目录 `README.md` 都一样，只有 DSH 自己的文件工具能写）。所以 `prettier --write`、`black`、`pip install`、`git add` / `git commit` / `git tag`、移动或删除文件，AI 侧都要**临时放宽一次沙箱权限**才能做；作者在自己的终端里没这个问题
 - **vite 在受限模式下起不来**：它解析真实路径时要 spawn 子进程，而沙箱禁止带管道的子进程（`spawn EPERM`）。起 `npm run dev` 同样要放宽一次权限
 - npm 的默认缓存 `D:\Develop\nodejs\node_cache` 在工作区外，AI 侧写不进去：装包要加 `--cache .npm-cache`（该目录已 gitignore，可随时删）
+- **起服务前先看一眼端口**：8000 已被占用时再起 `uvicorn` 会直接报 `Errno 10048`（实测遇到过）。注意**别的会话 / 别的沙箱账号起的进程，`Get-Process -Id` 可能查不到 PID，但服务是活的**（作者自己终端里起的、或另一个 agent 起的都可能），所以先 `netstat -ano | Select-String ':8000'` 看清，别当成孤儿进程直接杀
 - **DSH 的 Open In → VS Code 打不开**（与仓库代码无关）：宿主进程自身带着 `ELECTRON_RUN_AS_NODE=1`，而 `dsh-subprocess` 的 `scrubbedParentEnv()` 只过滤 `*KEY*/*PASSWORD*/*SECRET*/*TOKEN*` 与 `DSH_*`，没过滤它 → VS Code 被当 Node 跑，55ms 退出（code=1）。IntelliJ IDEA、Git Bash、文件资源管理器不受影响；文件卡片那条路走系统 shell，是好的
 - 仓库里一部分文件的所有者是另一个 agent 的沙箱账号（`LAPTOP-MING725\CodexSandboxOffline`），一部分归 `BUILTIN\Administrators`。2026-10-03 用 Windows 文件权限诊断脚本查过工作区根：当前用户有完全控制权、子树里没发现异常权限项、脚本无需改动，所以**"删 docs/ 下的文件被拒"的确切机制还没定论**，遇到时按"放宽一次权限"处理
