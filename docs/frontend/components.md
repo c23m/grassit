@@ -10,7 +10,7 @@
 - **导出**：`components/common/index.js` 只聚合与业务无关的基础件（当前是 `Button`、`Radio`、`TextInput`、`Textarea`、`Link`）；`Icon`、`Avatar`、`Aside` 这类按完整路径引。新组件先想清楚要不要进聚合入口。
 - **数据获取**：页面层用 `vue-request` 的 `useRequest` 或 `composables/useAsync`，不直接 import axios；所有请求走 `utils/request.js`（它负责带 token 和解包）。
 - **样式**：组件一律 `<style scoped>`，颜色尺寸取 `assets/styles/base.css` 里的 CSS 变量，不写死颜色。
-- **页面路由**：在 `router/index.js` 注册；需要登录的页面将来打 `meta.requiresAuth`（守卫还没实现，见 [router-guards.md](../reference/router-guards.md)）。
+- **页面路由**：在 `router/index.js` 注册；受限页打 `meta.requiresAuth`，游客页（`login` / `register`）打 `meta.guestOnly`（守卫见 [router-guards.md](../reference/router-guards.md)）。
 
 ## 页面（`views/`）
 
@@ -18,7 +18,7 @@
 
 - **路由**：`/:lang(zh|en)?/home`，以及 `/:lang(zh|en)?` 重定向过来
 - **状态**：在用
-- **结构**：自带整页骨架（header + `NavBar` + `main` + `Footer`），不套 `BaseLayout`——它在路由表里是顶层路由，不在布局父路由底下
+- **结构**：自带整页骨架（header + `NavBar` + `main` + `Footer`，页脚全站只在这个页面出现），不套 `BaseLayout`——它在路由表里是顶层路由，不在布局父路由底下
 - **数据**：`useRequest(() => getArticles())` 拉文章列表塞给 `Aside`；右侧"推荐列表"是写死的数组，不走接口，第一条是通往 `/playground` 的调试页
 - **注意**：import 了 `BaseLayout` 和 `@vueuse/core` 的 `get`，模板里都没用到，属于残留
 
@@ -58,8 +58,8 @@
 
 ### Dashboard.vue · 用户主页
 
-- **路由**：还没注册
-- **状态**：空壳
+- **路由**：`/:lang(zh|en)?/user/:username`，`meta.requiresAuth`（未登录会被守卫拦回 `/login`）
+- **状态**：空壳，先占着路由，好让"未登录被拦回 `/login`"这条验收有可测对象
 - **去向**：0.2.x 的仪表盘（用户主页），见 [todo.md](../todo.md)
 
 ### NotFound.vue · 404
@@ -74,35 +74,42 @@
 ### BaseLayout.vue
 
 - **状态**：在用
-- **结构**：引 `base.css`，`NavBar` + `<main><RouterView /></main>` + `Footer`
-- **用法**：路由里作为父路由，包住 `register` / `login` / `article` / `test` / `playground`
+- **结构**：引 `base.css`，`NavBar` + `<main><RouterView /></main>`（**不含页脚**，页脚只在首页）
+- **用法**：路由里作为父路由，包住 `register` / `login` / `article` / `user/:username` / `test` / `playground`
 
 ### nav/NavBar.vue
 
 - **状态**：在用
 - **结构**：logo、桌面端菜单（首页 / 文档 / api测试 / 文本）、右侧按钮组、移动端菜单图标
-- **右侧按钮组（从左到右）**：翻译、主题切换（`useDark`）、`NavAvatar` 用户区——用户区在最右边
-- **注意**：`menuOpen` 目前只切换状态，移动端菜单面板还没渲染；用户区（`NavAvatar`）还没挂进来，翻译按钮也还没做（`Icon.vue` 里 `translate` 图标已经有了）——都是 0.0.4 的活
-- **GitHub 链接**：从导航栏移到页脚
+- **宽屏布局**：四个区域从左到右全由 flex 分配——logo（固定宽度，不参与伸缩）、导航链接（`flex: 1` 吃剩余空间，内容居中）、功能图标（宽度由内容决定）、用户区（`NavAvatar`，宽度自适应）
+- **窄屏布局**：没有链接区也没有用户区（两者都收进菜单面板），导航栏只剩 logo + 功能图标 + 菜单图标，靠 `nav` 上的 `space-between` 把图标顶到右边
+- **移动端菜单面板**：`.menu` 绝对定位贴在导航栏下方，纵向排列四个链接 + `NavAvatar`；点面板任意处收起（模板里绑了 `@click`）
+- **竖线分隔**：宽屏下图标区与用户区之间用一条 `|`；样式统一在 `base.css` 的 `.divider`（`--text-weight-thin` + `--color-text-weak`），组件里只管什么时候显示
+- **右侧按钮组（从左到右）**：翻译（还没做）、主题切换（`useDark`）、窄屏的菜单图标；用户区在它右边那一格（宽屏）
+- **注意**：翻译按钮还没做（`Icon.vue` 里 `translate` 图标已经有了）；点用户区弹出的菜单留到 0.2.x
+- **GitHub 链接**：只在页脚，导航栏那个已经摘掉
 
 ### nav/NavAvatar.vue
 
-- **状态**：空壳，目前没有任何地方引用
-- **去向**：0.0.4 的用户区，放在导航栏最右侧
-- **已定的布局**：宽度固定，里面放头像 + 昵称；未登录时改成「注册 | 登录」两个链接（头像与昵称不显示）
-- **头像来源**：`UserMe.avatar`，为空时用 `assets/images/default_user.png`
+- **状态**：在用：宽屏挂在导航栏最右侧（`NavBar` 里的 `.user-slot`），窄屏挂在菜单面板里
+- **职责边界**：只管内容长相（`.user` 的排列与链接配色），在哪儿出现由 `NavBar` 决定，自己不带媒体查询
+- **已定的布局**：宽度自适应；已登录时**只显示昵称**，未登录时显示「注册 | 登录」两个链接
+- **头像**：将来由头像取代昵称，但要先有后端的存储与上传（`users` 表还没有头像列），所以这一版先只显示昵称
+- **取 store 的写法**：必须走 `storeToRefs`，直接解构 `user` 会丢响应性（见 [../reference/pinia.md](../reference/pinia.md)）
+- **点击行为**：昵称链到用户主页 `/user/<username>`（路由已注册，页面还是 `Dashboard.vue` 空壳）；点它弹出的菜单（用户信息与登出）留到 0.2.x
 
 ### nav/NavSearch.vue
 
 - **状态**：空壳，目前没有任何地方引用
+- **位置**：logo 右侧、导航链接左侧
 - **去向**：0.2.x 的导航栏搜索框
 
 ### Footer.vue
 
-- **状态**：在用
-- **结构**：静态链接（关于 / 联系 / 查找…，都链到 `#`）、备案号、版权
-- **去向**：导航栏那个 GitHub 链接（`https://github.com/c23m`）要移到这里
-- **注意**：真实链接和页面都还没有
+- **状态**：在用，但只在首页——`views/Home.vue` 直接引入，`BaseLayout` 已不再包含它
+- **结构**：GitHub 图标（`Icon.vue` 的 `github`，链到 `https://github.com/c23m`）、ICP 备案号（链到 `beian.miit.gov.cn`）、版权
+- **注意**：GitHub 链接已从导航栏摘下，只在这里；原来的「内容供个人学习交流使用」已按作者要求删掉
+- **注意**：没有公安备案号，不放；功能清单等有真页面了再加（现在只有调试页）
 
 ## 通用组件（`components/common/`）
 
@@ -174,4 +181,4 @@ axios 实例：请求自动带 `Authorization: Bearer <token>`，成功响应解
 
 ### `router/index.js`
 
-路由表，路径统一带可选语言前缀 `/:lang(zh|en)?`。`BaseLayout` 是父路由，`Home` 和 `NotFound` 在它之外。守卫与 `meta` 还没写。
+路由表，路径统一带可选语言前缀 `/:lang(zh|en)?`。`BaseLayout` 是父路由，`Home` 和 `NotFound` 在它之外。`beforeEach` 里先 `await auth.restore()`（刷新后恢复登录态，幂等：没 token 或已有 user 就立刻返回），再按 `meta.requiresAuth` / `meta.guestOnly` 放行或跳转。

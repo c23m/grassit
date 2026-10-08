@@ -9,6 +9,7 @@
 
 ## 全部引用
 
+- [project-primer.md](../reference/project-primer.md)——面向零基础的项目知识导读（概述 / 前端 / 后端 / 部署 / 配置 / 工程与流程），后端那 20 条也在里面
 - [sqlalchemy.md](../reference/sqlalchemy.md)——ORM 思路、Model、Engine 与 Session、CRUD、查询与表关系
 - [sqlalchemy-pydantic-types.md](../reference/sqlalchemy-pydantic-types.md)——SQLAlchemy 字段类型与 Pydantic 类型的对应关系
 - [regex.md](../reference/regex.md)——正则速查，以及 Pydantic `pattern` 的匹配语义（是否全匹配）

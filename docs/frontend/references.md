@@ -9,6 +9,7 @@
 
 ## 任务指南
 
+- [ai-changes-0.0.4.md](ai-changes-0.0.4.md)——AI 代写的代码清单，以及"刷新后登录态没了"的排查与修复记录（0.0.4；作者复核完即删）
 - [auth-form-parts.md](auth-form-parts.md)——认证表单能用哪些现成组件、有哪些缺口、数据层有哪几个入口（0.0.4；Register 写完即删）
 - [form-errors.md](form-errors.md)——AxiosError 的结构、FastAPI 的 409 与 422 两种 `detail` 怎么转人话（0.0.4；Register 写完即删）
 
@@ -20,6 +21,7 @@
 
 ## 全部引用
 
+- [project-primer.md](../reference/project-primer.md)——面向零基础的项目知识导读（概述 / 前端 / 后端 / 部署 / 配置 / 工程与流程），前端那 18 条也在里面
 - [html-semantics.md](../reference/html-semantics.md)——语义化标签、表单与可访问性、Vue 与原生写法对照
 - [js-methods.md](../reference/js-methods.md)——JavaScript 数组 / 对象 / 字符串常用方法与实测结果
 - [vue-events.md](../reference/vue-events.md)——`@click="fn"` 与 `fn()` 的区别、事件修饰符、组件上的事件与 `v-model`

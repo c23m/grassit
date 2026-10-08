@@ -10,7 +10,8 @@ Grassit 是个人博客 / Wiki 全栈项目（FastAPI + Vue 3 + MySQL）。本�
 - `backend/init_db.py` 建表，`backend/public/` 放对外提供的静态资源
 - `frontend/src/`：`api/`、`components/`、`composables/`、`router/`、`stores/`、`views/`、`utils/`、`assets/`
 - `docs/`：顶层放项目文档；`docs/backend/`、`docs/frontend/` 放与当前工作直接相关的文档：规范，以及跟着任务走的指南（做完就删）；`docs/reference/` 放不绑任务的参考件（速查、学习笔记）。两边各自的 `references.md` 说明引用了哪些
-- 根目录：`docker-compose.yml`、`.env.example`、`.prettierrc`、`.gitattributes`、`CHANGELOG.md`、`HANDOVER.md`
+- 根目录：`docker-compose.yml`、`package.json`（根目录的 prettier 与 `format` 脚本）、`.env.example`、`.prettierrc`、`.gitattributes`、`.gitignore`、`CHANGELOG.md`、`HANDOVER.md`
+- `tools/`：仓库自用的小工具（目前只有 `gen_toc.py`，给 Markdown 生成目录），Python 写，不参与前后端运行
 
 ## 常用命令
 
@@ -28,6 +29,11 @@ npm run dev                       # http://localhost:5173，/api 代理到 8000
 npm run build                     # 生产构建
 
 docker compose up                 # mysql + backend + frontend
+
+# 格式化（prettier 装在根目录，Black 装在 backend\.venv）
+npm run format                    # prettier 写回全仓库
+npm run format:check              # 只检查、不改文件
+cd backend; .venv\Scripts\python.exe -m black app init_db.py   # Black 管 backend/app 与 init_db.py
 ```
 
 - 读文件注意编码：仓库文档是无 BOM 的 UTF-8，而本机 PowerShell 5.1 的 `Get-Content` 默认按 GBK 解码，会乱码并吞行；读文件用 `-Encoding utf8`，或直接用 `rg`
@@ -35,7 +41,9 @@ docker compose up                 # mysql + backend + frontend
 ## 代码风格与命名
 
 - Python：Black，4 空格缩进，snake_case；模型与 schema 用 PascalCase
-- JS / Vue / Markdown：Prettier（样式由根目录 `.prettierrc` 固定：无分号、单引号、4 空格；`package.json`、`vite.config.js` 等工具配置 2 空格）；行尾统一 LF
+- JS / Vue / CSS / Markdown / JSON / YAML：Prettier（样式由根目录 `.prettierrc` 固定：无分号、单引号、2 空格；YAML 例外，用双引号、行宽 120）；行尾统一 LF，格式一律交给 `npm run format`
+- Markdown 写法（Prettier 会归一，别手工较劲）：斜体 `_x_`、粗体 `**x**`、无序列表 `-`、有序列表 `1.`、标题用 ATX（`# ` 开头）、代码围栏用反引号（`~~~` 会被改掉）、分隔线 `---` 且前面留空行、段内硬换行用行尾 `\`；可用 GFM 扩展（表格、任务列表、删除线、脚注），不用定义列表与行内 HTML
+- 列表标记与有序分隔符由 Prettier 按"相邻同类列表交替"重写（`-`/`*`、`.`/`)`），序号也会重排，别依赖自己写的符号
 - Vue 组件文件名用 PascalCase；`docs/` 内文件名用小写短横线，根目录文档用大写（`README.md`、`CHANGELOG.md`）
 - 请求体参数统一叫 `body`，取值直接写 `body.field`，只有值被计算/转换过、或需要重命名表达领域含义时才抽局部变量
 - 注释够用即可：写清这段代码负责什么、为什么这么写，不逐行翻译代码；AI 读到哪个文件就可以顺手补注释，不必事先确认
