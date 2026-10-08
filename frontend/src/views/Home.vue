@@ -41,8 +41,8 @@ const recommendations = [
     title: '调试页',
     description:
       '开发自用的一页：登录、注册、接口测试都从这里进，省得手敲 url。上线前会删掉。',
-    link: '/playground',
-    image: 'test',
+    link: '/test',
+    image: 'desert',
   },
   {
     title: '访问学校官网',
@@ -50,13 +50,6 @@ const recommendations = [
       '本站可以跳转到学校官网。真是一项实用的功能！本站可以跳转到学校官网。真是一项实用的功能啊！本站可以跳转到学校官网。真是一项实用的功能啊！',
     link: 'https://www.hfut.edu.cn',
     image: 'sunny',
-  },
-  {
-    title: '请输入文本',
-    description:
-      '会跳转到本站测试界面。一个用来测试html/css/js的界面。会跳转到本站测试界面。一个用来测试html/css/js的界面。会跳转到本站测试界面。一个用来测试html/css/js的界面。',
-    link: '/test',
-    image: 'desert',
   },
   {
     title: '占位符',

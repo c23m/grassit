@@ -28,7 +28,7 @@ const theme = computed(() => (isDark.value ? 'dark' : 'light'))
         <Link url="/article">文档</Link>
       </li>
       <li>
-        <Link url="/test">api测试</Link>
+        <Link url="/test">测试</Link>
       </li>
       <li>
         <Link url="">文本</Link>
@@ -52,7 +52,7 @@ const theme = computed(() => (isDark.value ? 'dark' : 'light'))
     <div v-if="!isDesktop && menuOpen" class="menu" @click="menuOpen = false">
       <Link url="/home">首页</Link>
       <Link url="/article">文档</Link>
-      <Link url="/test">api测试</Link>
+      <Link url="/test">测试</Link>
       <Link url="">文本</Link>
       <NavAvatar />
     </div>

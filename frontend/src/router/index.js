@@ -3,12 +3,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import BaseLayout from '@/components/layouts/BaseLayout.vue'
 import Home from '@/views/Home.vue'
 import Article from '@/views/Article.vue'
-import ApiTest from '@/views/ApiTest.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import Login from '@/views/Login.vue'
 import NotFound from '@/views/NotFound.vue'
-import Playground from '@/views/Playground.vue'
 import Register from '@/views/Register.vue'
+import Test from '@/views/Test.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const routes = [
@@ -53,12 +52,8 @@ const routes = [
       },
       {
         path: 'test',
-        component: ApiTest,
-      },
-      {
-        path: 'playground',
-        name: 'playground',
-        component: Playground,
+        name: 'test',
+        component: Test,
       },
     ],
   },
