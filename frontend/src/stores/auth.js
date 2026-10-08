@@ -56,12 +56,21 @@ export const useAuthStore = defineStore('auth', () => {
     return restoring
   }
 
-  const logout = async () => {
-    await logoutApi()
+  // 清空登录态但不跳转：跳转时机是调用方的事（logout / 拦截器 / 页面）
+  const clearSession = () => {
     token.value = ''
     user.value = null
-    router.push('/login')
   }
 
-  return { token, user, login, fetchMe, restore, logout }
+  const logout = async () => {
+    await logoutApi()
+    clearSession()
+    // 别一律丢到登录页：只有身处"游客进不去"的受限页才需要挪窝，挪去首页；
+    // 公共页原地不动即可，页面会跟着 user 变回未登录的样子
+    if (router.currentRoute.value.meta.requiresAuth) {
+      router.push({ name: 'home' })
+    }
+  }
+
+  return { token, user, login, fetchMe, restore, clearSession, logout }
 })

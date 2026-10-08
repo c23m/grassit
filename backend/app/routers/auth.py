@@ -12,6 +12,11 @@ from app.schemas.user import UserMe
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+# 前端统一经 `/api` 前缀访问（开发由 Vite 代理、生产由 Nginx 反代，都会剥掉 `/api` 再转给后端），
+# 所以 cookie 的 path 必须写浏览器实际看到的那条路径：写 `/auth` 的话浏览器匹配不上 `/api/auth/...`，
+# 请求里根本不会带这个 cookie，刷新必然 401
+REFRESH_COOKIE_PATH = "/api/auth"
+
 
 async def get_current_user(
     db: Database,
@@ -43,7 +48,7 @@ async def login(response: Response, body: LoginRequest, db: Database) -> LoginRe
         httponly=True,
         samesite="strict",
         max_age=30 * 24 * 3600,
-        path="/auth",
+        path=REFRESH_COOKIE_PATH,
     )
     token = security.create_token(user.id, "access")
     return LoginResponse(token=token, user=UserMe.model_validate(user))
@@ -51,7 +56,7 @@ async def login(response: Response, body: LoginRequest, db: Database) -> LoginRe
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
 async def logout(response: Response) -> None:
-    response.delete_cookie("refreshToken", path="/auth")
+    response.delete_cookie("refreshToken", path=REFRESH_COOKIE_PATH)
     return None
 
 
@@ -88,7 +93,7 @@ async def refresh(
     try:
         user_id = security.decode_token(refresh_token, "refresh")
     except HTTPException:
-        response.delete_cookie("refreshToken", path="/auth")
+        response.delete_cookie("refreshToken", path=REFRESH_COOKIE_PATH)
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid refresh token")
     token = security.create_token(user_id, "access")
     return TokenResponse(token=token)
