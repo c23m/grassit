@@ -4,7 +4,7 @@
 
 > 参考笔记（学习用），不是项目规范。示例代码由 AI 生成、未经审阅，以实测与官方文档为准。
 > 版本按本仓库实际安装的核对过：vue 3.5.32、@vueuse/core 14.4.0（`useToggle`、`useDark` 的行为是从 node_modules 源码里读出来的）。
-> 相关笔记：[js-methods.md](js-methods.md)（数组/对象方法）、[html-semantics.md](html-semantics.md)（表单与可访问性）、[auth-form-parts.md](../guides/auth-form-parts.md)（认证表单的现成组件）。
+> 相关笔记：[js-methods.md](js-methods.md)（数组/对象方法）、[html-semantics.md](html-semantics.md)（表单与可访问性）、[frontend-parts.md](frontend-parts.md)（common 组件的 props 与数据层入口）。
 
 ## `@click="fn"` 和 `@click="fn()"` 不是一回事
 
@@ -103,9 +103,8 @@ set(v) {
 
 ## 本仓库的相关位置
 
-| 位置                     | 用到的东西                                                                     |
-| ------------------------ | ------------------------------------------------------------------------------ |
-| `layouts/nav/NavBar.vue` | `@click="toggleDark()"`（踩过上面那个坑，已修）、`useDark`                     |
-| `views/Login.vue`        | `@submit.prevent="onSubmit"`（处理器不收参数，可以不带括号）                   |
-| `views/Home.vue`         | `@click="pictIndex = (pictIndex + 1) % colors.length"`                         |
-| `views/ApiTest.vue`      | `@click="urlCache.indexInc"`——那些 handler 是 `() => {}`，多收一个事件参数无害 |
+| 位置                     | 用到的东西                                                   |
+| ------------------------ | ------------------------------------------------------------ |
+| `layouts/nav/NavBar.vue` | `@click="toggleDark()"`（踩过上面那个坑，已修）、`useDark`   |
+| `views/Login.vue`        | `@submit.prevent="onSubmit"`（处理器不收参数，可以不带括号） |
+| `views/Home.vue`         | `@click="pictIndex = (pictIndex + 1) % colors.length"`       |

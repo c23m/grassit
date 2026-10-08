@@ -1,6 +1,6 @@
 # 仓库规范
 
-Grassit 是个人博客 / Wiki 全栈项目（FastAPI + Vue 3 + MySQL）。本文件是仓库的协作规范：跨领域、长期不变的规则都在这里，某个领域的规范见 [docs/specs/](docs/specs/)；贡献者和 AI 助手都按它执行；产品需求见 [docs/planning.md](docs/planning.md)，版本规划见 [docs/todo.md](docs/todo.md)，当前进度与下一步见 [HANDOVER.md](HANDOVER.md)，部署见 [docs/specs/deploy.md](docs/specs/deploy.md)。
+Grassit 是个人博客 / Wiki 全栈项目（FastAPI + Vue 3 + MySQL）。本文件是仓库的协作规范：跨领域、长期不变的规则都在这里，某个领域的规范见 [docs/specs/](docs/specs/)；贡献者和 AI 助手都按它执行；产品需求与版本规划见 [docs/planning.md](docs/planning.md)，当前进度与下一步见 [HANDOVER.md](HANDOVER.md)，部署见 [docs/specs/deploy.md](docs/specs/deploy.md)。
 
 放在仓库根目录，是为了让 Agent 自动读到它；[docs/](docs/) 内只放项目文档与学习笔记。
 
@@ -9,7 +9,7 @@ Grassit 是个人博客 / Wiki 全栈项目（FastAPI + Vue 3 + MySQL）。本�
 - `backend/app/`：FastAPI 应用，按 `models/` / `routers/` / `schemas/` 分组；跨层的单一职责基础模块（`database.py`、`config.py`、`security.py`）直接平铺，同类模块到三个以上再收进子包
 - `backend/init_db.py` 建表，`backend/public/` 放对外提供的静态资源
 - `frontend/src/`：`api/`、`components/`、`composables/`、`router/`、`stores/`、`views/`、`utils/`、`assets/`
-- `docs/`：根下放跨领域的需求与计划；`specs/` 领域规范、`guides/` 临时指南（任务做完就删）、`notes/` 学习与速查。哪份文件管什么、现在能不能删，见 [docs/README.md](docs/README.md)
+- `docs/`：根下放跨领域的需求与计划；`specs/` 领域规范、`guides/` 当前阶段在用（当前版本待办与临时指南）、`notes/` 学习与速查。哪份文件管什么、现在能不能删，见 [docs/README.md](docs/README.md)
 - 根目录：`docker-compose.yml`、`package.json`（根目录的 prettier 与 `format` 脚本）、`.env.example`、`.prettierrc`、`.gitattributes`、`.gitignore`、`CHANGELOG.md`、`HANDOVER.md`
 - `tools/`：仓库自用的小工具（目前只有 `gen_toc.py`，给 Markdown 生成目录），Python 写，不参与前后端运行
 
@@ -61,13 +61,12 @@ cd backend; .venv\Scripts\python.exe -m black app init_db.py   # Black 管 backe
 每个文档职责单一、内容不重复；**哪份文件管什么只看 [docs/README.md](docs/README.md) 一处**（文档地图），本节只写规则：
 
 - 本文件：协作规范——跨领域、长期不变的规则（怎么做事）。只放规则，不放进度、待办与临时决定——进度写 [HANDOVER.md](HANDOVER.md)，待办按下面分两处放；同类问题重复出现两三次、工作流或技术栈变化时才改，要改就一次改完
-- [docs/planning.md](docs/planning.md)：产品需求
-- [docs/todo.md](docs/todo.md)：只写**未来版本**的规划（还没开始做的），普通清单、不打勾
+- [docs/planning.md](docs/planning.md)：产品需求与版本规划——「九、版本规划」只写**未来版本**（还没开始做的），普通清单、不打勾
 - [HANDOVER.md](HANDOVER.md)：交接快照（现在在哪、下一步做什么、已知问题），每个里程碑收尾时更新一次
 - [CHANGELOG.md](CHANGELOG.md)：已完成版本的重要变更
-- `docs/guides/` 放**当前阶段在用、过了就作废**的东西：当前开发版本的详细待办（带 `- [ ]`，版本收尾时清掉）和为某个任务写的临时指南（开头写清删除条件）。任务做完、代码里已经有答案了就删，别留在仓库里
+- `docs/guides/` 放**当前阶段在用**的东西：**当前开发版本的详细待办**（带 `- [ ]`；文件名**不带版本号**，固定叫 `todo.md`）和为某个任务写的临时指南（开头写清删除条件）。版本收尾时**把待办文件的内容换成下一个版本的**（改内容、不新建文件、不改文件名），上一版可用的结论提炼进 `notes/` 或记进 CHANGELOG；写给某个任务的临时指南做完、代码里已经有答案了就删
 - 领域规范放 `docs/specs/`：限定某个领域、会越写越细的约定或方案（如前端结构基准）。分工是**跨领域的进本文件，限定某个领域的进 specs/**
-- 每份 `docs/` 下的文档在标题下写一行元信息：`notes/` 写「用途：速查 / 通读」，`guides/` 写「生命周期：临时 ｜ 删除条件：…」，`specs/` 写「状态：已定案 / 规划中 / 未开始」
+- 每份 `docs/` 下的文档在标题下写一行元信息：`notes/` 写「用途：速查 / 通读」，`guides/` 写「生命周期：临时 ｜ 删除条件：…」（当前版本待办那份写"收尾时换成下一版内容"），`specs/` 写「状态：已定案 / 规划中 / 未开始」
 
 ## 测试
 
@@ -75,7 +74,7 @@ cd backend; .venv\Scripts\python.exe -m black app init_db.py   # Black 管 backe
 
 ## 版本与变更日志
 
-- 版本号是可验收的里程碑，不必每次改动都动版本；达成验收后打 `vX.Y.Z` tag，在 [CHANGELOG.md](CHANGELOG.md) 加一条以版号作标题的记录，并把该版本从 [docs/todo.md](docs/todo.md) 移除
+- 版本号是可验收的里程碑，不必每次改动都动版本；达成验收后打 `vX.Y.Z` tag，在 [CHANGELOG.md](CHANGELOG.md) 加一条以版号作标题的记录，并把该版本从 [docs/planning.md](docs/planning.md) 的「九、版本规划」里移除
 - 变更日志只记重要改动（结构、接口、配置、行为等），不重要的不记；保持简洁，过时信息及时删除
 - 当前阶段是开发环境，不按生产标准设计；生产部署见 [docs/specs/deploy.md](docs/specs/deploy.md)
 

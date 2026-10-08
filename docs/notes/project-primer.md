@@ -4,7 +4,7 @@
 
 > 这份文档写给**完全零基础**的读者（也就是本项目的作者）：把仓库里真实用到的技术点，按「是什么 → 本项目哪里用到 → 坑 / 注意」讲一遍，让你能看懂代码、进而审查 AI 写的东西。
 > 用法：先读「概述」建立全局印象，再按需要跳读；每条都指到了具体文件，看文档时把文件一起打开效果最好。
-> 范围是**整个项目**（不止 0.0.4）。**以代码与实测为准**：本文由 AI 整理、未经审查，跟代码冲突的地方以代码为准；**还没做的一律标「计划中」**并指到 `docs/todo.md` 的对应版本。
+> 范围是**整个项目**（不止 0.0.4）。**以代码与实测为准**：本文由 AI 整理、未经审查，跟代码冲突的地方以代码为准；**还没做的一律标「计划中」**并指到 [planning.md](../planning.md) 的「九、版本规划」里对应的版本。
 > 有些概念在这里只讲"是什么、在哪儿用"，细节展开见 `docs/notes/` 下已有的笔记，文中会给相对链接（例如 [pinia.md](pinia.md)）。
 
 <!-- toc -->
@@ -94,8 +94,8 @@
 ### Grassit 是什么
 
 - **是什么**：一个自托管的个人博客 + Wiki 系统，前后端分离，一个人用的单一站点 —— 不做多租户、不做富文本编辑器，正文用 Markdown。
-- **本项目**：需求写在 [planning.md](../planning.md)；当前进度见 [todo.md](../todo.md) 与 [HANDOVER.md](../../HANDOVER.md)；已完成版本记在 [CHANGELOG.md](../../CHANGELOG.md)。
-- **注意**：`planning.md` 是**需求**（想做什么），不是现状；想知道"现在能跑什么"，看代码和 `todo.md`。
+- **本项目**：需求与版本规划写在 [planning.md](../planning.md)；**当前版本待办**见 [guides/todo.md](../guides/todo.md)、进度见 [HANDOVER.md](../../HANDOVER.md)；已完成版本记在 [CHANGELOG.md](../../CHANGELOG.md)。
+- **注意**：`planning.md` 是**需求与规划**（想做什么、以后做什么），不是现状；想知道"现在能跑什么"，看代码和 [HANDOVER.md](../../HANDOVER.md)。
 
 ### 前后端分离：页面在浏览器里跑，数据在服务器上
 
@@ -125,7 +125,7 @@
 
 - **是什么**：项目自带的两个"体检"入口 —— 一个是自定义的健康检查接口，一个是 FastAPI 自动生成的接口文档页面。
 - **本项目**：`GET /test` 返回当前时间、后端版本号与数据库连通状态（`backend/app/routers/test.py`）；`http://127.0.0.1:8000/docs` 能列出所有接口并直接试调（FastAPI 自动生成）。
-- **注意**：`/test` 与前端调试页 `/playground` 是临时页面，**上线前要删**（记在 [todo.md](../todo.md) 的 0.1.2）。
+- **注意**：调试页 `/test`（由原 `/playground` 与原 `/test` 合并而来）是临时页面，**上线前要删**（记在 [planning.md](../planning.md#九版本规划) 的 0.1.2）。
 
 ## 前端
 
@@ -187,19 +187,19 @@
 
 - **是什么**：刷新后内存里的用户信息没了，但 token 还在 —— 所以启动时要用 token 去后端换一次"我是谁"，这叫**恢复登录态**。
 - **本项目**：`frontend/src/stores/auth.js` 的 `restore()`（幂等：没 token 或已经有 user 就立刻返回，并复用同一个进行中的请求），由 `frontend/src/router/index.js` 的守卫 `await` 调用。
-- **注意**：access token 只有 15 分钟有效期，过期后后端返回 401，前端会清掉 token 并跳回登录页 —— 真正解决要等 **0.0.5 的 refresh 闭环**（计划中）。
+- **注意**：access token 只有 15 分钟有效期，过期后后端返回 401，拦截器会自动刷新并重放请求（**0.0.5 起**）；刷新也失败才清掉登录态并跳回登录页。
 
 ### 请求层：Axios 实例与拦截器
 
 - **是什么**：Axios 是发 HTTP 请求的库；**实例**把公共配置（后端地址、超时）集中一处；**拦截器**是所有请求/响应都要经过的一道钩子，适合统一加请求头、统一处理错误。
 - **本项目**：`frontend/src/utils/request.js` —— `baseURL` 取 `/api`、超时 10 秒、请求拦截器加 `Authorization: Bearer <token>`、响应拦截器把 `response.data` 直接返回给调用方。
-- **注意**：响应拦截器**已经帮你取过一层 data**，所以业务里再写 `res.data` 就错了；401 → 刷新 token → 重放那条链是 **0.0.5**（计划中）。
+- **注意**：响应拦截器**已经帮你取过一层 data**，所以业务里再写 `res.data` 就错了；401 → 刷新 token → 重放那条链已在 **0.0.5** 落地：只有"带了 `Authorization` 的 401"才刷（没带的比如密码错不刷），并发 401 只刷一次，刷新失败清空登录态回 `/login`。
 
 ### 接口封装与 useRequest
 
 - **是什么**：把"哪个接口、什么方法、什么路径"集中封装成函数，页面只管调函数，不关心 URL —— 接口变了只改一处。`vue-request` 则提供 `loading` / `error` / `data` 三件套，省掉手写状态。
-- **本项目**：`frontend/src/api/auth.js`（登录、注册、登出、刷新、取当前用户）、`frontend/src/api/article.js`、`frontend/src/api/user.js`；`frontend/src/views/Home.vue` 与 `views/Playground.vue` 用 `useRequest`。
-- **注意**：文章接口现在**只返回写死的样例数据**，不是真数据 —— 真落库是 **0.1.0**（计划中，见 [todo.md](../todo.md)）。
+- **本项目**：`frontend/src/api/auth.js`（登录、注册、登出、刷新、取当前用户）、`frontend/src/api/article.js`、`frontend/src/api/user.js`；`frontend/src/views/Home.vue` 与 `views/Test.vue` 用 `useRequest`。
+- **注意**：文章接口现在**只返回写死的样例数据**，不是真数据 —— 真落库是 **0.1.0**（当前版本的事，见 [guides/todo.md](../guides/todo.md)）。
 
 ### 表单与校验
 
@@ -235,7 +235,7 @@
 
 - **是什么**：文章正文是 Markdown（一种用符号写格式的纯文本），要在页面上显示成 HTML 就得有渲染库 —— 但"把用户内容当 HTML 插进页面"（Vue 的 `v-html`）是**XSS**（脚本注入）的主要入口，必须做清洗。
 - **本项目**：`marked` 已经装进 `frontend/package.json`，但 `frontend/src/views/Article.vue` 里的渲染逻辑**整段被注释着**，样式表 `frontend/src/assets/styles/markdown.css` 也在仓库里。
-- **注意**：启用它是 **0.1.0** 的事，届时要一并做 sanitize（已记在 [todo.md](../todo.md)）。
+- **注意**：启用它是 **0.1.0** 的事，届时要一并做 sanitize（已记在 [guides/todo.md](../guides/todo.md)）。
 
 ## 后端
 
@@ -315,7 +315,7 @@
 
 - **是什么**：**JWT** 是一串三段式字符串（用点分隔），前两段是明文可读的信息（payload 里有 `sub` 用户 id、`exp` 过期时间、`type` 类型），第三段是用服务器密钥算出的**签名** —— 服务器不需要存会话，只要验签就能确认"这串字符串是我发的、没被改过"，这叫**无状态**。
 - **本项目**：`backend/app/security.py` 的 `create_token` / `decode_token`（算法默认 HS256、access token 默认 15 分钟）；登录时签发，之后每个请求带在请求头里。
-- **注意**：无状态的代价是**不能撤销**（签发出去就有效到过期），想支持登出拉黑得额外存名单（记在 [todo.md](../todo.md) 的"token 撤销（不急）"）；原理与坑见 [jwt.md](jwt.md)。
+- **注意**：无状态的代价是**不能撤销**（签发出去就有效到过期），想支持登出拉黑得额外存名单（记在 [planning.md](../planning.md#九版本规划) 的"token 撤销（不急）"）；原理与坑见 [jwt.md](jwt.md)。
 
 ### 401：后端怎么判断"你是谁"
 
@@ -332,8 +332,8 @@
 ### refresh token 与 HttpOnly Cookie
 
 - **是什么**：access token 有效期短（15 分钟）以减少泄露风险，另发一个长期凭证（refresh token）用来换新的 access token。refresh token 放在 **HttpOnly Cookie** 里（JavaScript 读不到，能防一部分 XSS 窃取），Cookie 的 `path` 决定它只在访问哪些路径时被浏览器带上。
-- **本项目**：`backend/app/routers/auth.py` 的 `login` 写入 `refreshToken` cookie（`httponly`、`samesite=strict`、30 天、`path=/auth`）；`POST /auth/refresh` 用 cookie 换新 access token；过期参数在 `backend/app/config.py`。
-- **注意**：**这条链还没闭合**（0.0.5 计划中）。前端拦截器虽然有"401 → 刷新 → 重放"的代码，但浏览器实际请求的路径是 `/api/auth/refresh`（带代理前缀），而 cookie 的作用域写的是 `/auth`，做 0.0.5 时要确认这个前缀问题怎么处理。
+- **本项目**：`backend/app/routers/auth.py` 的 `login` 写入 `refreshToken` cookie（`httponly`、`samesite=strict`、30 天、`path=/api/auth`）；`POST /auth/refresh` 用 cookie 换新 access token；过期参数在 `backend/app/config.py`。
+- **注意**：`path` 要写**浏览器实际看到的路径** —— 前端统一走 `/api` 前缀（由代理层剥掉），所以是 `/api/auth` 而不是后端的 `/auth`；写成 `/auth` 时浏览器路径匹配不上，cookie 根本不会被带上（0.0.5 踩过这个坑）。这条链现在闭合：拦截器在 `frontend/src/utils/request.js`。
 
 ### 为什么这里看不到 CORS 配置
 
@@ -394,7 +394,7 @@
 ### 上线前要删的调试页
 
 - **是什么**：开发期为了方便留的页面，上线前要清掉，否则既是入口漏洞也是难看的地方。
-- **本项目**：`/test`（`backend/app/routers/test.py` 与 `frontend/src/views/ApiTest.vue`）、`/playground`（`frontend/src/views/Playground.vue`）以及导航栏里的入口 —— 已记在 [todo.md](../todo.md) 的 0.1.2。
+- **本项目**：`/test`（`backend/app/routers/test.py` 与 `frontend/src/views/Test.vue`）以及导航栏里的入口 —— 已记在 [planning.md](../planning.md#九版本规划) 的 0.1.2。
 - **注意**：这两页**故意不做登录拦截**，改守卫的 `meta` 时别顺手给它们加上。
 
 ## 配置
@@ -464,8 +464,8 @@
 ### 版本里程碑与打 tag 的时机
 
 - **是什么**：本项目把版本号当作**可验收的里程碑**，不是"改一次就 +1"。
-- **本项目**：`0.0.1` 骨架 → `0.0.2` 注册登录落库 → `0.0.3` 签发 access token → `0.0.4` 前端登录态（进行中）→ 之后 0.0.5 / 0.1.0 / 0.1.1 / 0.1.2，逐个版本写在 [todo.md](../todo.md)。
-- **注意**：顺序是**先验收通过**，然后 CHANGELOG 记一条、把该版本从 `todo.md` 移除、再打 tag —— 反了就等于给没验过的东西盖章。
+- **本项目**：`0.0.1` 骨架 → `0.0.2` 注册登录落库 → `0.0.3` 签发 access token → `0.0.4` 前端登录态 → `0.0.5` refresh token 闭环 → 当前是 **0.1.0**；未来版本逐个写在 [planning.md](../planning.md#九版本规划)，当前版本的详细待办在 [guides/todo.md](../guides/todo.md)。
+- **注意**：顺序是**先验收通过**，然后 CHANGELOG 记一条、把该版本从 [planning.md](../planning.md#九版本规划) 里移除、再打 tag —— 反了就等于给没验过的东西盖章。
 
 ### CHANGELOG 只记重要变更
 
@@ -476,14 +476,14 @@
 ### docs/ 的职责划分
 
 - **是什么**：文档按"职责单一、内容不重复"分家，各自回答不同的问题：想做什么 / 下一步做什么 / 现在到哪了 / 已经做了什么。
-- **本项目**：`docs/planning.md`（产品需求）、`docs/todo.md`（版本规划与验收标准，只留未完成的版本）、[HANDOVER.md](../../HANDOVER.md)（交接快照：现在在哪、下一步做什么）、[CHANGELOG.md](../../CHANGELOG.md)（已完成版本）、`docs/notes/`（不绑任务的速查与学习笔记）、`docs/specs/`（领域规范，会越写越细）、`docs/guides/`（当前任务的指南，**做完就删**）。
+- **本项目**：`docs/planning.md`（产品需求 +「九、版本规划」：未来版本与验收标准，只留未完成的版本）、[HANDOVER.md](../../HANDOVER.md)（交接快照：现在在哪、下一步做什么）、[CHANGELOG.md](../../CHANGELOG.md)（已完成版本）、`docs/notes/`（不绑任务的速查与学习笔记）、`docs/specs/`（领域规范，会越写越细）、`docs/guides/todo.md`（当前版本的详细待办，收尾时换成下一版）。
 - **注意**：`docs/notes/` 里的笔记**不是规范**，结论以代码和实测为准；哪份文件管什么见 [docs/README.md](../README.md)。
 
 ### AGENTS.md：人和 AI 共用的一套规则
 
 - **是什么**：把长期规则（怎么做事）集中在一个文件里，人和 AI 都按它执行，省掉每次重复交代。
 - **本项目**：[AGENTS.md](../../AGENTS.md) 里有项目结构、常用命令、代码风格与命名、后端异步红线、文档约定、测试、版本与变更日志、提交与推送、协作分工、改动前先确认、上下文与花费、前端界面。
-- **注意**：那里**只放规则**，不放进度与待办（进度去 `todo.md` / `HANDOVER.md`）。
+- **注意**：那里**只放规则**，不放进度与待办（进度去 [HANDOVER.md](../../HANDOVER.md)，当前版本待办去 [guides/todo.md](../guides/todo.md)）。
 
 ### 改动分级确认
 
@@ -500,7 +500,7 @@
 ### 手工验收与"暂无自动化测试"
 
 - **是什么**：**自动化测试**是"一组能重复运行、自动判断对错的代码"；没有它时只能按清单手工走一遍流程，这叫手工验收。
-- **本项目**：仓库里**目前没有任何测试文件**；`AGENTS.md` 写着"暂无自动化测试，pytest + httpx 脚手架排在 0.1.1"，[todo.md](../todo.md) 的 0.1.1 一节列了要覆盖的用例（注册、登录、鉴权失败、文章权限）；依赖清单 `backend/requirements.txt` 里 `httpx` 已经就位。
+- **本项目**：仓库里**目前没有任何测试文件**；`AGENTS.md` 写着"暂无自动化测试，pytest + httpx 脚手架排在 0.1.1"，[planning.md](../planning.md#九版本规划) 的 0.1.1 一节列了要覆盖的用例（注册、登录、鉴权失败、文章权限）；依赖清单 `backend/requirements.txt` 里 `httpx` 已经就位。
 - **注意**：写材料或简历时**别说"有测试"**；当前每个版本的验收都是手工跑（起服务、看 `/docs`、走一遍链路）。
 
 ### 提交习惯与提交信息

@@ -1,6 +1,25 @@
 # Changelog
 
-只记项目的重要变更。需求见 [docs/planning.md](docs/planning.md)，现状与计划见 [docs/todo.md](docs/todo.md)，开发与协作规范见 [AGENTS.md](AGENTS.md)。
+只记项目的重要变更。需求与版本规划见 [docs/planning.md](docs/planning.md)，现状与协作规范见 [AGENTS.md](AGENTS.md)。
+
+## 0.0.5（2026-10-08）
+
+**refresh token 闭环**
+
+- access token 过期能自动续期：响应拦截器走 401 → `POST /auth/refresh` → 重放原请求；刷新失败则清空登录态并回 `/login`
+- `refreshToken` cookie 的 `path` 由 `/auth` 改成 `/api/auth` —— 浏览器实际请求的是 `/api/auth/...`（Vite 与生产 nginx 都会剥掉 `/api` 前缀），原来的 path 匹配不上，cookie 根本不会被带上，刷新必然 401
+- 并发 401 只刷新一次（后到的发现 token 已被换过就直接重放）；刷新接口自身的 401 不递归刷新；没带 `Authorization` 的 401（如密码错）不触发刷新
+- store 新增 `clearSession()`（清 token + user、不跳转）；登出不再一律跳登录页，只有当前页是受限页时才跳首页
+
+**调试页**
+
+- `/playground` 与停用的 `/test`（原 `ApiTest.vue`）合并成 `views/Test.vue`，路由只留 `/:lang(zh|en)?/test`：左列登录态与后端连通性（逐字段展示），右列接口测试（方法 / 目标 / 请求体 / 结果）；导航栏入口改名「测试」
+- 接口测试的 `useCache` 历史翻页删除（箭头只改了缓存指针、没写回输入框）
+
+**工程**
+
+- 本地库账号约定：`admin`（昵称 管理员、密码 `123456`）是目前唯一的管理员假设，其余为测试账号；重置后按 `init_db.py` 顶部注释把 admin 补回来
+- 文档结构：当前版本待办固定在 `guides/todo.md`（不带版本号，收尾时改内容、不删文件）；未来版本的规划并进 [docs/planning.md](docs/planning.md) 的「九、版本规划」，不再单独一份 `docs/todo.md`
 
 ## 0.0.4（2026-10-03）
 

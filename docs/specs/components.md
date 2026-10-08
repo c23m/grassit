@@ -21,7 +21,7 @@
 - **路由**：`/:lang(zh|en)?/home`，以及 `/:lang(zh|en)?` 重定向过来
 - **状态**：在用
 - **结构**：自带整页骨架（header + `NavBar` + `main` + `Footer`，页脚全站只在这个页面出现），不套 `BaseLayout`——它在路由表里是顶层路由，不在布局父路由底下
-- **数据**：`useRequest(() => getArticles())` 拉文章列表塞给 `Aside`；右侧"推荐列表"是写死的数组，不走接口，第一条是通往 `/playground` 的调试页
+- **数据**：`useRequest(() => getArticles())` 拉文章列表塞给 `Aside`；右侧"推荐列表"是写死的数组，不走接口，第一条是通往 `/test` 的调试页
 - **注意**：import 了 `BaseLayout` 和 `@vueuse/core` 的 `get`，模板里都没用到，属于残留
 
 ### Article.vue · 文章详情
@@ -29,7 +29,7 @@
 - **路由**：`/:lang(zh|en)?/article/:identifier?`，props 为 `identifier`
 - **状态**：半成品
 - **结构**：预期是 `Aside` 目录 + 正文两栏，正文用 `marked` 渲染成 HTML
-- **注意**：数据获取、`marked.parse`、`watch`/`onMounted` 以及整段模板**目前全部被注释**，页面渲染出来是空的；重启这块时要顺带处理 XSS（`v-html` 直接渲染用户内容是入口，见 [todo.md](../todo.md) 的 0.1.0）
+- **注意**：数据获取、`marked.parse`、`watch`/`onMounted` 以及整段模板**目前全部被注释**，页面渲染出来是空的；重启这块时要顺带处理 XSS（`v-html` 直接渲染用户内容是入口，是当前版本 0.1.0 的活，见 [guides/todo.md](../guides/todo.md)）
 
 ### Login.vue · 登录
 
@@ -45,24 +45,20 @@
 - **结构**：`section.register` > `h2` + `form`（用户名、昵称、密码三个必填 + 邮箱可选）+ 提交按钮 + 提示位 + `hr` + 底部「登录」链接
 - **注意**：直连 `api/auth.js` 的 `register`（注册响应没有 token，回登录页自己登）；字段级错误显示在各自标签右侧，落不到字段的错误居中显示在按钮上方，成功后同样在那一行显示「注册成功」，表单与按钮一起禁用，1 秒后跳登录页；前端规则镜像 `schemas/auth.py`，失焦时检查；邮箱留空要发 `null`，空字符串会被后端 `EmailStr` 判成格式错误
 
-### Playground.vue · 调试页
-
-- **路由**：`/:lang(zh|en)?/playground`
-- **状态**：在用（开发自用）
-- **结构**：顶部是开发入口（登录 / 注册 / api 测试），下面 `useRequest` 打 `/test` 系列接口，附一个直接调 `login` 的表单（老代码，参数直接传了 ref）
-- **注意**：属于临时工具，不承诺长期存在
-
-### ApiTest.vue · 接口测试页
+### Test.vue · 调试页
 
 - **路由**：`/:lang(zh|en)?/test`
-- **状态**：停用
-- **注意**：script 与模板**整份被注释**，页面是空的；0.2.x 计划改造成"直连真实接口"（见 [todo.md](../todo.md)）
+- **状态**：在用（开发自用）
+- **结构**：主体是**左右两列**（窄屏 900px 以下收成一列）——
+  - 左列"临时内容"：`dl` 展示登录态（昵称 + 用户名；未登录显示"未登录"与**登录 / 注册**入口，已登录才显示"退出登录"）与后端连通性（时间 / 版本 / 数据库状态，带"重新请求"）；以后要试的临时代码往下再加一个 `.card`
+  - 右列"接口测试"（原 `ApiTest.vue` 的功能）：方法（GET / POST / PUT / DELETE）、目标路径、请求体（JSON，GET 时禁用），下面是结果卡片，成功显示格式化 JSON，失败显示 `detail` / 错误信息
+- **注意**：属于临时工具，不承诺长期存在；由原 `Playground.vue` 与原 `ApiTest.vue` 合并而成，页内那个直连 `login` 的老表单与那个永远禁用的"上传文件"按钮都没搬过来；表单只活在内存里（原来那套 `useCache` 历史翻页已砍掉，因为箭头改了缓存指针却没写回输入框）；请求体非空时按 JSON 解析，解析不过就报错不发出去；`/test` 返回的字段是 camelCase（`dbStatus`），取值别写成 `db_status`
 
 ### Dashboard.vue · 用户主页
 
 - **路由**：`/:lang(zh|en)?/user/:username`，`meta.requiresAuth`（未登录会被守卫拦回 `/login`）
 - **状态**：空壳，先占着路由，好让"未登录被拦回 `/login`"这条验收有可测对象
-- **去向**：0.2.x 的仪表盘（用户主页），见 [todo.md](../todo.md)
+- **去向**：0.2.x 的仪表盘（用户主页），见 [planning.md](../planning.md#九版本规划)
 
 ### NotFound.vue · 404
 
@@ -77,12 +73,12 @@
 
 - **状态**：在用
 - **结构**：引 `base.css`，`NavBar` + `<main><RouterView /></main>`（**不含页脚**，页脚只在首页）
-- **用法**：路由里作为父路由，包住 `register` / `login` / `article` / `user/:username` / `test` / `playground`
+- **用法**：路由里作为父路由，包住 `register` / `login` / `article` / `user/:username` / `test`
 
 ### nav/NavBar.vue
 
 - **状态**：在用
-- **结构**：logo、桌面端菜单（首页 / 文档 / api测试 / 文本）、右侧按钮组、移动端菜单图标
+- **结构**：logo、桌面端菜单（首页 / 文档 / 测试 / 文本）、右侧按钮组、移动端菜单图标
 - **宽屏布局**：四个区域从左到右全由 flex 分配——logo（固定宽度，不参与伸缩）、导航链接（`flex: 1` 吃剩余空间，内容居中）、功能图标（宽度由内容决定）、用户区（`NavAvatar`，宽度自适应）
 - **窄屏布局**：没有链接区也没有用户区（两者都收进菜单面板），导航栏只剩 logo + 功能图标 + 菜单图标，靠 `nav` 上的 `space-between` 把图标顶到右边
 - **移动端菜单面板**：`.menu` 绝对定位贴在导航栏下方，纵向排列四个链接 + `NavAvatar`；点面板任意处收起（模板里绑了 `@click`）
@@ -171,15 +167,15 @@
 
 ### `utils/request.js`
 
-axios 实例：请求自动带 `Authorization: Bearer <token>`，成功响应解包成 `response.data`，401 时尝试刷新后重放。`utils/index.js` 只写了 `export * from './request.js'`，**导不出 default**，要引就引 `./request.js`。
+axios 实例：请求自动带 `Authorization: Bearer <token>`，成功响应解包成 `response.data`；401 时先判断是不是"带着旧 token 过期了"（没带 `Authorization` 的 401、刷新接口自身的 401、已重放过的请求都不刷），是则 `POST /auth/refresh` 后重放原请求（并发 401 只刷一次），刷新失败清空登录态并回 `/login`。`utils/index.js` 只写了 `export * from './request.js'`，**导不出 default**，要引就引 `./request.js`。
 
 ### `stores/auth.js`
 
-登录态：`token`（`useLocalStorage('token')`）、`user`、`login(username, password)` / `fetchMe()` / `logout()`。登录是**位置参数**，内部 `router.push('/')`，响应里直接带 user；`fetchMe` 会合并并发请求、失败时清掉 token。目前只有 `Login.vue` 用它，**启动时恢复还没做**（刷新后 `user` 仍是 null）。
+登录态：`token`（`useLocalStorage('token')`）、`user`、`login(username, password)` / `fetchMe()` / `restore()` / `clearSession()` / `logout()`。登录是**位置参数**，响应里直接带 user；`fetchMe` 合并并发请求、401 时清登录态；`restore()` 幂等，路由守卫每次导航前 `await` 它（这就是刷新后不掉登录态的原因）；`clearSession()` 只清 token + user、不跳转，拦截器刷新失败时用它；`logout()` 先通知后端再清本地，只有**当前页是受限页**（`meta.requiresAuth`）才跳首页，公共页原地不动。
 
 ### `composables/`
 
-`useAysnc.js`（文件名拼错了，导出 `useAsync`；返回 `{ data, loading, error, execute }`，但会吞掉异常、`error` 里只有 `err.message`）和 `useCache.js`（用 localStorage 存定长列表）。
+`useAysnc.js`（文件名拼错了，导出 `useAsync`；返回 `{ data, loading, error, execute }`，但会吞掉异常、`error` 里只有 `err.message`）和 `useCache.js`（用 localStorage 存定长列表；**目前没有调用点**，原 `ApiTest.vue` 是它唯一的用处）。
 
 ### `router/index.js`
 

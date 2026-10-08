@@ -119,13 +119,13 @@ const ensureUser = () => {
 
 守卫里 `await auth.ensureUser()` 即可；同一个页面同时触发两次导航时，第二次拿到的是同一个 promise，不会重复请求 `/users/me`。
 
-退出登录反过来做：清 token（赋 `''` 会同步写回 localStorage）、清 user、跳登录页。漏掉任何一块，刷新后就会"假登录"。
+退出登录反过来做：清 token（赋 `''` 会同步写回 localStorage）、清 user。漏掉任何一块，刷新后就会"假登录"。跳转不是必须的：本项目只在当前页是受限页时才跳首页，公共页原地不动（0.0.5 调整）。
 
 ## 本项目的落点
 
-| 文件                            | 职责                                              |
-| ------------------------------- | ------------------------------------------------- |
-| `frontend/src/stores/auth.js`   | 持有 token 与 user，暴露 login / fetchMe / logout |
-| `frontend/src/utils/request.js` | 从同一个 localStorage key 读 token 塞进请求头     |
+| 文件                            | 职责                                                                       |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| `frontend/src/stores/auth.js`   | 持有 token 与 user，暴露 login / fetchMe / restore / clearSession / logout |
+| `frontend/src/utils/request.js` | 从同一个 localStorage key 读 token 塞进请求头                              |
 
-两边各自 `useLocalStorage('token', '')`，靠上面说的同页面同步机制保持一致。更"正规"的做法是让拦截器直接读 store，但 store 会 import api、api 又 import 拦截器，容易绕成循环依赖，0.0.5 处理 refresh 时值得一起想清楚。
+两边各自 `useLocalStorage('token', '')`，靠上面说的同页面同步机制保持一致 —— 0.0.5 实测确认**确实是同步的**（VueUse 写 localStorage 时自己派发同域 `storage` 事件），所以不必把 token 收成一处。拦截器清登录态时调 store 的 `clearSession()`；它要拿 store 只能动态 `import()`，否则 store → api → 拦截器 绕成循环依赖。

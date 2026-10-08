@@ -45,11 +45,13 @@ const restore = () => {
 | 登录后能看到昵称 | 登录成功跳 `/home`，而 Home 是**顶层路由、自带一份 NavBar**，NavAvatar 整个重新挂载，setup 重新读了一次 store —— 此时值已经写进去了 |
 | 刷新后换不上     | 首屏挂载时 `user` 还是 `null`，被解构成了快照；之后更新不再触发渲染                                                                 |
 
-## 现在的边界（0.0.5 的活）
+## 0.0.5 补上的部分
 
-access token 15 分钟过期，401 → `/auth/refresh` → 重放那条链还没做。**后端已经就绪**：`login` 会下发真实的 refresh JWT，`POST /auth/refresh` 会校验并换发新的 access token；缺的是前端拦截器那半。
+401 → `/api/auth/refresh` → 重放那条链现在在 `frontend/src/utils/request.js` 里：并发 401 只刷一次、刷新请求自己 401 不递归、刷新失败清空登录态并回 `/login`。
 
-所以过期后再刷新会出现：拦截器清掉 token 并跳登录页，此后 `restore()` 见 token 为空直接返回，**连 `me` 请求都不会发**。这不是恢复逻辑坏了。
+这里还牵出一个更早的问题：cookie 的 `path` 原本写的是 `/auth`，而浏览器实际请求的是 `/api/auth/refresh`（代理层会剥掉 `/api`），路径匹配不上、cookie 根本不会被带上，所以**那条链在浏览器里必然 401**；只有直连后端的 `/auth/refresh` 是通的。现已改成 `/api/auth`（改之前登录的那份 cookie 作废，要重新登录一次）。
+
+刷新失败之后的表现仍然是上面说的那样：`restore()` 见 token 为空直接返回，**连 `me` 请求都不会发**。这不是恢复逻辑坏了。
 
 ## 可复用的排查套路
 

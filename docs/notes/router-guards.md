@@ -86,5 +86,5 @@ app.mount('#app')
 ## 本项目现状
 
 - 路由带可选语言前缀（`/:lang(zh|en)?`），`to.fullPath` 会带上它；跳转时用 `{ name: 'login' }` 比手拼路径省事
-- 受限页定为用户主页与发文页（见 [todo.md](../todo.md) 的 0.0.4）；`login` / `register` 公开，`/test`、`/playground` 是调试用的临时页，不拦
-- 守卫还没写，`meta.requiresAuth` 也还没打
+- 受限页定为用户主页与发文页（见 [CHANGELOG.md](../../CHANGELOG.md) 的 0.0.4）；`login` / `register` 公开，`/test` 是调试用的临时页，不拦
+- 守卫已在 0.0.4 落地：`beforeEach` 先 `await auth.restore()`（幂等），再按 `meta.requiresAuth` 拦回 `{ name: 'login' }`、按 `meta.guestOnly` 把已登录的人送回首页；目前只有 `/user/:username` 打了 `requiresAuth`
