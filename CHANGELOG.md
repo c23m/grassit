@@ -2,6 +2,23 @@
 
 只记项目的重要变更。需求见 [docs/planning.md](docs/planning.md)，现状与计划见 [docs/todo.md](docs/todo.md)，开发与协作规范见 [AGENTS.md](AGENTS.md)。
 
+## 0.0.4（2026-10-03）
+
+**登录态贯通前后端**
+
+- 路由守卫（`router/index.js`）：打 `meta.requiresAuth` 的页面未登录跳 `/login`；`login` / `register` 打 `meta.guestOnly`，已登录再访问送回首页
+- 启动时在守卫里 `await auth.restore()` 恢复登录态（幂等、并发共享同一次请求），首屏渲染前 user 已就位，不再闪「注册 | 登录」
+- 导航栏用户区 `NavAvatar`：已登录显示昵称、未登录显示登录入口（store 必须用 `storeToRefs` 取，否则刷新后界面不更新）；移动端菜单面板收进链接与用户入口
+- 导航栏摘掉 GitHub 链接（页脚已有）、页脚删掉「内容供个人学习交流使用」
+- 注册成功不自动登录，跳 `/login`；登录 / 注册的 409 与 422 报错转成人话显示
+- 退出登录接在调试页 `/playground`（正式入口等 0.2.x 的用户菜单）
+- `/user/:username` 打上 `meta.requiresAuth`，页面本身还是空壳（0.2.x 填）
+
+**工程**
+
+- 接入 Prettier 与 Black：根 `package.json` 提供 `format` / `format:check`，全仓样式统一为 2 空格（此前 4 空格），YAML 例外用双引号、行宽 120
+- `docs/` 重排为「根下 / `specs/` 领域规范 / `guides/` 临时指南 / `notes/` 学习与速查」，文档地图合并到 `docs/README.md`
+
 ## 0.0.3（2026-09-24）
 
 **认证**
