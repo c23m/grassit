@@ -1,89 +1,89 @@
 :root {
-    /* Basic */
+  /* Basic */
 
-    --text-weight-bold: 700;
-    --text-weight-normal: 400;
-    --text-weight-thin: 300;
+  --text-weight-bold: 700;
+  --text-weight-normal: 400;
+  --text-weight-thin: 300;
 
-    /* light-theme
+  /* light-theme
        取值来自 Tailwind 默认调色板（gray / blue / red / amber / green），
        灰色阶梯按“底色 → 正文 → 次要文字 → 边框”由强到弱排 */
-    color-scheme: light;
-    --color-bg-primary: #f3f4f6;
-    --color-bg-secondary: #e5e7eb;
-    --color-text-strong: #111827;
-    --color-text-default: #374151;
-    --color-text-weak: #6b7280;
-    --color-link: #2563eb;
-    --color-link-hover: #1d4ed8;
-    --color-border: #4b5563;
-    --color-shadow: rgba(0, 0, 0, 0.2);
-    --color-danger: #dc2626;
-    --color-danger-hover: #b91c1c;
-    --color-warning: #b45309;
-    --color-success: #15803d;
+  color-scheme: light;
+  --color-bg-primary: #f3f4f6;
+  --color-bg-secondary: #e5e7eb;
+  --color-text-strong: #111827;
+  --color-text-default: #374151;
+  --color-text-weak: #6b7280;
+  --color-link: #2563eb;
+  --color-link-hover: #1d4ed8;
+  --color-border: #4b5563;
+  --color-shadow: rgba(0, 0, 0, 0.2);
+  --color-danger: #dc2626;
+  --color-danger-hover: #b91c1c;
+  --color-warning: #b45309;
+  --color-success: #15803d;
 }
 
 :root.dark {
-    /* dark-theme */
-    color-scheme: dark;
-    --color-bg-primary: #111827;
-    --color-bg-secondary: #1f2937;
-    --color-text-strong: #f9fafb;
-    --color-text-default: #d1d5db;
-    --color-text-weak: #9ca3af;
-    --color-link: #60a5fa;
-    --color-link-hover: #93c5fd;
-    --color-border: #4b5563;
-    --color-shadow: rgba(255, 255, 255, 0.1);
-    --color-danger: #f87171;
-    --color-danger-hover: #fca5a5;
-    --color-warning: #fbbf24;
-    --color-success: #4ade80;
+  /* dark-theme */
+  color-scheme: dark;
+  --color-bg-primary: #111827;
+  --color-bg-secondary: #1f2937;
+  --color-text-strong: #f9fafb;
+  --color-text-default: #d1d5db;
+  --color-text-weak: #9ca3af;
+  --color-link: #60a5fa;
+  --color-link-hover: #93c5fd;
+  --color-border: #4b5563;
+  --color-shadow: rgba(255, 255, 255, 0.1);
+  --color-danger: #f87171;
+  --color-danger-hover: #fca5a5;
+  --color-warning: #fbbf24;
+  --color-success: #4ade80;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 
-    transition-property: color, background-color, border-color, box-shadow;
-    transition-duration: 0.2s;
-    transition-timing-function: ease;
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
 }
 
 html {
-    line-height: 1.5;
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-    font-family:
-        system-ui,
-        -apple-system,
-        'Segoe UI',
-        Roboto,
-        'Helvetica Neue',
-        sans-serif;
-    background-color: var(--color-bg-primary);
-    color: var(--color-text-default);
-    width: 100%;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-default);
+  width: 100%;
 }
 
 a {
-    text-decoration: none;
-    color: var(--color-link);
+  text-decoration: none;
+  color: var(--color-link);
 }
 
 a:hover {
-    text-decoration: underline;
-    color: var(--color-link-hover);
+  text-decoration: underline;
+  color: var(--color-link-hover);
 }
 
 ul,
 ol {
-    list-style: none;
+  list-style: none;
 }
 
 img,
@@ -91,23 +91,23 @@ picture,
 video,
 canvas,
 svg {
-    display: block;
-    max-width: 100%;
-    height: auto;
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 input,
 button,
 textarea,
 select {
-    font: inherit;
-    color: inherit;
+  font: inherit;
+  color: inherit;
 }
 
 button {
-    background: none;
-    border: none;
-    cursor: pointer;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 /* 禁用态不给"可点击"的手型：cursor 不受 :hover 影响，
@@ -116,28 +116,34 @@ button:disabled,
 input:disabled,
 textarea:disabled,
 select:disabled {
-    cursor: not-allowed;
+  cursor: not-allowed;
 }
 
 table {
-    border-collapse: collapse;
-    width: 100%;
+  border-collapse: collapse;
+  width: 100%;
 }
 
 fieldset {
-    border: none;
+  border: none;
 }
 
 .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* 竖线分隔符：| 这个字符在正文里又粗又高，压一档字重、换成次要文字色才像一条细线 */
+.divider {
+  font-weight: var(--text-weight-thin);
+  color: var(--color-text-weak);
 }
 
 /* basic */
@@ -147,13 +153,13 @@ h2,
 h3,
 h4,
 strong {
-    color: var(--color-text-strong);
-    font-weight: var(--text-weight-bold);
+  color: var(--color-text-strong);
+  font-weight: var(--text-weight-bold);
 }
 
 code,
 pre {
-    font-family: consolas, monospace;
+  font-family: consolas, monospace;
 }
 
 @media screen and (min-width: 1024px) {
