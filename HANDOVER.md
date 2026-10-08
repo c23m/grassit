@@ -5,16 +5,16 @@
 
 ## 现在在哪（2026-10-08）
 
-- 最新 tag 仍是 `v0.0.4`（鉴权与前端登录态）；**0.0.5（refresh token 闭环）代码已完成、验收已通过，但还没提交、没打 tag** —— 收尾只剩：提交 + 打 `v0.0.5` tag + 推送（提交要作者点头）
-- 0.0.5 的验收是在**真浏览器**里跑的（headless Chrome + CDP，方法见下）：登录后把 access token 换成真过期的 → `/auth/refresh` **1 次 200**、token 换新、页面保持登录态；token 有效时不误刷（0 次）；refresh 也过期时清空登录态并落到 `/login`
-- 工作区共 20 个文件改动（refresh 闭环 + 顺带的调试页合并、登出跳转规则、Home 推荐卡片、库账号约定），**全部未提交**；[CHANGELOG.md](CHANGELOG.md) 已记 0.0.5 一条
+- 最新 tag `v0.0.5`（refresh token 闭环），**已推送到 `origin/main`**；`backend/app/__init__.py` 的 `__version__` 也是 0.0.5（`GET /test` 返回的就是它）
+- **0.0.5 已验收并收尾**：验收是在**真浏览器**里跑的（headless Chrome + CDP，方法见下）——登录后把 access token 换成真过期的 → `/auth/refresh` **1 次 200**、token 换新、页面保持登录态；token 有效时不误刷（0 次）；refresh 也过期时清空登录态并落到 `/login`
+- 0.0.5 这一阶段 3 笔提交（`0.0.5：refresh token 闭环` → `调试页：/playground 与测试页合并为 Test` → `0.0.5：收尾——版本号、CHANGELOG、HANDOVER 与文档结构`）已推送；[CHANGELOG.md](CHANGELOG.md) 记了一条
 - 文档现状：`docs/` 为「根下（需求与版本规划）/ `specs/` 领域规范 / `guides/` 当前阶段在用 / `notes/` 学习与速查」，哪份管什么见 [docs/README.md](docs/README.md)。**当前开发版本的详细待办固定叫 [docs/guides/todo.md](docs/guides/todo.md)**（文件名不带版本号，收尾时改内容、不删文件），现已换成 **0.1.0 · MVP** 的内容；未来版本写在 [docs/planning.md](docs/planning.md) 的「九、版本规划」（原先的 `docs/todo.md` 已并进那里）
 - 本机有格式化工具：prettier 装在根目录（`npm run format` / `format:check`），Black 装在 `backend/.venv`（命令见 [AGENTS.md](AGENTS.md) 的"常用命令"，跑之前记得设 `BLACK_CACHE_DIR`，见下面的环境限制）
 
 ## 下一步（按顺序）
 
-1. **0.0.5 收尾**：提交（把 `backend/app/__init__.py` 的 `__version__` 跟到 `0.0.5`）、打 tag `v0.0.5`、推送
-2. **0.1.0 · MVP**：详细待办在 [docs/guides/todo.md](docs/guides/todo.md)。目标：注册 → 登录 → 发布文章 → 在首页列表与详情页读到它；`routers/article.py` 的写死样例与空实现就是要做实的地方
+1. **0.1.0 · MVP**：详细待办在 [docs/guides/todo.md](docs/guides/todo.md)。目标：注册 → 登录 → 发布文章 → 在首页列表与详情页读到它；`routers/article.py` 的写死样例与空实现就是要做实的地方
+2. 收尾习惯：验收通过 → 记 CHANGELOG → 更新本文件 → 把 `guides/todo.md` 换成下一版 → 打 tag → 提交并推送
 
 ## 接手前先知道的几件事
 
