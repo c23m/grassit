@@ -1,6 +1,8 @@
 # 前端页面与组件基准
 
-> 本文件是项目规范的一部分：前端页面与组件的**结构基准**，新增页面、改组件、加 props 之前先对齐这里。参考笔记都在 [docs/reference/](../reference/)，这边引用哪些见 [references.md](references.md)。
+> 状态：已定案 ｜ 前端页面与组件的结构基准：放哪、命名、导出、取数、样式、路由；另附页面清单
+
+> 本文件是项目规范的一部分：前端页面与组件的**结构基准**，新增页面、改组件、加 props 之前先对齐这里。参考笔记都在 [docs/notes/](../notes/)，文档地图见 [docs/README.md](../README.md)。
 > 内容以代码实测为准；发现代码与本文件不一致时先判断哪个是对的，再同步另一方。
 
 ## 约定
@@ -10,7 +12,7 @@
 - **导出**：`components/common/index.js` 只聚合与业务无关的基础件（当前是 `Button`、`Radio`、`TextInput`、`Textarea`、`Link`）；`Icon`、`Avatar`、`Aside` 这类按完整路径引。新组件先想清楚要不要进聚合入口。
 - **数据获取**：页面层用 `vue-request` 的 `useRequest` 或 `composables/useAsync`，不直接 import axios；所有请求走 `utils/request.js`（它负责带 token 和解包）。
 - **样式**：组件一律 `<style scoped>`，颜色尺寸取 `assets/styles/base.css` 里的 CSS 变量，不写死颜色。
-- **页面路由**：在 `router/index.js` 注册；受限页打 `meta.requiresAuth`，游客页（`login` / `register`）打 `meta.guestOnly`（守卫见 [router-guards.md](../reference/router-guards.md)）。
+- **页面路由**：在 `router/index.js` 注册；受限页打 `meta.requiresAuth`，游客页（`login` / `register`）打 `meta.guestOnly`（守卫见 [router-guards.md](../notes/router-guards.md)）。
 
 ## 页面（`views/`）
 
@@ -95,7 +97,7 @@
 - **职责边界**：只管内容长相（`.user` 的排列与链接配色），在哪儿出现由 `NavBar` 决定，自己不带媒体查询
 - **已定的布局**：宽度自适应；已登录时**只显示昵称**，未登录时显示「注册 | 登录」两个链接
 - **头像**：将来由头像取代昵称，但要先有后端的存储与上传（`users` 表还没有头像列），所以这一版先只显示昵称
-- **取 store 的写法**：必须走 `storeToRefs`，直接解构 `user` 会丢响应性（见 [../reference/pinia.md](../reference/pinia.md)）
+- **取 store 的写法**：必须走 `storeToRefs`，直接解构 `user` 会丢响应性（见 [../reference/pinia.md](../notes/pinia.md)）
 - **点击行为**：昵称链到用户主页 `/user/<username>`（路由已注册，页面还是 `Dashboard.vue` 空壳）；点它弹出的菜单（用户信息与登出）留到 0.2.x
 
 ### nav/NavSearch.vue

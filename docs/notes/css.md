@@ -1,7 +1,9 @@
 # CSS 速查
 
+> 用途：速查 ｜ 选择器与优先级、flex、单位、状态伪类、scoped 样式的命中规则
+
 > 参考笔记（学习用），不是项目规范。示例代码由 AI 生成、未经审阅，以实测与官方文档为准。
-> 语义标签、表单结构、可访问性见 [html-semantics.md](html-semantics.md)；组件结构基准见 [components.md](../frontend/components.md)。
+> 语义标签、表单结构、可访问性见 [html-semantics.md](html-semantics.md)；组件结构基准见 [components.md](../specs/components.md)。
 
 ## 本仓库的样式从哪来
 

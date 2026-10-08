@@ -1,5 +1,7 @@
 # 表单提交与错误处理速查
 
+> 生命周期：临时 ｜ 删除条件：Register 页完成（已完成，待删） ｜ AxiosError 的结构、FastAPI 的 409 与 422 两种 detail 怎么转人话
+
 > 参考笔记（学习用），不是项目规范。示例代码由 AI 生成、未经审阅，以实测与官方文档为准。
 > 错误码与字段限制对照 [planning.md](../planning.md)（7.4 错误码表、3.1 注册），接口行为对照 `backend/app/routers/auth.py`。
 

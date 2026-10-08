@@ -7,20 +7,17 @@
 
 - 最新 tag `v0.0.3`（登录签发 access token），已推送到 `origin/main`；`v0.0.3` 之后有一批提交还没打 tag
 - **0.0.4 · 鉴权与前端登录态：代码全部落地，等作者验收**（todo 那一节的勾已全部打上，验收后整节移入 CHANGELOG）
-- 工作区未提交：**25 个已改 + 7 个新文件**，混了三批东西 —— ① 接入 prettier / Black（18 个纯格式化文件 + 根 `package.json`、`.gitignore`、`backend/requirements-dev.txt`、`tools/`）；② 0.0.4 收尾代码；③ 文档（项目导读、简历、复核材料）。提交计划见"下一步"
+- 原先堆在工作区的那批已按三笔提交（`chore：接入 prettier 与 Black`、`0.0.4：前端登录态…`、`文档：项目知识导读…`），另有一笔 `文档：重组 docs 目录`；都只在本地，未推送
 - 本机从这一轮起有了格式化工具：prettier 装在根目录（`npm run format` / `format:check`），Black 装在 `backend/.venv`（命令见 [AGENTS.md](AGENTS.md) 的"常用命令"）
-- 文档现状：`docs/frontend/components.md` 仍是前端结构规范；**新增 [docs/reference/project-primer.md](docs/reference/project-primer.md)**（面向零基础的全项目知识导读，6 类 71 条，目录由 [tools/gen_toc.py](tools/gen_toc.py) 生成）；上一轮的 `0.0.4-review-primer.md` 已被它取代并删除
-- 本轮 AI 代写的代码逐条记在 [docs/frontend/ai-changes-0.0.4.md](docs/frontend/ai-changes-0.0.4.md)，供作者复核（包括"刷新后登录态没了"的完整排查过程）
+- 文档现状：前端结构规范在 `docs/specs/components.md`；`docs/` 已重排为「根下 / specs / guides / notes」，地图见 [docs/README.md](docs/README.md)；**新增 [docs/notes/project-primer.md](docs/notes/project-primer.md)**（面向零基础的全项目知识导读，6 类 71 条，目录由 [tools/gen_toc.py](tools/gen_toc.py) 生成）；上一轮的 `0.0.4-review-primer.md` 已被它取代并删除
+- 本轮 AI 代写的代码逐条记在 [docs/guides/ai-changes-0.0.4.md](docs/guides/ai-changes-0.0.4.md)，供作者复核（包括"刷新后登录态没了"的完整排查过程）
 
 ## 下一步（按顺序）
 
 1. **跑 0.0.4 验收**：dev server 当前是停的，先 `npm run dev`（后端也要起）。链路：注册新账号 → 登录 → 导航栏出现昵称 → **刷新后仍在登录态** → 未登录访问 `/user/<username>` 被拦回 `/login`；顺手看：已登录访问 `/login` 会不会被送回首页、窄屏（<768px）点菜单图标有没有面板、Playground 的退出登录好不好使
-2. **提交**（建议三笔，别混在一起）：
-   - `chore：接入 prettier 与 Black` —— 18 个纯格式化文件 + `package.json`、`package-lock.json`、`.gitignore`、`backend/requirements-dev.txt`、`tools/`
-   - `0.0.4：前端登录态、路由守卫与导航栏收尾` —— `router/index.js`、`main.js`、`stores/auth.js`、`NavBar.vue`、`NavAvatar.vue`、`Footer.vue`、`Playground.vue`、`base.css`、`BaseLayout.vue`
-   - `文档：项目知识导读与 0.0.4 复核材料` —— `docs/reference/project-primer.md`、`docs/frontend/ai-changes-0.0.4.md`、`docs/resume.md`、`AGENTS.md`、`docs/todo.md`、`HANDOVER.md`、两边 `references.md`、`components.md`
+2. ~~提交~~：已按三笔提交（格式统一 / 0.0.4 代码 / 文档），文档重组另成一笔；都在本地，未推送
 3. **收尾**：CHANGELOG 记一条（版号作标题）→ 从 [docs/todo.md](docs/todo.md) 移除 0.0.4 → 打 `v0.0.4` tag → 更新本文件"现在在哪"
-4. 顺手可做：`docs/frontend/auth-form-parts.md`、`form-errors.md` 是为登录 / 注册页写的，两页已落地，按"做完即删"删掉并同步 [frontend/references.md](docs/frontend/references.md)
+4. 顺手可做：`docs/guides/auth-form-parts.md`、`form-errors.md` 是为登录 / 注册页写的，两页已落地，按"做完即删"删掉并同步 [docs/README.md](docs/README.md)
 
 ## 接手前先知道的几件事
 

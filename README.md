@@ -37,17 +37,17 @@ npm run dev                          # http://localhost:5173，/api 代理到 80
 
 ## 文档
 
-| 文档                                 | 职责                                                           |
-| ------------------------------------ | -------------------------------------------------------------- |
-| [docs/planning.md](docs/planning.md) | 产品需求：目标与范围、用户、认证、文章、存储、接口、待定事项   |
-| [docs/todo.md](docs/todo.md)         | 现状与计划                                                     |
-| [AGENTS.md](AGENTS.md)               | 仓库规范：结构、命令、风格、协作分工、提交与版本               |
-| [HANDOVER.md](HANDOVER.md)           | 交接快照：当前进度、下一步做什么、已知不一致                   |
-| [CHANGELOG.md](CHANGELOG.md)         | 变更历史                                                       |
-| [docs/deploy.md](docs/deploy.md)     | 部署（尚未开始）                                               |
-| [docs/backend/](docs/backend/)       | 后端文档：规范、任务指南与引用说明                             |
-| [docs/frontend/](docs/frontend/)     | 前端文档：页面与组件基准、任务指南、引用说明                   |
-| [docs/reference/](docs/reference/)   | 参考件：速查与学习笔记，不绑任务（引用见两边 `references.md`） |
+| 文档                                 | 职责                                                         |
+| ------------------------------------ | ------------------------------------------------------------ |
+| [docs/planning.md](docs/planning.md) | 产品需求：目标与范围、用户、认证、文章、存储、接口、待定事项 |
+| [docs/todo.md](docs/todo.md)         | 现状与计划                                                   |
+| [AGENTS.md](AGENTS.md)               | 仓库规范：结构、命令、风格、协作分工、提交与版本             |
+| [HANDOVER.md](HANDOVER.md)           | 交接快照：当前进度、下一步做什么、已知不一致                 |
+| [CHANGELOG.md](CHANGELOG.md)         | 变更历史                                                     |
+| [docs/README.md](docs/README.md)     | 文档地图：每份文档管什么、现在能不能删                       |
+| [docs/specs/](docs/specs/)           | 领域规范与定案：前端结构基准、生产部署方案                   |
+| [docs/guides/](docs/guides/)         | 临时指南：跟着任务走，做完即删                               |
+| [docs/notes/](docs/notes/)           | 参考件：速查与学习笔记，不绑任务                             |
 
 ## 技术栈
 

@@ -1,7 +1,9 @@
 # 0.0.4 里 AI 代写的代码（待复核）
 
+> 生命周期：临时 ｜ 删除条件：作者复核完 0.0.4 后 ｜ AI 代写的代码清单，以及「刷新后登录态没了」的排查与修复记录
+
 > 用途：把 0.0.4 期间 AI 替作者写的代码、以及"刷新后登录态没了"这个问题的排查与修复过程记下来，供作者回头看。复核完按"做完即删"处理。
-> 规范看 [components.md](components.md)，速查与笔记见 [references.md](references.md)。**看代码前先过一遍 [../reference/project-primer.md](../reference/project-primer.md)**（整个项目的零基础知识导读，0.0.4 这轮用到的点都在里面）。写于 2026-10-02；结论以代码与实测为准。
+> 规范看 [components.md](../specs/components.md)，速查与笔记见 [notes/](../notes/)。**看代码前先过一遍 [project-primer.md](../notes/project-primer.md)**（整个项目的零基础知识导读，0.0.4 这轮用到的点都在里面）。写于 2026-10-02；结论以代码与实测为准。
 
 ## 一、AI 动手的代码
 
@@ -60,7 +62,7 @@ import { storeToRefs } from 'pinia'
 const { user } = storeToRefs(useAuthStore())
 ```
 
-这条**自己笔记里就写过**：[../reference/pinia.md](../reference/pinia.md) 第 44-52 行「解构会丢响应性」。注意 action 不受影响（`Login.vue` 里的 `const { login } = useAuthStore()` 是对的）。
+这条**自己笔记里就写过**：[../reference/pinia.md](../notes/pinia.md) 第 44-52 行「解构会丢响应性」。注意 action 不受影响（`Login.vue` 里的 `const { login } = useAuthStore()` 是对的）。
 
 ### 为什么现象那么拧巴
 
@@ -122,4 +124,4 @@ access token 15 分钟就过期，而 401 → `/auth/refresh` → 重放那条�
 ## 附：本次排查过的两个环境问题（与仓库代码无关）
 
 - **DSH 的 Open In → VS Code 打不开**：DSH 宿主进程自身带着 `ELECTRON_RUN_AS_NODE=1`（它自己是以 Node 模式起的），而 `dsh-subprocess` 的 `scrubbedParentEnv()` 只过滤 `*KEY*/*PASSWORD*/*SECRET*/*TOKEN*` 与 `DSH_*`，没过滤这个变量 → VS Code（Electron 应用）被当 Node 跑，`Code.exe <目录>` 变成"用 Node 执行该目录"，55ms 退出 code=1 → 界面报「打开失败，请重试」。IntelliJ IDEA、Git Bash、文件资源管理器不受影响；文件卡片那条路走系统 shell，由已在运行的 explorer 起 VS Code，所以是好的
-- **仓库部分文件的权限**：`docs/`、`CHANGELOG.md` 等归 `BUILTIN\Administrators`，`AGENTS.md`、`HANDOVER.md`、`docs/reference/` 归 `LAPTOP-MING725\CodexSandboxOffline`（另一个 agent 的沙箱账号）。受限沙箱下删 `docs/` 里的文件会被拒（缺"更改权限"一项，且所有者不是当前用户），临时放宽一次权限即可
+- **仓库部分文件的权限**：`docs/`、`CHANGELOG.md` 等归 `BUILTIN\Administrators`，`AGENTS.md`、`HANDOVER.md`、`docs/notes/`（当时叫 `docs/reference/`）归 `LAPTOP-MING725\CodexSandboxOffline`（另一个 agent 的沙箱账号）。受限沙箱下删 `docs/` 里的文件会被拒（缺"更改权限"一项，且所有者不是当前用户），临时放宽一次权限即可

@@ -1,5 +1,7 @@
 # SQLAlchemy 速查
 
+> 用途：通读 ｜ ORM 思路、Model、Engine 与 Session、CRUD、查询与表关系
+
 > 参考笔记（学习用），不是项目规范。示例代码由 AI 生成、未经审阅，以实测与官方文档为准。
 > 实测环境：SQLAlchemy 2.0.54 + asyncmy + MySQL 9.4，文中写法均已实际跑通。
 > 类型标注与 Pydantic 的对应关系见 [sqlalchemy-pydantic-types.md](sqlalchemy-pydantic-types.md)。

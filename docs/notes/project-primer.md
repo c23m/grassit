@@ -1,9 +1,11 @@
 # Grassit 项目知识导读
 
+> 用途：通读 ｜ 面向零基础的全项目知识导读：概述 / 前端 / 后端 / 部署 / 配置 / 工程与流程
+
 > 这份文档写给**完全零基础**的读者（也就是本项目的作者）：把仓库里真实用到的技术点，按「是什么 → 本项目哪里用到 → 坑 / 注意」讲一遍，让你能看懂代码、进而审查 AI 写的东西。
 > 用法：先读「概述」建立全局印象，再按需要跳读；每条都指到了具体文件，看文档时把文件一起打开效果最好。
 > 范围是**整个项目**（不止 0.0.4）。**以代码与实测为准**：本文由 AI 整理、未经审查，跟代码冲突的地方以代码为准；**还没做的一律标「计划中」**并指到 `docs/todo.md` 的对应版本。
-> 有些概念在这里只讲"是什么、在哪儿用"，细节展开见 `docs/reference/` 下已有的笔记，文中会给相对链接（例如 [pinia.md](pinia.md)）。
+> 有些概念在这里只讲"是什么、在哪儿用"，细节展开见 `docs/notes/` 下已有的笔记，文中会给相对链接（例如 [pinia.md](pinia.md)）。
 
 <!-- toc -->
 
@@ -131,7 +133,7 @@
 
 - **是什么**：Vue 是一个"用组件拼页面"的框架；**组件**就是一个可复用的页面零件；**单文件组件**指把它的逻辑（`<script>`）、结构（`<template>`）、样式（`<style>`）写在同一个 `.vue` 文件里。
 - **本项目**：`frontend/src/components/`（可复用零件）与 `frontend/src/views/`（整页）都是 `.vue` 文件；`<script setup>` 是 Vue 3 的简写写法，里面声明的变量可以直接在模板里用。
-- **注意**：本仓库的组件文件名用 PascalCase（如 `NavAvatar.vue`），页面文件放 `views/`、零件放 `components/`（见 [components.md](../frontend/components.md)）。
+- **注意**：本仓库的组件文件名用 PascalCase（如 `NavAvatar.vue`），页面文件放 `views/`、零件放 `components/`（见 [components.md](../specs/components.md)）。
 
 ### 模板语法：插值、条件、循环、绑定
 
@@ -155,7 +157,7 @@
 
 - **是什么**：组件多了要分目录，否则找不到东西。
 - **本项目**：`components/common/`（按钮、输入框、链接、图标这类通用零件）、`components/layouts/`（页面骨架：`BaseLayout.vue` 与 `Footer.vue`）、`components/layouts/nav/`（导航栏相关：`NavBar.vue`、`NavAvatar.vue`、还没写的 `NavSearch.vue`）、`components/misc/`（业务相关的小卡片）、`views/`（一整页）；另外 `composables/` 放可复用的逻辑函数。
-- **注意**：加页面、改组件前先对齐 [components.md](../frontend/components.md)，它就是这个仓库的结构基准。
+- **注意**：加页面、改组件前先对齐 [components.md](../specs/components.md)，它就是这个仓库的结构基准。
 
 ### 页面切换：前端路由
 
@@ -203,7 +205,7 @@
 
 - **是什么**：浏览器表单的默认行为是整页刷新，所以要用 `@submit.prevent` 拦住自己处理；校验分"提交时校验"和"失焦/输入时实时校验"两种时机。
 - **本项目**：`frontend/src/views/Login.vue`、`frontend/src/views/Register.vue`（失焦与实时校验、有错时禁用提交）、`frontend/src/components/common/TextInput.vue`。
-- **注意**：后端返回的错误要**转成人话**分两种：409（冲突，比如用户名已存在）与 422（字段格式不对），结构不同，见 [form-errors.md](../frontend/form-errors.md)。
+- **注意**：后端返回的错误要**转成人话**分两种：409（冲突，比如用户名已存在）与 422（字段格式不对），结构不同，见 [form-errors.md](../guides/form-errors.md)。
 
 ### 样式隔离：scoped 与 CSS 变量
 
@@ -325,7 +327,7 @@
 
 - **是什么**：`409 Conflict` 表示"数据没错，但跟现有数据冲突"（用户名、邮箱已存在）；`422` 表示"数据格式/取值不合规"（pydantic 校验失败，会自动带上哪个字段错在哪）。
 - **本项目**：`backend/app/routers/auth.py` 的 `register` 主动查重抛 409，并用 `IntegrityError` 兜底回滚（并发时数据库唯一约束会拦住）；422 由 pydantic 自动产生。
-- **注意**：这两种错误的响应结构不同，前端处理时要分开找人话文案，见 [form-errors.md](../frontend/form-errors.md)。
+- **注意**：这两种错误的响应结构不同，前端处理时要分开找人话文案，见 [form-errors.md](../guides/form-errors.md)。
 
 ### refresh token 与 HttpOnly Cookie
 
@@ -336,14 +338,14 @@
 ### 为什么这里看不到 CORS 配置
 
 - **是什么**：浏览器有**同源策略**，网页默认不能随便请求别的域名/端口的接口；服务器要用 CORS 响应头明确允许，跨域请求才会被放行。
-- **本项目**：`backend/app/main.py` 里没有 CORS 中间件 —— 因为开发时浏览器只跟 Vite（5173）说话、由 Vite 代理转发到后端；生产则由 nginx 反代（见 [deploy.md](../deploy.md)），对浏览器而言始终是**同源**。
+- **本项目**：`backend/app/main.py` 里没有 CORS 中间件 —— 因为开发时浏览器只跟 Vite（5173）说话、由 Vite 代理转发到后端；生产则由 nginx 反代（见 [deploy.md](../specs/deploy.md)），对浏览器而言始终是**同源**。
 - **注意**：哪天让前端直连 `http://127.0.0.1:8000`（不走代理），就必须回来加 CORS 配置了。
 
 ### 静态资源与 PUBLIC_DIR
 
 - **是什么**：头像、附件这类文件不走接口，而是由后端当成静态目录直接对外的 URL 提供。
 - **本项目**：`backend/app/main.py` 用 `StaticFiles` 把 `PUBLIC_DIR`（`backend/.env` 里配成 `./public`，目录是 `backend/public/`）挂到 `/public` 路径；相对路径以 `backend/` 为准，不依赖启动目录。
-- **注意**：该目录**必须存在**，否则 FastAPI 启动就报错（`backend/Dockerfile` 里专门 `mkdir -p /app/public` 就是为了这个）；目录规划见 [deploy.md](../deploy.md)。
+- **注意**：该目录**必须存在**，否则 FastAPI 启动就报错（`backend/Dockerfile` 里专门 `mkdir -p /app/public` 就是为了这个）；目录规划见 [deploy.md](../specs/deploy.md)。
 
 ### 异步红线：async def 里不能写阻塞代码
 
@@ -369,7 +371,7 @@
 
 - **是什么**：Dockerfile 是一份"怎么造镜像"的配方：基础镜像 → 设置工作目录 → 拷依赖清单 → 装依赖 → 拷代码 → 声明端口 → 启动命令。
 - **本项目**：`backend/Dockerfile`（`python:3.12-slim`，`pip install -r requirements.txt`，`mkdir -p /app/public`，`CMD uvicorn ...`）；`frontend/Dockerfile`（`node:22-alpine`，`npm ci`，`CMD npm run dev -- --host 0.0.0.0`）。
-- **注意**：两个 Dockerfile 都是**开发用**的（前端跑的是 dev server 而不是构建产物）；生产形态见 [deploy.md](../deploy.md)，**未开始**。
+- **注意**：两个 Dockerfile 都是**开发用**的（前端跑的是 dev server 而不是构建产物）；生产形态见 [deploy.md](../specs/deploy.md)，**未开始**。
 
 ### docker-compose：一条命令起三个服务
 
@@ -386,7 +388,7 @@
 ### 还没有的东西：生产部署与 CI
 
 - **是什么**：把项目放到公网服务器上跑（域名、HTTPS、反代、进程守护）叫生产部署；让机器自动跑检查/构建/测试叫 **CI**（持续集成）。
-- **本项目**：目前只有本地 compose；生产方案（nginx 反代 `/api` 与 `/public`、HTTPS、生产 compose）写在 [deploy.md](../deploy.md) 里，状态是**未开始**，排在 **0.1.2**；仓库里**没有任何 CI 配置**。
+- **本项目**：目前只有本地 compose；生产方案（nginx 反代 `/api` 与 `/public`、HTTPS、生产 compose）写在 [deploy.md](../specs/deploy.md) 里，状态是**未开始**，排在 **0.1.2**；仓库里**没有任何 CI 配置**。
 - **注意**：文档里提到的部署架构都是**规划**，不是现状 —— 别照着它以为线上已经有东西。
 
 ### 上线前要删的调试页
@@ -425,7 +427,7 @@
 
 - **是什么**：开发时前端的 `/api` 请求要转发到后端，转发目标用变量配置，方便在不同环境换地址。
 - **本项目**：`frontend/vite.config.js` 里优先读 `VITE_PROXY_TARGET`，没有则用 `http://localhost:8000`；compose 里把它设成 `http://backend:8000`（容器网络里的服务名）。
-- **注意**：生产环境不靠 Vite 代理，而是 nginx 反代 —— 见 [deploy.md](../deploy.md)。
+- **注意**：生产环境不靠 Vite 代理，而是 nginx 反代 —— 见 [deploy.md](../specs/deploy.md)。
 
 ### 代码风格：Prettier 与 Black
 
@@ -474,8 +476,8 @@
 ### docs/ 的职责划分
 
 - **是什么**：文档按"职责单一、内容不重复"分家，各自回答不同的问题：想做什么 / 下一步做什么 / 现在到哪了 / 已经做了什么。
-- **本项目**：`docs/planning.md`（产品需求）、`docs/todo.md`（版本规划与验收标准，只留未完成的版本）、[HANDOVER.md](../../HANDOVER.md)（交接快照：现在在哪、下一步做什么）、[CHANGELOG.md](../../CHANGELOG.md)（已完成版本）、`docs/reference/`（不绑任务的速查与学习笔记）、`docs/frontend/` 与 `docs/backend/`（当前任务的规范与指南，**做完就删**）。
-- **注意**：`docs/reference/` 里的笔记**不是规范**，结论以代码和实测为准；两边的 `references.md` 说明各自引用了哪些参考件。
+- **本项目**：`docs/planning.md`（产品需求）、`docs/todo.md`（版本规划与验收标准，只留未完成的版本）、[HANDOVER.md](../../HANDOVER.md)（交接快照：现在在哪、下一步做什么）、[CHANGELOG.md](../../CHANGELOG.md)（已完成版本）、`docs/notes/`（不绑任务的速查与学习笔记）、`docs/specs/`（领域规范，会越写越细）、`docs/guides/`（当前任务的指南，**做完就删**）。
+- **注意**：`docs/notes/` 里的笔记**不是规范**，结论以代码和实测为准；哪份文件管什么见 [docs/README.md](../README.md)。
 
 ### AGENTS.md：人和 AI 共用的一套规则
 

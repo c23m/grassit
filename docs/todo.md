@@ -8,7 +8,7 @@
 
 让登录状态贯通前后端：用户能在浏览器里注册、登录，并看到自己的登录状态。后端部分已在 0.0.3 完成。
 
-学习内容：Pinia 状态持久化、前端路由守卫、表单与事件处理（要看的笔记列在 [frontend/references.md](frontend/references.md)）。
+学习内容：Pinia 状态持久化、前端路由守卫、表单与事件处理（要看的笔记列在文档地图 [README.md](README.md)，速查那几条）。
 
 **页面**（都已完成）
 
@@ -24,7 +24,7 @@
 
 **导航栏与页脚**（都已完成）
 
-布局与间距的定案见 [frontend/components.md](frontend/components.md)。
+布局与间距的定案见 [frontend/components.md](specs/components.md)。
 
 - [x] 摘掉导航栏那个 GitHub 链接（页脚已经放了）
 - [x] 移动端菜单面板：链接与用户入口收进 `.menu`，`menuOpen` 现在真的渲染
@@ -81,7 +81,7 @@
 
 ### 0.1.2 · 部署
 
-见 [deploy.md](deploy.md)。
+见 [deploy.md](specs/deploy.md)。
 
 学习内容：Nginx 反向代理与静态资源、HTTPS、进程管理。
 

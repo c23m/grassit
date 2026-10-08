@@ -56,7 +56,7 @@ VITE_API_BASE_URL
 VITE_APP_TITLE
 ```
 
-改动后请更新 [CHANGELOG](../CHANGELOG.md)。
+改动后请更新 [CHANGELOG](../../CHANGELOG.md)。
 
 ## 容器
 

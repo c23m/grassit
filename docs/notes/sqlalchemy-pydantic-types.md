@@ -1,5 +1,7 @@
 # SQLAlchemy / Pydantic 类型对照
 
+> 用途：速查 ｜ SQLAlchemy 字段类型与 Pydantic 类型的对应关系
+
 > 参考笔记（学习用），不是项目规范。
 
 分三层：**数据库列类型**、**ORM 类型标注**、**Pydantic 类型**。email 在数据库层就是普通字符串，只在 Pydantic 层有特殊格式。
