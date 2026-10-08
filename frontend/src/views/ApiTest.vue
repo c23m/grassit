@@ -59,7 +59,7 @@
 </script>
 
 <template>
-    <!-- <div class="container">
+  <!-- <div class="container">
         <form @submit.prevent="refresh">
             <h2>测试表单</h2>
             <fieldset>
@@ -118,71 +118,71 @@
 
 <style scoped>
 h3 {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 h4 {
-    display: inline;
-    margin-right: auto;
+  display: inline;
+  margin-right: auto;
 }
 
 .container {
-    display: flex;
-    padding: 40px;
+  display: flex;
+  padding: 40px;
 }
 
 form {
-    width: 50vw;
-    padding: 1em;
+  width: 50vw;
+  padding: 1em;
 }
 
 fieldset {
-    padding: 1em 0;
-    width: 600px;
-    margin: 20px 0;
+  padding: 1em 0;
+  width: 600px;
+  margin: 20px 0;
 }
 
 legend {
-    padding: 0 10px;
-    display: flex;
-    width: 600px;
-    gap: 30px;
+  padding: 0 10px;
+  display: flex;
+  width: 600px;
+  gap: 30px;
 }
 
 legend button {
-    padding: 5px 10px;
+  padding: 5px 10px;
 }
 
 .method label {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .target {
-    font-family: 'consolas';
-    width: 600px;
+  font-family: 'consolas';
+  width: 600px;
 }
 
 .request-body {
-    width: 600px;
-    height: 200px;
+  width: 600px;
+  height: 200px;
 }
 
 .buttons {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .error {
-    color: red;
+  color: red;
 }
 
 .query {
-    padding: 20px;
+  padding: 20px;
 }
 
 pre {
-    font-family: 'consolas';
-    white-space: pre-wrap;
-    word-wrap: break-word;
+  font-family: 'consolas';
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 </style>

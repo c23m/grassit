@@ -5,31 +5,31 @@
 
 ## 本仓库的样式从哪来
 
-| 文件                         | 内容                                         | 谁导入                       |
-| ---------------------------- | -------------------------------------------- | ---------------------------- |
-| `assets/styles/base.css`     | reset + 配色变量（`:root` / `:root.dark`）    | `main.js`（全局）            |
-| `assets/styles/markdown.css` | 文章正文排版，规则都挂在 `.markdown-body` 下  | `main.js`（全局，0.1.0 启用） |
-| 组件里的 `<style scoped>`    | 单个组件的样式                               | 组件自己                     |
+| 文件                         | 内容                                         | 谁导入                        |
+| ---------------------------- | -------------------------------------------- | ----------------------------- |
+| `assets/styles/base.css`     | reset + 配色变量（`:root` / `:root.dark`）   | `main.js`（全局）             |
+| `assets/styles/markdown.css` | 文章正文排版，规则都挂在 `.markdown-body` 下 | `main.js`（全局，0.1.0 启用） |
+| 组件里的 `<style scoped>`    | 单个组件的样式                               | 组件自己                      |
 
 `base.css` 由 `main.js` 全局导入，所有页面都能拿到那套变量；暗色是给 `<html>` 加 `class="dark"`（`NavBar.vue` 里的 `useDark()`），对应 `:root.dark`。
 
 配色变量：
 
-| 变量                    | 亮色                 | 暗色                   | 用途                 |
-| ----------------------- | -------------------- | ---------------------- | -------------------- |
-| `--color-bg-primary`    | `#f3f4f6`            | `#111827`              | 页面底色             |
-| `--color-bg-secondary`  | `#e5e7eb`            | `#1f2937`              | 输入框、卡片         |
-| `--color-text-strong`   | `#111827`            | `#f9fafb`              | 标题                 |
-| `--color-text-default`  | `#374151`            | `#d1d5db`              | 正文                 |
-| `--color-text-weak`     | `#6b7280`            | `#9ca3af`              | 次要文字、占位符     |
-| `--color-border`        | `#4b5563`            | `#4b5563`              | 边框、禁用态底色     |
-| `--color-link`          | `#2563eb`            | `#60a5fa`              | 链接、主按钮         |
-| `--color-link-hover`    | `#1d4ed8`            | `#93c5fd`              | 链接的 hover         |
-| `--color-danger`        | `#dc2626`            | `#f87171`              | 错误、删除           |
-| `--color-danger-hover`  | `#b91c1c`            | `#fca5a5`              | 危险按钮的 hover     |
-| `--color-warning`       | `#b45309`            | `#fbbf24`              | 警告                 |
-| `--color-success`       | `#15803d`            | `#4ade80`              | 成功                 |
-| `--color-shadow`        | `rgba(0, 0, 0, 0.2)` | `rgba(255, 255, 255, 0.1)` | 阴影             |
+| 变量                   | 亮色                 | 暗色                       | 用途             |
+| ---------------------- | -------------------- | -------------------------- | ---------------- |
+| `--color-bg-primary`   | `#f3f4f6`            | `#111827`                  | 页面底色         |
+| `--color-bg-secondary` | `#e5e7eb`            | `#1f2937`                  | 输入框、卡片     |
+| `--color-text-strong`  | `#111827`            | `#f9fafb`                  | 标题             |
+| `--color-text-default` | `#374151`            | `#d1d5db`                  | 正文             |
+| `--color-text-weak`    | `#6b7280`            | `#9ca3af`                  | 次要文字、占位符 |
+| `--color-border`       | `#4b5563`            | `#4b5563`                  | 边框、禁用态底色 |
+| `--color-link`         | `#2563eb`            | `#60a5fa`                  | 链接、主按钮     |
+| `--color-link-hover`   | `#1d4ed8`            | `#93c5fd`                  | 链接的 hover     |
+| `--color-danger`       | `#dc2626`            | `#f87171`                  | 错误、删除       |
+| `--color-danger-hover` | `#b91c1c`            | `#fca5a5`                  | 危险按钮的 hover |
+| `--color-warning`      | `#b45309`            | `#fbbf24`                  | 警告             |
+| `--color-success`      | `#15803d`            | `#4ade80`                  | 成功             |
+| `--color-shadow`       | `rgba(0, 0, 0, 0.2)` | `rgba(255, 255, 255, 0.1)` | 阴影             |
 
 值取自 Tailwind 的默认调色板（gray / blue / red / amber / green）；`--text-weight-*` 是字重不是颜色，所以不带 `--color-` 前缀。一对"本色 / hover"只差亮度（同色相同饱和度，亮色调暗、暗色调亮），所以 hover 不会看起来是另一种颜色。
 
@@ -37,12 +37,12 @@
 
 ## 选择器与优先级
 
-| 写法             | 优先级权重 | 例                             |
-| ---------------- | ---------- | ------------------------------ |
-| 元素 / 伪元素    | (0,0,1)    | `label`、`::placeholder`       |
+| 写法             | 优先级权重 | 例                               |
+| ---------------- | ---------- | -------------------------------- |
+| 元素 / 伪元素    | (0,0,1)    | `label`、`::placeholder`         |
 | 类 / 属性 / 伪类 | (0,1,0)    | `.field`、`[disabled]`、`:hover` |
-| id               | (1,0,0)    | `#app`                         |
-| 行内 style       | (1,0,0,0)  | `style="..."`                  |
+| id               | (1,0,0)    | `#app`                           |
+| 行内 style       | (1,0,0,0)  | `style="..."`                    |
 
 - 权重相同则**后写的赢**（同一文件里往下写、或后导入的文件）
 - 后代选择器把各段权重相加：`.form label input` = (0,2,2)
@@ -54,7 +54,7 @@
 ```css
 /* base.css 里已经全局设过 */
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 ```
 
@@ -65,23 +65,23 @@
 
 ## display 常用值
 
-| 值             | 特点                                                     |
-| -------------- | -------------------------------------------------------- |
-| `block`        | 独占一行，可设宽高                                        |
-| `inline`       | 跟着文字排，**设 width/height 无效**，上下 margin 无效     |
-| `inline-block` | 像文字一样排列，但可以设宽高（`text-align` 能居中它）      |
-| `flex`         | 自己变弹性容器，子元素按主轴排列                           |
-| `grid`         | 二维网格，做整页布局时用                                   |
-| `none`         | 从布局里彻底移除（对比 `visibility: hidden` 仍占位）       |
+| 值             | 特点                                                   |
+| -------------- | ------------------------------------------------------ |
+| `block`        | 独占一行，可设宽高                                     |
+| `inline`       | 跟着文字排，**设 width/height 无效**，上下 margin 无效 |
+| `inline-block` | 像文字一样排列，但可以设宽高（`text-align` 能居中它）  |
+| `flex`         | 自己变弹性容器，子元素按主轴排列                       |
+| `grid`         | 二维网格，做整页布局时用                               |
+| `none`         | 从布局里彻底移除（对比 `visibility: hidden` 仍占位）   |
 
 ## 居中
 
-| 目标                       | 写法                                                                  |
-| -------------------------- | --------------------------------------------------------------------- |
-| 行内内容横向居中           | 父元素 `text-align: center`                                           |
-| 有确定宽度的块横向居中     | 自己 `width: 300px; margin: 0 auto`                                    |
-| 任意内容水平 + 垂直居中     | 父元素 `display: flex; justify-content: center; align-items: center`   |
-| 单行文字在盒子里垂直居中   | `line-height` 等于盒子高度，或直接用 flex                              |
+| 目标                     | 写法                                                                 |
+| ------------------------ | -------------------------------------------------------------------- |
+| 行内内容横向居中         | 父元素 `text-align: center`                                          |
+| 有确定宽度的块横向居中   | 自己 `width: 300px; margin: 0 auto`                                  |
+| 任意内容水平 + 垂直居中  | 父元素 `display: flex; justify-content: center; align-items: center` |
+| 单行文字在盒子里垂直居中 | `line-height` 等于盒子高度，或直接用 flex                            |
 
 `text-align: center` 只能影响**行内级**子元素；`inline-block` 算行内级，所以给父元素设 `text-align: center` 能把它推到中间——这是"居中一个表单"最省事的写法。
 
@@ -89,17 +89,17 @@
 
 ```css
 .row {
-    display: flex;
-    flex-direction: row; /* 默认；主轴 = 水平 */
-    gap: 0.75rem; /* 子元素之间的间距 */
-    align-items: center; /* 交叉轴（这里 = 垂直）对齐 */
-    justify-content: space-between; /* 主轴（这里 = 水平）分配 */
+  display: flex;
+  flex-direction: row; /* 默认；主轴 = 水平 */
+  gap: 0.75rem; /* 子元素之间的间距 */
+  align-items: center; /* 交叉轴（这里 = 垂直）对齐 */
+  justify-content: space-between; /* 主轴（这里 = 水平）分配 */
 }
 
 .col {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 ```
 
@@ -114,22 +114,22 @@ flex 是"一维"（只管一行或一列），grid 是"二维"（行列一起定
 
 ```css
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
 }
 ```
 
-| 写法                                       | 作用                                             |
-| ------------------------------------------ | ------------------------------------------------ |
-| `grid-template-columns: 200px 1fr`         | 固定 200px + 剩余空间，两列                        |
-| `grid-template-columns: repeat(3, 1fr)`    | 三等分                                           |
-| `repeat(auto-fill, minmax(240px, 1fr))`    | 每列至少 240px，不够就自动换行（卡片墙）           |
-| `grid-template-rows`                       | 行高，省略时由内容撑开                            |
-| `gap: 1rem` / `gap: 1rem 2rem`             | 行列间距 / 行距 列距                              |
-| `grid-column: span 2`                      | 某个子项横跨两列                                  |
-| `place-items: center`                      | `align-items` + `justify-items` 的简写            |
-| `grid-template-areas`                      | 用名字划区域，适合整页骨架                        |
+| 写法                                    | 作用                                     |
+| --------------------------------------- | ---------------------------------------- |
+| `grid-template-columns: 200px 1fr`      | 固定 200px + 剩余空间，两列              |
+| `grid-template-columns: repeat(3, 1fr)` | 三等分                                   |
+| `repeat(auto-fill, minmax(240px, 1fr))` | 每列至少 240px，不够就自动换行（卡片墙） |
+| `grid-template-rows`                    | 行高，省略时由内容撑开                   |
+| `gap: 1rem` / `gap: 1rem 2rem`          | 行列间距 / 行距 列距                     |
+| `grid-column: span 2`                   | 某个子项横跨两列                         |
+| `place-items: center`                   | `align-items` + `justify-items` 的简写   |
+| `grid-template-areas`                   | 用名字划区域，适合整页骨架               |
 
 - `fr` 表示"剩余空间里的一份"，只在这个容器内有效
 - 子项默认一格占一格，不用给它们写宽度
@@ -137,41 +137,41 @@ flex 是"一维"（只管一行或一列），grid 是"二维"（行列一起定
 
 ## 尺寸与间距单位
 
-| 单位         | 相对谁                    | 什么时候用                          |
-| ------------ | ------------------------- | ----------------------------------- |
-| `px`         | 绝对                      | 边框、细线、输入框宽度这类固定尺寸  |
-| `rem`        | 根元素字号（默认 16px）   | 间距、字号（随用户设置缩放，首选）  |
-| `em`         | 自身字号（嵌套会累积）    | 少用，容易越套越大                  |
-| `%`          | 父容器对应尺寸            | 宽度；高度百分比需要父级有确定高度  |
-| `vw` / `vh`  | 视口宽 / 高               | 整屏布局                            |
+| 单位        | 相对谁                  | 什么时候用                         |
+| ----------- | ----------------------- | ---------------------------------- |
+| `px`        | 绝对                    | 边框、细线、输入框宽度这类固定尺寸 |
+| `rem`       | 根元素字号（默认 16px） | 间距、字号（随用户设置缩放，首选） |
+| `em`        | 自身字号（嵌套会累积）  | 少用，容易越套越大                 |
+| `%`         | 父容器对应尺寸          | 宽度；高度百分比需要父级有确定高度 |
+| `vw` / `vh` | 视口宽 / 高             | 整屏布局                           |
 
 - `clamp(min, 理想值, max)` 可以做弹性尺寸：`font-size: clamp(1rem, 2.5vw, 1.5rem)`
 - `calc()` 可以混算不同单位：`width: calc(100% - 2rem)`
 
 ## 常用属性速查
 
-| 属性                                              | 说明                                                                 |
-| ------------------------------------------------- | -------------------------------------------------------------------- |
-| `margin` / `padding`                              | 简写按「上 右 下 左」；两个值时 = 上下、左右；`margin: 0 auto` 左右自动 |
-| `border`                                          | `border: 2px solid var(--color-border)`，简写顺序 宽 样式 颜色         |
-| `border-radius`                                   | 圆角，`50%` 是正圆（配合等宽高）                                       |
-| `box-shadow`                                      | 阴影，`0 2px 8px var(--color-shadow)`                                 |
-| `overflow`                                        | `hidden` 裁剪、`auto` 需要时才出滚动条                                |
-| `max-width`                                       | 比 `width` 更好用，小屏自动收缩                                       |
-| `opacity`                                         | 整体透明度，子元素跟着变                                              |
-| `cursor`                                          | `pointer` 表示可点                                                    |
-| `line-height`                                     | 行高，无单位时表示倍数（如 `1.5`）                                    |
-| `text-align`                                      | 行内内容的水平对齐                                                    |
-| `white-space`                                     | `nowrap` 不换行                                                       |
-| `transition`                                      | `background-color 0.2s ease`                                          |
+| 属性                 | 说明                                                                    |
+| -------------------- | ----------------------------------------------------------------------- |
+| `margin` / `padding` | 简写按「上 右 下 左」；两个值时 = 上下、左右；`margin: 0 auto` 左右自动 |
+| `border`             | `border: 2px solid var(--color-border)`，简写顺序 宽 样式 颜色          |
+| `border-radius`      | 圆角，`50%` 是正圆（配合等宽高）                                        |
+| `box-shadow`         | 阴影，`0 2px 8px var(--color-shadow)`                                   |
+| `overflow`           | `hidden` 裁剪、`auto` 需要时才出滚动条                                  |
+| `max-width`          | 比 `width` 更好用，小屏自动收缩                                         |
+| `opacity`            | 整体透明度，子元素跟着变                                                |
+| `cursor`             | `pointer` 表示可点                                                      |
+| `line-height`        | 行高，无单位时表示倍数（如 `1.5`）                                      |
+| `text-align`         | 行内内容的水平对齐                                                      |
+| `white-space`        | `nowrap` 不换行                                                         |
+| `transition`         | `background-color 0.2s ease`                                            |
 
 单行文本溢出显示省略号，三个属性缺一不可（并且盒子要有确定宽度）：
 
 ```css
 .title {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 ```
 
@@ -187,25 +187,25 @@ flex 是"一维"（只管一行或一列），grid 是"二维"（行列一起定
 
 ## 状态伪类
 
-| 伪类                         | 命中时机                       |
-| ---------------------------- | ------------------------------ |
-| `:hover` / `:active`         | 悬停 / 按下                    |
-| `:focus` / `:focus-visible`  | 获得焦点 / 键盘导航获得焦点    |
-| `:disabled` / `:checked`     | 禁用 / 勾选                    |
-| `:first-child` / `:last-child` | 第一个 / 最后一个子元素      |
-| `:nth-child(2n)`             | 偶数位子元素                   |
-| `:not(.x)`                   | 排除                         |
+| 伪类                           | 命中时机                    |
+| ------------------------------ | --------------------------- |
+| `:hover` / `:active`           | 悬停 / 按下                 |
+| `:focus` / `:focus-visible`    | 获得焦点 / 键盘导航获得焦点 |
+| `:disabled` / `:checked`       | 禁用 / 勾选                 |
+| `:first-child` / `:last-child` | 第一个 / 最后一个子元素     |
+| `:nth-child(2n)`               | 偶数位子元素                |
+| `:not(.x)`                     | 排除                        |
 
 ## CSS 变量
 
 ```css
 :root {
-    --gap: 1rem;
+  --gap: 1rem;
 }
 
 .card {
-    padding: var(--gap);
-    color: var(--color-text-default, #374151); /* 第二个参数是兜底值 */
+  padding: var(--gap);
+  color: var(--color-text-default, #374151); /* 第二个参数是兜底值 */
 }
 ```
 
@@ -217,7 +217,7 @@ flex 是"一维"（只管一行或一列），grid 是"二维"（行列一起定
 
 ```css
 .btn {
-    transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 ```
 
@@ -228,9 +228,9 @@ flex 是"一维"（只管一行或一列），grid 是"二维"（行列一起定
 
 ```css
 @media (max-width: 600px) {
-    .form {
-        padding: 1rem;
-    }
+  .form {
+    padding: 1rem;
+  }
 }
 ```
 

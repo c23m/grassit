@@ -19,27 +19,27 @@ import { defineStore } from 'pinia'
 import { getMe } from '@/api/auth'
 
 export const useAuthStore = defineStore('auth', () => {
-    const user = ref(null)
+  const user = ref(null)
 
-    const isLoggedIn = computed(() => user.value !== null)
+  const isLoggedIn = computed(() => user.value !== null)
 
-    const fetchMe = async () => {
-        user.value = await getMe()
-    }
+  const fetchMe = async () => {
+    user.value = await getMe()
+  }
 
-    return { user, isLoggedIn, fetchMe }
+  return { user, isLoggedIn, fetchMe }
 })
 ```
 
 几个容易混的点：
 
-| 事项                          | 说明                                                             |
-| ----------------------------- | ---------------------------------------------------------------- |
-| 返回值即接口                  | `return` 出去的东西才是 store 暴露的，没 return 的变量外部看不到 |
-| 不是 `.value`                 | 组件里写 `store.user` 拿到的是解包后的值，store 内部照常写 `.value` |
-| ref → state、computed → getter | 这只是分类，用起来都是普通属性                                   |
-| 没有 `this`                   | setup 风格里 action 之间直接互相调用函数名                       |
-| 懒加载                        | `useAuthStore()` 第一次被调用时才创建 store 实例                 |
+| 事项                           | 说明                                                                |
+| ------------------------------ | ------------------------------------------------------------------- |
+| 返回值即接口                   | `return` 出去的东西才是 store 暴露的，没 return 的变量外部看不到    |
+| 不是 `.value`                  | 组件里写 `store.user` 拿到的是解包后的值，store 内部照常写 `.value` |
+| ref → state、computed → getter | 这只是分类，用起来都是普通属性                                      |
+| 没有 `this`                    | setup 风格里 action 之间直接互相调用函数名                          |
+| 懒加载                         | `useAuthStore()` 第一次被调用时才创建 store 实例                    |
 
 ### 解构会丢响应性
 
@@ -71,13 +71,13 @@ token.value = '' // 写回空字符串
 
 实测（@vueuse/core 14.4.0）几个值得知道的行为：
 
-| 行为             | 说明                                                                                                                                                        |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 同页面多实例同步 | 写值时会 `window.dispatchEvent(new StorageEvent('storage', ...))`，所以**同一个 key 的多个 ref 会互相同步**，不必自己加 watch                               |
-| 跨标签页同步     | 靠浏览器原生的 `storage` 事件，默认开启                                                                                                                     |
-| 写 null          | 赋 `null` / `undefined` 会走 `removeItem`，不会留下字符串 `"null"`                                                                                           |
-| 自动序列化       | 按初始值的类型挑序列化器：初始值 `''` 存字符串，初始值 `0` 存数字                                                                                            |
-| 同步 API         | localStorage 读写是同步的，只适合放小数据；同源脚本都能读到，别放长期有效的敏感凭据                                                                           |
+| 行为             | 说明                                                                                                                          |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 同页面多实例同步 | 写值时会 `window.dispatchEvent(new StorageEvent('storage', ...))`，所以**同一个 key 的多个 ref 会互相同步**，不必自己加 watch |
+| 跨标签页同步     | 靠浏览器原生的 `storage` 事件，默认开启                                                                                       |
+| 写 null          | 赋 `null` / `undefined` 会走 `removeItem`，不会留下字符串 `"null"`                                                            |
+| 自动序列化       | 按初始值的类型挑序列化器：初始值 `''` 存字符串，初始值 `0` 存数字                                                             |
+| 同步 API         | localStorage 读写是同步的，只适合放小数据；同源脚本都能读到，别放长期有效的敏感凭据                                           |
 
 兄弟 API 是 `useSessionStorage`（关标签页就没了）；需要更细的控制可以直接用 `useStorage`，例如 `useStorage('k', 0, undefined, { writeDefaults: false })` 表示初始值不写回存储。
 
@@ -107,11 +107,11 @@ watch(token, (v) => localStorage.setItem('token', v))
 let pending = null
 
 const ensureUser = () => {
-    if (user.value || !token.value) return Promise.resolve()
-    pending ??= fetchMe().finally(() => {
-        pending = null
-    })
-    return pending
+  if (user.value || !token.value) return Promise.resolve()
+  pending ??= fetchMe().finally(() => {
+    pending = null
+  })
+  return pending
 }
 ```
 

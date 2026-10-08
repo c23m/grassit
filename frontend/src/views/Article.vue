@@ -7,10 +7,10 @@ import { useAsync } from '@/composables/useAysnc'
 import Aside from '@/components/common/Aside.vue'
 
 const { identifier } = defineProps({
-    identifier: {
-        type: String,
-        required: true,
-    },
+  identifier: {
+    type: String,
+    required: true,
+  },
 })
 
 // const article = ref({
@@ -49,7 +49,7 @@ const { identifier } = defineProps({
 </script>
 
 <template>
-    <!-- <div v-if="loading" class="loading">加载中...</div>
+  <!-- <div v-if="loading" class="loading">加载中...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else class="container">
         <Aside :items="[]" class="menu"> 目录 </Aside>
@@ -68,35 +68,35 @@ const { identifier } = defineProps({
 <style scoped>
 .loading,
 .error {
-    padding: 20px;
+  padding: 20px;
 }
 
 .error {
-    color: red;
+  color: red;
 }
 
 .container {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 .menu {
-    width: 240px;
-    position: sticky;
-    top: 20px;
-    align-self: flex-start;
+  width: 240px;
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
 
-    max-width: calc(100vh - 40px);
-    overflow-y: auto;
+  max-width: calc(100vh - 40px);
+  overflow-y: auto;
 }
 
 .content {
-    padding: 40px;
-    flex: 1;
+  padding: 40px;
+  flex: 1;
 }
 
 .info {
-    color: var(--color-text-weak);
-    font-weight: 400;
+  color: var(--color-text-weak);
+  font-weight: 400;
 }
 </style>

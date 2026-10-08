@@ -1,20 +1,12 @@
 {
   "semi": false,
   "singleQuote": true,
-  "tabWidth": 4,
+  "tabWidth": 2,
   "endOfLine": "lf",
   "overrides": [
     {
-      "files": [
-        "**/package.json",
-        "**/.prettierrc",
-        "**/*.config.js",
-        "**/jsconfig.json",
-        "**/tsconfig*.json"
-      ],
-      "options": {
-        "tabWidth": 2
-      }
+      "files": ["**/*.yml", "**/*.yaml"],
+      "options": { "singleQuote": false, "printWidth": 120 }
     }
   ]
 }

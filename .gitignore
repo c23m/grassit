@@ -4,3 +4,8 @@
 .idea/
 .vscode/
 .DS_Store
+
+# 根目录的格式化工具（prettier）
+node_modules/
+# npm 缓存：默认在 D:\Develop\nodejs\node_cache（工作区外，受限沙箱写不进去），这里指到仓库内
+.npm-cache/

@@ -5,10 +5,10 @@
 > 目前唯一的编排文件是仓库根目录的 `docker-compose.yml`（只服务于本地开发）。
 
 - [生产环境的部署](#生产环境的部署)
-    - [整体架构](#整体架构)
-    - [服务器目录规划](#服务器目录规划)
-    - [配置](#配置)
-    - [容器](#容器)
+  - [整体架构](#整体架构)
+  - [服务器目录规划](#服务器目录规划)
+  - [配置](#配置)
+  - [容器](#容器)
 
 ## 整体架构
 
@@ -17,9 +17,9 @@
 用户浏览器: `https://grassit.cn`
 
 - Nginx - 80/443
-    - `grassit.cn/`: `/var/www/grassit/`（前端打包产物）
-    - `grassit.cn/api/`: 反代到 `http://127.0.0.1:8000/`（剥掉 `/api` 前缀）
-    - `grassit.cn/public/`: `/var/lib/grassit/public/`（头像、附件等静态资源）
+  - `grassit.cn/`: `/var/www/grassit/`（前端打包产物）
+  - `grassit.cn/api/`: 反代到 `http://127.0.0.1:8000/`（剥掉 `/api` 前缀）
+  - `grassit.cn/public/`: `/var/lib/grassit/public/`（头像、附件等静态资源）
 - FastAPI(uvicorn) - 127.0.0.1:8000
 - MySQL - 127.0.0.1:3306
 
@@ -27,10 +27,10 @@
 
 - `/var/www/grassit/`: 前端打包产物(Nginx root)
 - `/var/lib/grassit`: 存储
-    - `/public`
-        - `/avatars`
-        - `/attachments`
-        - `/static`
+  - `/public`
+    - `/avatars`
+    - `/attachments`
+    - `/static`
 - `/var/log/grassit/`: 后端日志
 - `/etc/grassit/`: 配置
 

@@ -16,7 +16,7 @@ services:
       timeout: 5s
       retries: 20
       start_period: 30s
-  
+
   backend:
     environment:
       DB_HOST: mysql
@@ -51,7 +51,6 @@ services:
       - "5173:5173"
     build: ./frontend
     image: gst-frontend
-  
+
 volumes:
   mysql_data:
-

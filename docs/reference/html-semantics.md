@@ -24,16 +24,16 @@
 
 ```html
 <form @submit.prevent="onSubmit">
-    <label for="username">用户名</label>
-    <input id="username" v-model="username" autocomplete="username" />
-    <label for="password">密码</label>
-    <input
-        id="password"
-        type="password"
-        v-model="password"
-        autocomplete="current-password"
-    />
-    <button type="submit">登录</button>
+  <label for="username">用户名</label>
+  <input id="username" v-model="username" autocomplete="username" />
+  <label for="password">密码</label>
+  <input
+    id="password"
+    type="password"
+    v-model="password"
+    autocomplete="current-password"
+  />
+  <button type="submit">登录</button>
 </form>
 ```
 

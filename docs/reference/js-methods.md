@@ -60,12 +60,12 @@ import { onMounted, ref } from 'vue'
 const inputEl = ref(null)
 
 onMounted(() => {
-    inputEl.value?.focus()
+  inputEl.value?.focus()
 })
 </script>
 
 <template>
-    <input ref="inputEl" />
+  <input ref="inputEl" />
 </template>
 ```
 

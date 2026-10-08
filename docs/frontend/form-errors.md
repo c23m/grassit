@@ -15,24 +15,24 @@ const error = ref('')
 const submitting = ref(false)
 
 const onSubmit = async () => {
-    error.value = ''
-    submitting.value = true
-    try {
-        await register({ username: username.value })
-    } catch (err) {
-        error.value = toMessage(err)
-    } finally {
-        submitting.value = false
-    }
+  error.value = ''
+  submitting.value = true
+  try {
+    await register({ username: username.value })
+  } catch (err) {
+    error.value = toMessage(err)
+  } finally {
+    submitting.value = false
+  }
 }
 </script>
 
 <template>
-    <form @submit.prevent="onSubmit">
-        <input v-model="username" />
-        <p v-if="error">{{ error }}</p>
-        <button type="submit" :disabled="submitting">提交</button>
-    </form>
+  <form @submit.prevent="onSubmit">
+    <input v-model="username" />
+    <p v-if="error">{{ error }}</p>
+    <button type="submit" :disabled="submitting">提交</button>
+  </form>
 </template>
 ```
 
@@ -62,23 +62,23 @@ const onSubmit = async () => {
 
 这是表单处理里最容易绊人的地方：同样是错误响应，`detail` 可能是**字符串**，也可能是**数组**。
 
-| 情况     | 谁产生的                                     | 形态                                        | 例子                |
-| -------- | -------------------------------------------- | ------------------------------------------- | ------------------- |
-| 业务错误 | 路由里主动 `raise HTTPException(409, "…")`   | 字符串                                      | `{"detail": "Username already exists"}` |
-| 校验失败 | Pydantic 校验层自动返回 422                  | 数组，每项含 `type` / `loc` / `msg` / `input` | 见下方 JSON         |
+| 情况     | 谁产生的                                   | 形态                                          | 例子                                    |
+| -------- | ------------------------------------------ | --------------------------------------------- | --------------------------------------- |
+| 业务错误 | 路由里主动 `raise HTTPException(409, "…")` | 字符串                                        | `{"detail": "Username already exists"}` |
+| 校验失败 | Pydantic 校验层自动返回 422                | 数组，每项含 `type` / `loc` / `msg` / `input` | 见下方 JSON                             |
 
 用户名只填 2 个字符时的实测响应：
 
 ```json
 {
-    "detail": [
-        {
-            "type": "string_too_short",
-            "loc": ["body", "username"],
-            "msg": "String should have at least 3 characters",
-            "input": "ab"
-        }
-    ]
+  "detail": [
+    {
+      "type": "string_too_short",
+      "loc": ["body", "username"],
+      "msg": "String should have at least 3 characters",
+      "input": "ab"
+    }
+  ]
 }
 ```
 
@@ -94,31 +94,31 @@ const onSubmit = async () => {
 ```js
 // 后端 409 的三条原文，见 backend/app/routers/auth.py
 const CONFLICT_MESSAGES = {
-    'Username already exists': '用户名已被占用',
-    'Email already exists': '邮箱已被占用',
-    'Username or email already exists': '用户名或邮箱已被占用',
+  'Username already exists': '用户名已被占用',
+  'Email already exists': '邮箱已被占用',
+  'Username or email already exists': '用户名或邮箱已被占用',
 }
 
 const FIELD_LABELS = {
-    username: '用户名',
-    nickname: '昵称',
-    password: '密码',
-    email: '邮箱',
+  username: '用户名',
+  nickname: '昵称',
+  password: '密码',
+  email: '邮箱',
 }
 
 const toMessage = (err) => {
-    if (!err.response) return '网络异常，请稍后再试'
-    const detail = err.response.data?.detail
-    if (typeof detail === 'string')
-        return CONFLICT_MESSAGES[detail] ?? '请求冲突，请检查填写内容'
-    if (Array.isArray(detail))
-        return detail
-            .map((item) => {
-                const field = item.loc.at(-1)
-                return `${FIELD_LABELS[field] ?? field}：${item.msg}`
-            })
-            .join('\n')
-    return `请求失败（${err.response.status}）`
+  if (!err.response) return '网络异常，请稍后再试'
+  const detail = err.response.data?.detail
+  if (typeof detail === 'string')
+    return CONFLICT_MESSAGES[detail] ?? '请求冲突，请检查填写内容'
+  if (Array.isArray(detail))
+    return detail
+      .map((item) => {
+        const field = item.loc.at(-1)
+        return `${FIELD_LABELS[field] ?? field}：${item.msg}`
+      })
+      .join('\n')
+  return `请求失败（${err.response.status}）`
 }
 ```
 

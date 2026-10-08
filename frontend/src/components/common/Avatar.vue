@@ -3,7 +3,7 @@ import { Link } from '@/components/common'
 </script>
 
 <template>
-    <Link class=""></Link>
+  <Link class=""></Link>
 </template>
 
 <style scoped></style>

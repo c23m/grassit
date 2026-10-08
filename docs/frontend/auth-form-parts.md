@@ -22,12 +22,12 @@ const submitting = ref(false)
 
 ## 现成组件的能力与限制
 
-| 组件                 | props                                | 登录页里的用法                                        |
-| -------------------- | ------------------------------------ | ----------------------------------------------------- |
+| 组件                 | props                                            | 登录页里的用法                                                 |
+| -------------------- | ------------------------------------------------ | -------------------------------------------------------------- |
 | `TextInput`          | `type`（默认 `text`）、`placeholder`、`disabled` | `<TextInput v-model="username" />`、密码框传 `type="password"` |
-| `Button`             | `type`（默认 `button`）、`disabled`  | 提交按钮**必须写 `type="submit"`**，见下方说明        |
-| `Link`               | 走 `url` 属性                        | "去注册"这类站内跳转                                  |
-| `Textarea` / `Radio` | —                                    | 登录页用不上                                          |
+| `Button`             | `type`（默认 `button`）、`disabled`              | 提交按钮**必须写 `type="submit"`**，见下方说明                 |
+| `Link`               | 走 `url` 属性                                    | "去注册"这类站内跳转                                           |
+| `Textarea` / `Radio` | —                                                | 登录页用不上                                                   |
 
 三个容易踩的点：
 
@@ -37,10 +37,10 @@ const submitting = ref(false)
 
 ## 数据层：两个入口，选一个
 
-| 入口                              | 签名                                                     | 说明                                                                 |
-| --------------------------------- | -------------------------------------------------------- | -------------------------------------------------------------------- |
-| `useAuthStore().login`            | `login(username, password)`                              | **位置参数**，和 api 层不一致；内部只写 token 和 user，不管跳转       |
-| `@/api/auth.js` 的 `login`        | `login({ username, password })`                          | 直接打接口，绕过 store；返回 `{ token, user }`                       |
+| 入口                       | 签名                            | 说明                                                            |
+| -------------------------- | ------------------------------- | --------------------------------------------------------------- |
+| `useAuthStore().login`     | `login(username, password)`     | **位置参数**，和 api 层不一致；内部只写 token 和 user，不管跳转 |
+| `@/api/auth.js` 的 `login` | `login({ username, password })` | 直接打接口，绕过 store；返回 `{ token, user }`                  |
 
 两个必须知道的点：
 
@@ -55,12 +55,12 @@ const submitting = ref(false)
 
 `POST /auth/register`（见 `backend/app/schemas/auth.py`）收四个字段：
 
-| 字段       | 限制                                        |
-| ---------- | ------------------------------------------- |
-| `username` | 3~30，`^[a-zA-Z0-9][a-zA-Z0-9_-]*$`         |
-| `nickname` | 1~30                                        |
-| `password` | 6~128                                       |
-| `email`    | 可选，`EmailStr \| None`                     |
+| 字段       | 限制                                |
+| ---------- | ----------------------------------- |
+| `username` | 3~30，`^[a-zA-Z0-9][a-zA-Z0-9_-]*$` |
+| `nickname` | 1~30                                |
+| `password` | 6~128                               |
+| `email`    | 可选，`EmailStr \| None`            |
 
 响应是 UserMe，**不带 token**，所以注册成功后跳 `/login` 而不是首页。
 

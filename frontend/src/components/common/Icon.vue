@@ -7,46 +7,46 @@ import IconTranslate from '~icons/material-symbols/translate-rounded'
 import IconExternal from '~icons/material-symbols/open-in-new-rounded'
 
 const icons = {
-    github: IconGithub,
-    light: IconLight,
-    dark: IconDark,
-    menu: IconMenu,
-    translate: IconTranslate,
-    external: IconExternal,
+  github: IconGithub,
+  light: IconLight,
+  dark: IconDark,
+  menu: IconMenu,
+  translate: IconTranslate,
+  external: IconExternal,
 }
 
 const { name, title } = defineProps({
-    name: {
-        type: String,
-        required: true,
-    },
-    title: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  title: String,
 })
 </script>
 
 <template>
-    <span class="wrapper" :title>
-        <component :is="icons[name]" v-if="icons[name]" class="icon" />
-    </span>
+  <span class="wrapper" :title>
+    <component :is="icons[name]" v-if="icons[name]" class="icon" />
+  </span>
 </template>
 
 <style scoped>
 .wrapper {
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    padding: 5px;
-    border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 50%;
 }
 
 .wrapper:hover {
-    background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg-secondary);
 }
 
 .icon {
-    display: inline-block;
-    color: var(--color-text-default);
-    width: 24px;
-    height: 24px;
+  display: inline-block;
+  color: var(--color-text-default);
+  width: 24px;
+  height: 24px;
 }
 </style>

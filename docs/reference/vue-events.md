@@ -6,13 +6,13 @@
 
 ## `@click="fn"` 和 `@click="fn()"` 不是一回事
 
-| 写法                    | 实际执行               | 处理器收到什么                 |
-| ----------------------- | ---------------------- | ------------------------------ |
-| `@click="fn"`           | 把这个函数交给 Vue 当处理器 | **第一个参数是事件对象**     |
-| `@click="fn()"`         | 包成 `$event => fn()`  | 什么都不传                     |
-| `@click="fn($event)"`   | 包成 `$event => fn($event)` | 手动把事件对象传进去       |
-| `@click="fn('a')"`      | 包成 `$event => fn('a')` | 只拿到 `'a'`，事件对象被丢掉 |
-| `@click="a(), b()"`     | 两个都执行             | 都拿不到事件                   |
+| 写法                  | 实际执行                    | 处理器收到什么               |
+| --------------------- | --------------------------- | ---------------------------- |
+| `@click="fn"`         | 把这个函数交给 Vue 当处理器 | **第一个参数是事件对象**     |
+| `@click="fn()"`       | 包成 `$event => fn()`       | 什么都不传                   |
+| `@click="fn($event)"` | 包成 `$event => fn($event)` | 手动把事件对象传进去         |
+| `@click="fn('a')"`    | 包成 `$event => fn('a')`    | 只拿到 `'a'`，事件对象被丢掉 |
+| `@click="a(), b()"`   | 两个都执行                  | 都拿不到事件                 |
 
 **差别只在处理器的第一个参数有没有意义。** 处理器是 `() => {}` 这种不收参数的，写不写括号都行（多传一个事件对象会被忽略）；一旦第一个参数有意义，就必须分清。
 
@@ -41,24 +41,24 @@ set(v) {
 
 ## 事件对象里有什么
 
-| 属性 / 方法                  | 用途                                                     |
-| ---------------------------- | -------------------------------------------------------- |
-| `$event.target`              | 触发事件的元素（可能是子元素，比如输入框里的 `<b>`）      |
-| `$event.currentTarget`       | 绑定监听的那个元素——判断"点的是不是它自己"要用这个         |
-| `$event.preventDefault()`    | 阻止默认行为（表单提交、链接跳转）                        |
-| `$event.stopPropagation()`   | 阻止冒泡                                                  |
-| `$event.key` / `$event.code` | 键盘按键（配合修饰符就不用自己判断了）                    |
+| 属性 / 方法                  | 用途                                                 |
+| ---------------------------- | ---------------------------------------------------- |
+| `$event.target`              | 触发事件的元素（可能是子元素，比如输入框里的 `<b>`） |
+| `$event.currentTarget`       | 绑定监听的那个元素——判断"点的是不是它自己"要用这个   |
+| `$event.preventDefault()`    | 阻止默认行为（表单提交、链接跳转）                   |
+| `$event.stopPropagation()`   | 阻止冒泡                                             |
+| `$event.key` / `$event.code` | 键盘按键（配合修饰符就不用自己判断了）               |
 
 ## 修饰符
 
-| 修饰符     | 等价于                                  | 常用场景                     |
-| ---------- | --------------------------------------- | ---------------------------- |
-| `.prevent` | `event.preventDefault()`                | 表单：`@submit.prevent`      |
-| `.stop`    | `event.stopPropagation()`               | 阻止冒泡到父元素             |
-| `.self`    | 只在 `target === currentTarget` 时触发   | 遮罩层点击关闭               |
-| `.once`    | 只触发一次                              | 引导、一次性回调             |
-| `.capture` | 捕获阶段触发                            | 父元素先于子元素拿到事件     |
-| `.passive` | 声明"不会阻止默认行为"，滚动更顺          | `@scroll.passive`            |
+| 修饰符     | 等价于                                 | 常用场景                 |
+| ---------- | -------------------------------------- | ------------------------ |
+| `.prevent` | `event.preventDefault()`               | 表单：`@submit.prevent`  |
+| `.stop`    | `event.stopPropagation()`              | 阻止冒泡到父元素         |
+| `.self`    | 只在 `target === currentTarget` 时触发 | 遮罩层点击关闭           |
+| `.once`    | 只触发一次                             | 引导、一次性回调         |
+| `.capture` | 捕获阶段触发                           | 父元素先于子元素拿到事件 |
+| `.passive` | 声明"不会阻止默认行为"，滚动更顺       | `@scroll.passive`        |
 
 可以串起来写，顺序有意义：`@click.stop.prevent="fn"`。
 
@@ -101,9 +101,9 @@ set(v) {
 
 ## 本仓库的相关位置
 
-| 位置                        | 用到的东西                                             |
-| --------------------------- | ------------------------------------------------------ |
-| `layouts/nav/NavBar.vue`    | `@click="toggleDark()"`（踩过上面那个坑，已修）、`useDark` |
-| `views/Login.vue`           | `@submit.prevent="onSubmit"`（处理器不收参数，可以不带括号）|
-| `views/Home.vue`            | `@click="pictIndex = (pictIndex + 1) % colors.length"` |
-| `views/ApiTest.vue`         | `@click="urlCache.indexInc"`——那些 handler 是 `() => {}`，多收一个事件参数无害 |
+| 位置                     | 用到的东西                                                                     |
+| ------------------------ | ------------------------------------------------------------------------------ |
+| `layouts/nav/NavBar.vue` | `@click="toggleDark()"`（踩过上面那个坑，已修）、`useDark`                     |
+| `views/Login.vue`        | `@submit.prevent="onSubmit"`（处理器不收参数，可以不带括号）                   |
+| `views/Home.vue`         | `@click="pictIndex = (pictIndex + 1) % colors.length"`                         |
+| `views/ApiTest.vue`      | `@click="urlCache.indexInc"`——那些 handler 是 `() => {}`，多收一个事件参数无害 |

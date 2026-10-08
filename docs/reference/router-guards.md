@@ -27,12 +27,12 @@ type NavigationGuardReturn = void | Error | boolean | RouteLocationRaw
 
 `next` 参数仍然会传进来，但源码里已标注 `@deprecated`（"Return a value from the guard instead of calling `next(value)`"），未来版本会移除。
 
-| 返回值                  | 结果                             |
-| ----------------------- | -------------------------------- |
-| `undefined` / `true`    | 放行                             |
-| `false`                 | 取消这次导航，停在原页面         |
-| 路由地址（字符串 / 对象）| 重定向到该地址，本轮导航作废     |
-| `Error`                 | 中断并交给 `router.onError` 处理 |
+| 返回值                    | 结果                             |
+| ------------------------- | -------------------------------- |
+| `undefined` / `true`      | 放行                             |
+| `false`                   | 取消这次导航，停在原页面         |
+| 路由地址（字符串 / 对象） | 重定向到该地址，本轮导航作废     |
+| `Error`                   | 中断并交给 `router.onError` 处理 |
 
 异步守卫直接把结果 `return` 出去即可。**最常见的坑是写了 `async` 却既不 return 也不调 `next`**：导航会静默卡住，页面什么都不发生，控制台也不报错。
 
@@ -42,21 +42,21 @@ type NavigationGuardReturn = void | Error | boolean | RouteLocationRaw
 
 ```js
 const routes = [
-    { path: 'login', name: 'login', component: Login },
-    {
-        path: 'article/:identifier?',
-        name: 'article',
-        component: Article,
-        meta: { requiresAuth: true },
-    },
+  { path: 'login', name: 'login', component: Login },
+  {
+    path: 'article/:identifier?',
+    name: 'article',
+    component: Article,
+    meta: { requiresAuth: true },
+  },
 ]
 
 router.beforeEach(async (to) => {
-    const auth = useAuthStore()
-    if (!to.meta.requiresAuth) return
-    await auth.ensureUser()
-    if (!auth.isLoggedIn)
-        return { name: 'login', query: { redirect: to.fullPath } }
+  const auth = useAuthStore()
+  if (!to.meta.requiresAuth) return
+  await auth.ensureUser()
+  if (!auth.isLoggedIn)
+    return { name: 'login', query: { redirect: to.fullPath } }
 })
 ```
 
